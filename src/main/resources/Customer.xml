@@ -1,0 +1,43 @@
+<_-IMY_-MGOL_CUSTOMER01>
+   <IDOC BEGIN="1">
+      <EDI_DC40 SEGMENT="1">
+         <TABNAM>EDI_DC40</TABNAM>
+         <MANDT>800</MANDT>
+         <DOCNUM>0000000001069114</DOCNUM>
+         <DOCREL>731</DOCREL>
+         <STATUS>30</STATUS>
+         <DIRECT>1</DIRECT>
+         <OUTMOD>2</OUTMOD>
+         <IDOCTYP>/IMY/MGOL_CUSTOMER01</IDOCTYP>
+         <MESTYP>/IMY/MGOL_CUSTOMER</MESTYP>
+         <SNDPOR>SAPME6</SNDPOR>
+         <SNDPRT>LS</SNDPRT>
+         <SNDPRN>T90CLNT090</SNDPRN>
+         <RCVPOR>ZMAT</RCVPOR>
+         <RCVPRT>LS</RCVPRT>
+         <RCVPRN>LR800</RCVPRN>
+         <CREDAT>20141213</CREDAT>
+         <CRETIM>121930</CRETIM>
+         <SERIAL>20141213121639</SERIAL>
+      </EDI_DC40>
+      <_-IMY_-MGOL_CUSTOMER SEGMENT="1">
+         <KUNNR>0000001460</KUNNR>
+         <NAME1>C.A.S. Computer Application Systems</NAME1>
+         <STREET>Chemnitzer Strasse 42</STREET>
+         <STR_SUPPL3>info@mygoconsulting.com</STR_SUPPL3>
+         <CITY>Dresden</CITY>
+         <REGION>14</REGION>
+         <COUNTRY>DE</COUNTRY>
+         <POSTL_COD1>01187</POSTL_COD1>
+         <TELEPHONE>0351-5423-00</TELEPHONE>
+         <FAX>0351-5423324</FAX>
+         <_-IMY_-MGOL_CUST_BANK SEGMENT="1">
+            <CUST_NUMBER>0000001460</CUST_NUMBER>
+            <BANK_COUNTRY>DE</BANK_COUNTRY>
+            <BANK_KEY>10035087</BANK_KEY>
+            <BANK_ACC>234764123</BANK_ACC>
+            <BANK_TYPE>USCI</BANK_TYPE>
+         </_-IMY_-MGOL_CUST_BANK>
+      </_-IMY_-MGOL_CUSTOMER>
+   </IDOC>
+</_-IMY_-MGOL_CUSTOMER01>
