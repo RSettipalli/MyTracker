@@ -19,7 +19,7 @@ public class UserDAOImpl implements MyTrackingDAO {
 	public boolean createUser(User user) {
 		String createQuery = MyTrackingDAOProperty.getProperty("createQuery");
 		int recordsCreated = jdbcTemplateObject.update(createQuery, user.getEmail(),user.getFname(),
-				user.getLname(),user.getPassword(),user.getUserType().getKey());
+				user.getLname(),user.getPassword(),user.getUserId()); //user.getUserType().getKey()
 		if(recordsCreated >= 1)
 			return true;
 		

@@ -126,5 +126,4 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		}
 
 	}
-
 }

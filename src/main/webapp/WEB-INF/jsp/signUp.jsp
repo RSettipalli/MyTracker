@@ -44,7 +44,7 @@ function register() {
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
-          <h2><span>Login</h2>
+          <h2><span>Login</span></h2>
           <div class="clr"></div>
  		<form:form name="registerForm" method="POST" commandName="user" action="./signUp.htm">
  		   <div class="clr">${message}</div>
@@ -57,8 +57,8 @@ function register() {
           <form:input path="email"  value="" /><br />
 		  <label>Password</label>
 		  <form:password path="password" showPassword="true"/><br />
-          <label>User Type</label>
-          <form:radiobuttons path="UserType" items="${AllUserTypes}"  /><br />
+          <label>Company/Consumer Id</label>
+          <form:input path="userId"  value="" /><br />
           <br />
           <input class="button" type="submit" value="Sign In" onclick="register()"/>
         </p>

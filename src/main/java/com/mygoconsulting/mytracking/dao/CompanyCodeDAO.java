@@ -98,5 +98,21 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 		}	
 
 	}
-
+	
+	public IMY_COMPANY getIMyCompanyByBUKRS(String bukrs){
+		System.out.println("BUKRS value is "+bukrs);
+		String selectQuery = new String("select * from COMPANY_CODE where BUKRS= ?");
+		Object[] selectParams = { bukrs };
+		IMY_COMPANY iMyCompany = (IMY_COMPANY) get(selectQuery, selectParams, companyCodeRowMapper);
+		System.out.println("BUKRS value from DB is "+iMyCompany.getBUKRS());
+		return iMyCompany;
+	}
+	
+	public IMY_SHIP_POINT getShipPointsList(String bukrs){
+		System.out.println("BUKRS value is "+bukrs);
+		String selectQuery = new String("select * from SHIP_POINT where BUKRS= ?");
+		Object[] selectParams = { bukrs };
+		IMY_SHIP_POINT iMyShipPoints = (IMY_SHIP_POINT) get(selectQuery, selectParams, shipPointRowMapper);
+		return iMyShipPoints;
+	}
 }

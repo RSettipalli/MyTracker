@@ -21,7 +21,7 @@ public class MygoTrackingBatchJob {
 		//TimerTask syncXmlDataTask = new SyncXMLDataTask();
 
 		Timer timer = new Timer(true);
-		timer.schedule(syncXmlDataTask, 0, 60 * 1000);
+		timer.schedule(syncXmlDataTask, 0, 30* 60 * 1000);
 	}
 
 	public void cleanUp() {

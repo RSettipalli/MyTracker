@@ -1,18 +1,32 @@
 package com.mygoconsulting.mytracking.manager;
 
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
-import org.springframework.stereotype.Service;
-
-import com.mygoconsulting.mytracking.model.IDOC;
+import com.mygoconsulting.mytracking.dao.CompanyCodeDAO;
 import com.mygoconsulting.mytracking.model.IMY_COMPANY;
+import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 
-@Service
+@Component("CompanyManager")
 public class CompanyManager {
-	List<IMY_COMPANY> imyCompanyList;
-	public List<IMY_COMPANY> getCompanyInfo() {
-		 IDOC idoc = new IDOC();  
-		 imyCompanyList = idoc.getIMY_COMPANY();			
-		  return imyCompanyList;
+	private IMY_COMPANY imyCompany = null;
+	@Autowired
+	@Qualifier("CompanyCode")
+	private CompanyCodeDAO companyCodeDao;
+	public CompanyManager(){
+		
+	}
+	
+	public IMY_COMPANY getCompanyInfo(String companyCode) {
+		System.out.println("Company Code "+ companyCode);
+		imyCompany = new IMY_COMPANY();
+		imyCompany = companyCodeDao.getIMyCompanyByBUKRS(companyCode);
+		return imyCompany;
+	}
+	
+	public IMY_SHIP_POINT getShipPoints(String companyCode){
+		IMY_SHIP_POINT shipPoints = companyCodeDao.getShipPointsList(companyCode);
+		return shipPoints;
 	}
 }

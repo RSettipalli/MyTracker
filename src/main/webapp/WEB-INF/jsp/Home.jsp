@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html;" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,21 +28,47 @@
       	<li><a href='#'><span>Invoice Report</span></a></li>
       	<li><a href='#'><span>Shipment Report</span></a></li>
       	<li><a href='#'><span>Product Info</span></a></li>
-      	<li><a href='#'><span>Profile</span></a></li>
-      	<li class='last'><a href="Resources.jsp">Resources</a></li>
+      	<li><a href='#'><span>Company Profile</span></a></li>
       	</ul>
       </div>
       <div class="clr"></div>
     </div>
   </div>
   <div class="content">
-  	<div class="content_resize"><!--<center> <img src="./images/mygologo_smallsize.jpg" alt="" class="hbg_img" /> </center>-->
+  	<div class="content_resize">
       <div class="clr"></div>
       <div class="mainbar">
       <div class="article">
       <h2><span>Welcome ${sessionScope.user.fname}</span></h2>
+      <b> <u>Company Information</u> </b> <br/>
+        BUKRS : ${companyInfo.BUKRS} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+        ORT01 : ${companyInfo.ORT01} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		BUTXT : ${companyInfo.BUTXT} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		SPRAS : ${companyInfo.SPRAS} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		WAERS : ${companyInfo.WAERS} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
+		ADRNR : ${companyInfo.ADRNR} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		ADDRESS1 : ${companyInfo.ADDRESS1} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		ADDRESS2 : ${companyInfo.ADDRESS2} &nbsp;&nbsp;&nbsp;&nbsp;	 <br/>
+		COUNTRY : ${companyInfo.COUNTRY} &nbsp;&nbsp;&nbsp;&nbsp;<br/> 
+		ZIP : ${companyInfo.ZIP} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		PHONE : ${companyInfo.PHONE} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+		FAX : ${companyInfo.FAX} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+ 	   
+ 	  <div class="content">
+ 	  <b> <u>Company Ship Points</u> </b> <br/> 	  
+ 	  	ADDRESS1 :${shipPoint.ADDRESS1} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
+ 	  	ADDRESS2 : ${shipPoint.ADDRESS2} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+	  	BUKRS : ${shipPoint.BUKRS} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
+	  	CITY : ${shipPoint.CITY} &nbsp;&nbsp;&nbsp;&nbsp; <br />
+	  	COUNTRY : ${shipPoint.COUNTRY} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+	  	FAX : ${shipPoint.FAX} &nbsp;&nbsp;&nbsp;&nbsp; <br/>	
+	  	LANGUAGE : ${shipPoint.LANGUAGE} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
+	  	PHONE : ${shipPoint.PHONE} &nbsp;&nbsp;&nbsp;&nbsp;	<br />
+	  	SHIP POINT : ${shipPoint.SHIP_POINT} &nbsp;&nbsp;&nbsp;&nbsp;  <br/> 
+	  	ZIP : ${shipPoint.ZIP} &nbsp;&nbsp;&nbsp;&nbsp; <br/>      
+   	 </div> 	  	     
       <div class="clr"></div>
-      </div><p class="pages"><small>Page 1 of 2 &nbsp;&nbsp;&nbsp;</small> <span>1</span> <a href="#">2</a> <a href="#">&raquo;</a></p></div>
+      </div></div>
       <div class="sidebar">
         <div class="searchform">
           <form id="formsearch" name="formsearch" method="post" action="#">
@@ -53,10 +84,11 @@
           <div class="clr"></div>
           <ul class="sb_menu">
             <li><a href="../Home.htm">Home</a></li>
-            <li><a href="#">Shipping</a></li>
-            <li><a href="#">Orders</a></li>
-            <li><a href="#">Tracker</a></li>
-            <li><a href="#">Resources</a></li>
+            <li><a href='../mytracking/orderInfo/'><span>Order Report</span></a></li>
+      		<li><a href='#'><span>Invoice Report</span></a></li>
+      		<li><a href='#'><span>Shipment Report</span></a></li>
+      		<li><a href='#'><span>Product Info</span></a></li>
+      		<li><a href='#'><span>Company Profile</span></a></li>
           </ul>
         </div>
       <div class="clr"></div>

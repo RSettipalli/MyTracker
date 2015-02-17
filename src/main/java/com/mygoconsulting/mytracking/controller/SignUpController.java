@@ -1,8 +1,7 @@
 package com.mygoconsulting.mytracking.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,11 +14,10 @@ import com.mygoconsulting.mytracking.manager.CompanyManager;
 import com.mygoconsulting.mytracking.manager.OrderManager;
 import com.mygoconsulting.mytracking.model.IMY_COMPANY;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
+import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 import com.mygoconsulting.mytracking.model.LoginForm;
 import com.mygoconsulting.mytracking.model.User;
 import com.mygoconsulting.mytracking.util.Email;
-import com.mygoconsulting.mytracking.util.UserType;
-
 //import com.mygoconsulting.mytracking.LogFactory;
 
 @Controller
@@ -31,6 +29,7 @@ public class SignUpController {
 	private MyTrackingDAO userDAO;
 
 	@Autowired
+	@Qualifier("CompanyManager")
 	CompanyManager companyManager;
 
 	@Autowired
@@ -41,14 +40,19 @@ public class SignUpController {
 	public String login(@ModelAttribute("loginForm") LoginForm loginRecord,
 			Model model) {
 		System.out.println("email is: " + loginRecord.getEmail());
+		IMY_SHIP_POINT shipPoint = null;
 		User user = userDAO.validateUser(loginRecord.getEmail(),
 				loginRecord.getPassword());
 		if (user != null) {
-			List<IMY_COMPANY> companyList = companyManager.getCompanyInfo();
-			model.addAttribute("companyInfo",companyList);
-			
-			List<IMY_MGOL_OD_DETAIL> orderDetail = orderManager.getOrderDetail();
-			model.addAttribute("orderDetail",orderDetail);
+			System.out.println("Company code is "+user.getUserId());
+			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(user.getUserId());
+			model.addAttribute("companyInfo",companyInfo);
+			if(companyInfo != null){
+				shipPoint = companyManager.getShipPoints(user.getUserId());
+				model.addAttribute("shipPoint",shipPoint);
+			}
+			//List<IMY_MGOL_OD_DETAIL> orderDetail = orderManager.getOrderDetail();
+			//model.addAttribute("orderDetail",orderDetail);
 
 			model.addAttribute("user", user);
 			return "Home";
@@ -67,7 +71,7 @@ public class SignUpController {
 	public String signUp(Model model) {
 		User user = new User();
 		model.addAttribute("user", user);
-		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
+		//model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
 		return "signUp";
 	}
 

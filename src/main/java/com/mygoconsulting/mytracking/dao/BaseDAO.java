@@ -3,6 +3,7 @@ package com.mygoconsulting.mytracking.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class BaseDAO {
 
 	@Autowired
-	//@Qualifier("jdbcTemplate")
+	@Qualifier("jdbcTemplate")
 	private JdbcTemplate jdbcTemplateObject;
 
 	protected boolean insertOrUpdate(String sqlQuery, Object[] params) {
@@ -24,15 +25,19 @@ public class BaseDAO {
 
 	@SuppressWarnings("unchecked")
 	protected Object get(String sqlQuery, Object[] params, RowMapper rowMapper) {
+		
+		System.out.println("Select Query is "+sqlQuery);
 		Object obj = null;
 		try{
-		obj = jdbcTemplateObject.queryForObject(sqlQuery, params,
-				rowMapper);
+			obj = jdbcTemplateObject.queryForObject(sqlQuery, params,rowMapper);
 		}catch(EmptyResultDataAccessException ex){
+			System.out.println("jdbcTemplateObject is null");
+			obj = null;
+		} catch (Exception ex){
+			System.out.println("jdbcTemplateObject is null");
 			obj = null;
 		}
 		return obj;
-
 	}
 
 	protected boolean isExists(String sqlQuery, Object[] params,

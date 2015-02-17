@@ -16,9 +16,9 @@ public class CompanyCodeController {
 	@Autowired
 	CompanyManager companyManager;
 	@RequestMapping(value="/companyCode", method = RequestMethod.GET)
-	public String companyCode(Model model){
-		List<IMY_COMPANY> imyCompanyList = companyManager.getCompanyInfo();
-		model.addAttribute("companyInfo",imyCompanyList);		
+	public String companyCode(Model model){		
+		//IMY_COMPANY imyCompany = companyManager.getCompanyInfo();
+		//model.addAttribute("companyInfo",imyCompany);		
 		return "home";
 	}
 }

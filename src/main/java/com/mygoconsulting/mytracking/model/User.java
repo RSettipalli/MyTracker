@@ -1,14 +1,12 @@
 package com.mygoconsulting.mytracking.model;
 
-import com.mygoconsulting.mytracking.util.UserType;
-
 public class User {
 	
 	private String fname;
 	private String lname;
 	private String email;
-	private UserType userType;
 	private String password;
+	private String userId;
 	
 	public String getFname() {
 		return fname;
@@ -28,16 +26,16 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public UserType getUserType() {
-		return userType;
-	}
-	public void setUserType(UserType userType) {
-		this.userType = userType;
-	}
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}	
 }
