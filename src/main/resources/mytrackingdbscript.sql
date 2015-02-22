@@ -8,9 +8,9 @@ use newMyTracker;
 
 Admin user ratnakars/Xsw@3edc
 
-create table customer_info (customer_id int(25) NOT NULL auto_increment, fname varchar(50) NOT NULL, lname varchar(50) NOT NULL, email varchar(150) NOT NULL, password varchar(50) NOT NULL, status varchar(15), type varchar(25) NOT NULL, PRIMARY KEY (customer_id), UNIQUE KEY customer_id (customer_id), UNIQUE KEY email (email) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+create table customer_info (customer_id int(25) NOT NULL auto_increment, fname varchar(50) NOT NULL, lname varchar(50) NOT NULL, email varchar(150) NOT NULL, password varchar(50) NOT NULL, status varchar(15), userId varchar(25) NOT NULL, PRIMARY KEY (customer_id), UNIQUE KEY customer_id (customer_id), UNIQUE KEY email (email) ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-insert into customer_info (fname,lname,email,password,type) values('Ratnakar','Settipalli','ratnakar@gmail.com','Xsw@3edc','1');
+insert into customer_info (fname,lname,email,password,userId) values('Ratnakar','Settipalli','ratnakar@gmail.com','Xsw@3edc','0005');
 
 --CompanyCode Tables **** Companycode.xml
 create table COMPANY_CODE (BUKRS varchar(10) NOT NULL, BUTXT  varchar(50), ORT01 varchar(25), WAERS varchar(10), SPRAS varchar(1), ADRNR varchar(25), ADDRESS1 varchar(50), ADDRESS2 varchar(50), COUNTRY varchar(3), ZIP varchar(10), PHONE varchar(15), FAX varchar(15), PRIMARY KEY (BUKRS)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
