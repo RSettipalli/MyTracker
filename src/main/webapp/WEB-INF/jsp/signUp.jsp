@@ -9,7 +9,7 @@
 <script type="text/javascript" src="./js/arial.js"></script>
 <script type="text/javascript" src="./js/cuf_run.js"></script>
 <script type="text/javascript">
-function register() {
+	function register() {
 		  document.registerForm.submit();
 	}
 </script>
@@ -25,22 +25,10 @@ function register() {
        <!--  <a href="Registere.html"><img src="./images/Registeration_sm.png" width = "50px" border="0"/></a>-->
       </div>
       <div class="clr"></div>
-      <!--  <div class="menu_nav">
-        <ul>
-          <li><a href="Home.html">Home</a></li>
-          <li><a href="Shipping.html">Shipping</a></li>
-          <li><a href="Orders.html">Orders</a></li>
-          <li><a href="Tracker.html">Tracker</a></li>
-          <li><a href="Resources.html">Resources</a></li>
-        </ul>
-      </div>-->
-
-      <div class="clr"></div>
-
     </div>
   </div>
   <div class="content">
-    <div class="content_resize"><!--  <center> <img src="./images/mygologo_smallsize.jpg" alt="" class="hbg_img" /> </center>-->
+    <div class="content_resize">
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">

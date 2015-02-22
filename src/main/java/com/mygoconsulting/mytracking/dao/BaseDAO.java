@@ -52,5 +52,40 @@ public class BaseDAO {
 	protected void batchUpdate(String sql, List<Object[]> batchArgs){
 		jdbcTemplateObject.batchUpdate(sql, batchArgs);
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	protected Object get(String sqlQuery, RowMapper rowMapper) {
+		
+		System.out.println("Select Query is "+sqlQuery);
+		Object obj = null;
+		try{
+			obj = jdbcTemplateObject.queryForObject(sqlQuery, rowMapper);
+		}catch(EmptyResultDataAccessException ex){
+			System.out.println("jdbcTemplateObject is null");
+			obj = null;
+		} catch (Exception ex){
+			System.out.println("jdbcTemplateObject is null");
+			obj = null;
+		}
+		return obj;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected List<Object> getObjects(String sqlQuery,RowMapper rowMapper) {
+		
+		System.out.println("Select Query is "+sqlQuery);
+		List<Object> obj = null;
+		try{
+			obj = jdbcTemplateObject.query(sqlQuery, rowMapper);
+		}catch(EmptyResultDataAccessException ex){
+			System.out.println("jdbcTemplateObject is null");
+			obj = null;
+		} catch (Exception ex){
+			System.out.println("jdbcTemplateObject is null");
+			obj = null;
+		}
+		return obj;
+	}
 
 }

@@ -1,5 +1,7 @@
 package com.mygoconsulting.mytracking.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,5 +189,23 @@ public class SalesDAO extends BaseDAO implements IDAO {
 				}
 			}
 		}
+	}
+	
+	public IMY_MGOL_SO_HEADER getSalesOrderHeader(String soNum){
+		String selectQuery = new String("select * from SO_HEADER");
+		//Object[] selectParams = { header.getINVOI_NBR() };
+		IMY_MGOL_SO_HEADER soHeader = (IMY_MGOL_SO_HEADER) get(selectQuery,headerRowMapper);
+		return soHeader;
+	}
+	
+	public List<IMY_MGOL_SO_DETAIL> getSalesOrderDetails(String soNum){
+		String selectQuery = new String("select * from SO_DETAIL");
+		List<Object> soDetailObjects = (List<Object>) getObjects(selectQuery,soDetailRowMapper);
+		List<IMY_MGOL_SO_DETAIL> soDetails = new ArrayList<IMY_MGOL_SO_DETAIL>();
+		for(Iterator<Object> iterator = soDetailObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_DETAIL invDetail = (IMY_MGOL_SO_DETAIL) iterator.next();
+			soDetails.add(invDetail);
+		}
+		return soDetails;
 	}
 }

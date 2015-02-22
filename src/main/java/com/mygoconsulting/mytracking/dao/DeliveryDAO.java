@@ -1,5 +1,7 @@
 package com.mygoconsulting.mytracking.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -197,5 +199,25 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 				}
 			}
 		}		
+	}
+	
+	public List<IMY_MGOL_OD_DETAIL> getOrderDetails(String orderNum){
+		String selectQuery = new String("select * from DELIVERY_DETAIL "); //where ORDER_NBR= ?
+		//Object[] selectParams = { orderNum };
+		List<Object> orderDetailObjects    = (List<Object>) getObjects(selectQuery,detailRowMapper);
+		List<IMY_MGOL_OD_DETAIL> orderDetails = new ArrayList<IMY_MGOL_OD_DETAIL>();
+		for(Iterator<Object> iterator = orderDetailObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_OD_DETAIL orderDetail = (IMY_MGOL_OD_DETAIL) iterator.next();
+			System.out.println("OrderDetails are "+orderDetail.getBASE_UOM());
+			orderDetails.add(orderDetail);
+		}
+		return orderDetails;		
+	}
+	
+	public IMY_MGOL_OD_HEADER getOrderHeader(String orderNum){
+		String selectQuery = new String("select * from DELIVERY_HEADER ");//where DELVI_NBR= ?
+		//Object[] selectParams = { orderNum };
+		IMY_MGOL_OD_HEADER orderHeader = (IMY_MGOL_OD_HEADER) get(selectQuery,headerRowMapper);//selectParams,		
+		return orderHeader;		
 	}
 }

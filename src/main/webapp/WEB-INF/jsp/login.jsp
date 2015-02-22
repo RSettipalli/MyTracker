@@ -23,16 +23,12 @@ function login() {
       <div class="logoTitle"><h1>My Tracker</h1></div>
       <div class="logoSmallTitle"><a href="#"><img src="./images/mygologo_icon_sm.jpg" width = "50px" border="0"/></a>
        <a href="#"><img src="./images/contactusimage_sm.jpg" width = "50px" border="0"/></a>
-       <a href="./Registere.htm"><img src="./images/Registeration_sm.png" width = "50px" border="0"/></a>
+       <a href="./signUp.htm"><img src="./images/Registeration_sm.png" width = "50px" border="0"/></a>
       </div>
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
           <li><a href="./login.htm">Home</a></li>
-          <!--<li><a href="Shipping.html">Shipping</a></li>
-          <li><a href="Orders.html">Orders</a></li>
-          <li><a href="Tracker.html">Tracker</a></li>-->
-          <li><a href="./Resources.htm">Resources</a></li>
         </ul>
       </div>
 
@@ -41,7 +37,7 @@ function login() {
     </div>
   </div>
   <div class="content">
-    <div class="content_resize"><!--<center> <img src="./images/mygologo_smallsize.jpg" alt="" class="hbg_img" /> </center>-->
+    <div class="content_resize"><center> <img src="./images/mygologo_smallsize.jpg" alt="" class="hbg_img" /> </center>
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
@@ -55,11 +51,10 @@ function login() {
           	<form:input path="email" value="" /><br />
           	<label>Password</label>
           	<form:password path="password" showPassword="true"/><br/>
-          	<br/>
           	</p>
           	<input class="button" type="submit" value="Submit" onclick="login()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  	
 		  	<div><a href="./forgot.htm">Forgot Password</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  	<a href="./signUp.htm">Not a Member Yet?</a></div>
+		  	<!--  <a href="./signUp.htm">Not a Member Yet?</a>--></div>
       	</form:form>
 		</center>
         </div>

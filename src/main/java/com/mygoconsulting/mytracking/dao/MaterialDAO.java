@@ -126,4 +126,24 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		}
 
 	}
+	
+	public IMY_MAT_ONLINE getMaterialDetails(){
+		String selectQuery = new String("select * from MATERIAL");
+		IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery, materialMapper);
+		return iMyMaterials;
+	}
+	
+	public IMY_MAT_WERKS getMaterialPlantDetails(){
+		String selectQuery = new String("select * from MATERIAL_PLANT");
+		IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery, materialPlantMapper);
+		return iMyMaterialPlant;
+	}
+	
+	public IMY_MAT_STORAGE_DETIALS getMaterialStorageDetails(){
+		String selectQuery = new String("select * from MATERIAL");
+		IMY_MAT_STORAGE_DETIALS iMyMaterialStorage = (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
+		return iMyMaterialStorage;
+	}
+	
+	
 }

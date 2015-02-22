@@ -2,9 +2,12 @@ package com.mygoconsulting.mytracking.manager;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_CUSTOMER;
 
+@Component("CustomerManager")
 public class CustomerManager {
 	List<IMY_MGOL_CUSTOMER> imyCustomer;
 	public List<IMY_MGOL_CUSTOMER> getCustomerInfo() {
