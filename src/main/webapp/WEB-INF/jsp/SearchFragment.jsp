@@ -1,6 +1,6 @@
 <div class="sidebar">
 	<div class="searchform">
-          <form id="formsearch" name="formsearch" method="post" action="#">
+          <label>Search </label><form id="formsearch" name="formsearch" method="post" action="#">
             <span>
             <input name="editbox_search" class="editbox_search" id="editbox_search" maxlength="80" value="" type="text" />
             </span>

@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -42,50 +40,11 @@
       <div class="clr"></div>
       <div class="mainbar">
       <div class="article">
-      <jsp:include page="./SearchFragment.jsp"/>
       <h2><span>Welcome ${sessionScope.user.fname}</span></h2>      
-      <b> <u>Company Information</u> </b> <br/>
-        BUKRS : ${companyInfo.BUKRS} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-        ORT01 : ${companyInfo.ORT01} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		BUTXT : ${companyInfo.BUTXT} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		SPRAS : ${companyInfo.SPRAS} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		WAERS : ${companyInfo.WAERS} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
-		ADRNR : ${companyInfo.ADRNR} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		ADDRESS1 : ${companyInfo.ADDRESS1} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		ADDRESS2 : ${companyInfo.ADDRESS2} &nbsp;&nbsp;&nbsp;&nbsp;	 <br/>
-		COUNTRY : ${companyInfo.COUNTRY} &nbsp;&nbsp;&nbsp;&nbsp;<br/> 
-		ZIP : ${companyInfo.ZIP} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		PHONE : ${companyInfo.PHONE} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-		FAX : ${companyInfo.FAX} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
- 	   
- 	  <div class="content">
- 	  <b> <u>Company Ship Points</u> </b> <br/> 	  
- 	  	ADDRESS1 :${shipPoint.ADDRESS1} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
- 	  	ADDRESS2 : ${shipPoint.ADDRESS2} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-	  	BUKRS : ${shipPoint.BUKRS} &nbsp;&nbsp;&nbsp;&nbsp; <br/> 
-	  	CITY : ${shipPoint.CITY} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-	  	COUNTRY : ${shipPoint.COUNTRY} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-	  	FAX : ${shipPoint.FAX} &nbsp;&nbsp;&nbsp;&nbsp; <br/>	
-	  	LANGUAGE : ${shipPoint.LANGUAGE} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
-	  	PHONE : ${shipPoint.PHONE} &nbsp;&nbsp;&nbsp;&nbsp;	<br />
-	  	SHIP POINT : ${shipPoint.SHIP_POINT} &nbsp;&nbsp;&nbsp;&nbsp;  <br/> 
-	  	ZIP : ${shipPoint.ZIP} &nbsp;&nbsp;&nbsp;&nbsp; <br/>      
-   	 </div> 	  	     
+      <jsp:include page="./SearchFragment.jsp"/> 	  	     
       <div class="clr"></div>
       </div></div>
        <div class="clr"></div>
-        <div class="gadget">
-          <div class="clr"></div>
-          <ul class="sb_menu">
-            <li class="active"><a href="../Home.htm">Home</a></li>      		
-      		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
-      		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
-      		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
-      		<li><a href='./Material.htm'><span>Material Info</span></a></li>
-      		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
-			<li><a href="./login.htm">Login</a></li>
-          </ul>
-        </div>
       <div class="clr"></div>
     </div>
   </div>

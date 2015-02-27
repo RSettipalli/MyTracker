@@ -22,7 +22,13 @@
       <div class="logoTitle"><h1>My Tracker</h1></div>
       <div class="logoSmallTitle"><a href="#"><img src="./images/mygologo_icon_sm.jpg" width = "50px" border="0"/></a>
        <a href="#"><img src="./images/contactusimage_sm.jpg" width = "50px" border="0"/></a>
-       <!--  <a href="Registere.html"><img src="./images/Registeration_sm.png" width = "50px" border="0"/></a>-->
+       <a href="./signUp.htm"><img src="./images/Registeration_sm.png" width = "50px" border="0"/></a>
+      </div>
+      <div class="clr"></div>
+      <div class="menu_nav">
+      <ul>
+       	<li><a href="./login.htm">Login</a></li>
+      </ul>
       </div>
       <div class="clr"></div>
     </div>
@@ -32,11 +38,11 @@
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
-          <h2><span>Login</span></h2>
+          <h2><span>Register</span></h2>
           <div class="clr"></div>
- 		<form:form name="registerForm" method="POST" commandName="user" action="./signUp.htm">
+ 		<form:form name="registerForm" class="foorm" method="POST" commandName="user" action="./signUp.htm">
  		   <div class="clr">${message}</div>
-        <p>
+        	<p>
           <label>First Name</label>
           <form:input path="fname"  value="" /><br />
           <label>Last Name</label>

@@ -221,4 +221,37 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 		}
 		return invDetails;
 	}
+	
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvoiceDetailComment(String invNum){
+		String selectQuery = new String("select * from INV_DETAIL_COMMENT");
+		List<Object> invCommentObjects = (List<Object>) getObjects(selectQuery,invoiceCommentRowMapper);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> invComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
+		for(Iterator<Object> iterator = invCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_DETAIL_COMMENT invComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
+			invComments.add(invComment);
+		}
+		return invComments;
+	}
+	
+	public List<IMY_MGOL_INV_ITEM_ATMT> getInvoiceItemAttachement(String invNum){
+		String selectQuery = new String("select * from INV_ITEM_ATTACHMENT");
+		List<Object> invItemAttachementObjects = (List<Object>) getObjects(selectQuery,invoiceItemAttachementRowMapper);
+		List<IMY_MGOL_INV_ITEM_ATMT> invItemAttachements = new ArrayList<IMY_MGOL_INV_ITEM_ATMT>();
+		for(Iterator<Object> iterator = invItemAttachementObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_INV_ITEM_ATMT invItemAttachement = (IMY_MGOL_INV_ITEM_ATMT) iterator.next();
+			invItemAttachements.add(invItemAttachement);
+		}
+		return invItemAttachements;
+	}
+	
+	public List<IMY_MGOL_INV_HEADER_COMMEN> getInvoiceHeaderCommentDetails(String invNum){
+		String selectQuery = new String("select * from INV_HEADER_COMMENT");
+		List<Object> invHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
+		List<IMY_MGOL_INV_HEADER_COMMEN> invHeaderComments = new ArrayList<IMY_MGOL_INV_HEADER_COMMEN>();
+		for(Iterator<Object> iterator = invHeaderCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_INV_HEADER_COMMEN invHeaderComment = (IMY_MGOL_INV_HEADER_COMMEN) iterator.next();
+			invHeaderComments.add(invHeaderComment);
+		}
+		return invHeaderComments;
+	}
 }

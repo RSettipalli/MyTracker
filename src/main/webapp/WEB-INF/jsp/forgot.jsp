@@ -48,8 +48,8 @@ function forgotSubmit() {
           <div class="clr"></div>
 	<center>
 		 <form:form method="POST" id="forgotForm" commandName="forgotUser" action="./forgot.htm">
-        <p >
-        <div>${forgotMsg}</div>
+		 <div>${forgotMsg}</div>
+        <p>        
           <label>Email Id</label>
           <form:input path="email" value="" />          
           <br /><br />

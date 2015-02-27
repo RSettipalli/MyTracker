@@ -220,4 +220,37 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 		IMY_MGOL_OD_HEADER orderHeader = (IMY_MGOL_OD_HEADER) get(selectQuery,headerRowMapper);//selectParams,		
 		return orderHeader;		
 	}
+	
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getODDetailComment(String orderNum){
+		String selectQuery = new String("select * from DELIVERY_OD_DETAIL_COMMENT");
+		List<Object> odDetailCommentObjects = (List<Object>) getObjects(selectQuery,detailCommentRowMapper);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> odDetailComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
+		for(Iterator<Object> iterator = odDetailCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_DETAIL_COMMENT odDetailComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
+			odDetailComments.add(odDetailComment);
+		}
+		return odDetailComments;
+	}
+	
+	public List<IMY_MGOL_OD_ITEM_ATTACHM> getODItemAttachement(String orderNum){
+		String selectQuery = new String("select * from DELIVERY_ITEM_ATTACHMENT");
+		List<Object> odDetailItemAttachementObjects = (List<Object>) getObjects(selectQuery,detailItemAttachementRowMapper);
+		List<IMY_MGOL_OD_ITEM_ATTACHM> odDetailItemAttachements = new ArrayList<IMY_MGOL_OD_ITEM_ATTACHM>();
+		for(Iterator<Object> iterator = odDetailItemAttachementObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_OD_ITEM_ATTACHM odDetailItemAttachement = (IMY_MGOL_OD_ITEM_ATTACHM) iterator.next();
+			odDetailItemAttachements.add(odDetailItemAttachement);
+		}
+		return odDetailItemAttachements;
+	}
+	
+	public List<IMY_MGOL_OD_HEADER_COMMENT> getODHeaderCommentDetails(String orderNum){
+		String selectQuery = new String("select * from DELIVERY_OD_HEADER_COMMENT");
+		List<Object> odHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
+		List<IMY_MGOL_OD_HEADER_COMMENT> odHeaderComments = new ArrayList<IMY_MGOL_OD_HEADER_COMMENT>();
+		for(Iterator<Object> iterator = odHeaderCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_OD_HEADER_COMMENT odHeaderComment = (IMY_MGOL_OD_HEADER_COMMENT) iterator.next();
+			odHeaderComments.add(odHeaderComment);
+		}
+		return odHeaderComments;
+	}
 }

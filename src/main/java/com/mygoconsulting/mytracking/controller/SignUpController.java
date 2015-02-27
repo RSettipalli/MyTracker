@@ -24,10 +24,17 @@ import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
 import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_HEADER;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_HEADER_COMMEN;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_ITEM_ATMT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER_COMMENT;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_ITEM_ATTACHM;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER_COMMENT;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_ITEM_ATTACHM;
 import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 import com.mygoconsulting.mytracking.model.LoginForm;
 import com.mygoconsulting.mytracking.model.User;
@@ -150,6 +157,15 @@ public class SignUpController {
 			
 			IMY_MGOL_INV_HEADER invoiceHeader = inventoryManager.getInventoryHeader(userInfo.getUserId());
 			model.addAttribute("invoiceHeader",invoiceHeader);
+			
+			List<IMY_MGOL_INV_HEADER_COMMEN> invHeaderComments = inventoryManager.getInvHeaderCommentDetails(userInfo.getUserId());
+			model.addAttribute("invoiceOrderHeaderComments",invHeaderComments);
+			
+			List<IMY_MGOL_SO_DETAIL_COMMENT> invDetailComments = inventoryManager.getInvDetailComment(userInfo.getUserId());
+			model.addAttribute("invDetailComments",invDetailComments);
+			
+			List<IMY_MGOL_INV_ITEM_ATMT> invItemAttachments = inventoryManager.getInvAttachement(userInfo.getUserId());
+			model.addAttribute("invItemAttachments",invItemAttachments);
 		}
 		return "Invoice";
 	}
@@ -162,6 +178,15 @@ public class SignUpController {
 			
 			IMY_MGOL_OD_HEADER orderHeader = orderManager.getOrderHeaderDetail(userInfo.getUserId());
 			model.addAttribute("orderHeader",orderHeader);
+			
+			List<IMY_MGOL_OD_HEADER_COMMENT> odHeaderComments = orderManager.getOrderHeaderCommentDetails(userInfo.getUserId());
+			model.addAttribute("orderHeaderComments",odHeaderComments);
+			
+			List<IMY_MGOL_SO_DETAIL_COMMENT> odDetailComments = orderManager.getOrderDetailComment(userInfo.getUserId());
+			model.addAttribute("odDetailComments",odDetailComments);
+			
+			List<IMY_MGOL_OD_ITEM_ATTACHM> odDetailItemAttachments = orderManager.getOrderDetailAttachement(userInfo.getUserId());
+			model.addAttribute("odDetailItemAttachments",odDetailItemAttachments);
 		}
 		return "OrderInfo";
 	}
@@ -189,6 +214,15 @@ public class SignUpController {
 			
 			IMY_MGOL_SO_HEADER salesOrderHeader = salesOrderManager.getSalesOrderHeader(userInfo.getUserId());
 			model.addAttribute("salesOrderHeader",salesOrderHeader);
+			
+			List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getUserId());
+			model.addAttribute("salesOrderHeaderComments",soHeaderComments);
+			
+			List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getUserId());
+			model.addAttribute("soDetailComments",soDetailComments);
+			
+			List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getUserId());
+			model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
 		}
 		return "Shipment";
 	}

@@ -47,7 +47,7 @@ function login() {
           	<form:input path="email" value="" /><br />
           	<label>Password</label>
           	<form:password path="password" showPassword="true"/><br/><br/>
-          	<input class="button" type="submit" value="Submit" onclick="login()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  	
+          	<input class="button" type="submit" value="Submit" onclick="login()"/>&nbsp;&nbsp;&nbsp;&nbsp;		  	
 		  	<a href="./forgot.htm">Forgot Password</a>
 		  	</p>
       	</form:form>

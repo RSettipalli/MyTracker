@@ -198,6 +198,28 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		return soHeader;
 	}
 	
+	public List<IMY_MGOL_SO_ITEM_ATTACHM> getSODetailAttachement(String soNum){
+		String selectQuery = new String("select * from SO_ITEM_ATTACHMENT");
+		List<Object> soDetailItemAttachementObjects = (List<Object>) getObjects(selectQuery,soDetailItemAttachementRowMapper);
+		List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachements = new ArrayList<IMY_MGOL_SO_ITEM_ATTACHM>();
+		for(Iterator<Object> iterator = soDetailItemAttachementObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachement = (IMY_MGOL_SO_ITEM_ATTACHM) iterator.next();
+			soDetailItemAttachements.add(soDetailItemAttachement);
+		}
+		return soDetailItemAttachements;
+	}
+	
+	public List<IMY_MGOL_SO_HEADER_COMMENT> getSOHeaderCommentDetails(String soNum){
+		String selectQuery = new String("select * from SO_HEADER_COMMENT");
+		List<Object> soHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
+		List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = new ArrayList<IMY_MGOL_SO_HEADER_COMMENT>();
+		for(Iterator<Object> iterator = soHeaderCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_HEADER_COMMENT soHeaderComment = (IMY_MGOL_SO_HEADER_COMMENT) iterator.next();
+			soHeaderComments.add(soHeaderComment);
+		}
+		return soHeaderComments;
+	}
+	
 	public List<IMY_MGOL_SO_DETAIL> getSalesOrderDetails(String soNum){
 		String selectQuery = new String("select * from SO_DETAIL");
 		List<Object> soDetailObjects = (List<Object>) getObjects(selectQuery,soDetailRowMapper);
@@ -207,5 +229,16 @@ public class SalesDAO extends BaseDAO implements IDAO {
 			soDetails.add(invDetail);
 		}
 		return soDetails;
+	}
+	
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getSODetailComment(String soNum){
+		String selectQuery = new String("select * from SO_DETAIL_COMMENT");
+		List<Object> soDetailCommentObjects = (List<Object>) getObjects(selectQuery,soDetailCommentRowMapper);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
+		for(Iterator<Object> iterator = soDetailCommentObjects.iterator();iterator.hasNext();){
+			IMY_MGOL_SO_DETAIL_COMMENT soDetailComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
+			soDetailComments.add(soDetailComment);
+		}
+		return soDetailComments;
 	}
 }
