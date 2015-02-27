@@ -24,8 +24,8 @@
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
-        	<li class="active"><a href="./Home.htm">Home</a></li>      		
-      		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
+        	<li><a href="./Home.htm">Home</a></li>      		
+      		<li class="active"><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
       		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
       		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
@@ -43,6 +43,7 @@
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
+        		<jsp:include page="./SearchFragment.jsp"/>
           <h2><span>Order Info</span></h2>          
           <b> <u>Order Header Information</u> </b> <br/>
         ORDER_STATUS_CD : ${orderHeader.ORDER_STATUS_CD} &nbsp;&nbsp;&nbsp;&nbsp; <br/>

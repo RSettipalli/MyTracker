@@ -24,12 +24,12 @@
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
-        	<li class="active"><a href="./Home.htm">Home</a></li>      		
+        	<li><a href="./Home.htm">Home</a></li>      		
       		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
       		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
       		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
-      		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
+      		<li class="active"><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
 			<li><a href="./login.htm">Login</a></li>
         </ul>
       </div>

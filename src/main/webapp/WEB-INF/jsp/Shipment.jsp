@@ -24,10 +24,10 @@
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
-        	<li class="active"><a href="./Home.htm">Home</a></li>      		
+        	<li><a href="./Home.htm">Home</a></li>      		
       		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
       		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
-      		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
+      		<li class="active"><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
       		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
 			<li><a href="./login.htm">Login</a></li>
@@ -43,6 +43,8 @@
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
+        
+        		<jsp:include page="./SearchFragment.jsp"/>
           <h2><span>Sales Order Info</span></h2>
           <b> <u>Sales Order Header Information</u> </b> <br/>
         ORDER_TYPE : ${salesOrderHeader.ORDER_TYPE} &nbsp;&nbsp;&nbsp;&nbsp; <br/>

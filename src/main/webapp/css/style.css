@@ -11,7 +11,7 @@ html, .main {
 	margin:0;
 }
 .main {
-	background:#fff url(images/header_bg.gif) repeat-x center 85px;
+	background:#fff url("../images/header_bg.gif") repeat-x center 85px;
 }
 .clr {
 	clear:both;
@@ -139,7 +139,7 @@ img.readmore {
 }
 .menu_nav ul li.active a, .menu_nav ul li a:hover {
 	color:#fff;
-	background:#f00 url(images/menu_a.gif) no-repeat center top;
+	background:#f00 url("../images/menu_a.gif") no-repeat center top;
 }
 .content {
 }
@@ -197,7 +197,7 @@ ul.sb_menu li a, ul.ex_menu li a {
 	text-decoration:none;
 	margin-left:-16px;
 	padding:4px 8px 4px 16px;
-	background:url(images/li.gif) no-repeat left center;
+	background:url("../images/li.gif") no-repeat left center;
 }
 ul.sb_menu li a:hover, ul.ex_menu li a:hover {
 	color:#00c6ff;
@@ -323,6 +323,14 @@ ol li input.text {
 	height:16px;
 	background-color:#fff;
 }
+ol li input.password {
+	width:480px;
+	border:1px solid #c0c0c0;
+	margin:2px 0;
+	padding:5px 2px;
+	height:16px;
+	background-color:#fff;
+}
 ol li textarea {
 	width:480px;
 	border:1px solid #c0c0c0;
@@ -346,14 +354,14 @@ ol li .send {
 	margin:6px 0;
 	padding:0;
 	float:left;
-	background:#fff url(images/search.gif) no-repeat top left;
+	background:#fff url("../images/search.gif") no-repeat top left;
 }
 #formsearch input.editbox_search {
 	margin:0;
-	padding:11px 6px 10px;
+	padding:11px 6px 6px;
 	float:left;
 	width:181px;
-	border:none;
+	border:solid 1px !important;
 	background:none;
 	font:normal 12px/1.5em Arial, Helvetica, sans-serif;
 	color:#a8acb2;
@@ -363,4 +371,70 @@ ol li .send {
 	padding:0;
 	border:none;
 	float:left;
+}
+.login {
+	color: Green;
+	background: url("../images/bluebox.png") no-repeat 2px center;
+	padding-left: 10px;
+	text-decoration: underline;
+	height: 20px;
+	line-height: 20px;
+	padding: 0;
+	
+}
+.loginform {
+	border: 1px solid #B4D6E6; 
+	background-color: #FAFAFA;
+	margin: 1px 400px 1px 0;
+}
+
+.loginform label {
+	display:block;
+	font-weight:bold;
+	margin:2px 0;
+	color: #333333;
+}
+.loginform input {
+	padding: 0px 3px;
+	border:1px solid #B4D6E6;
+	height: 20px;
+	line-height: 20px;
+	}
+
+.foorm {
+    padding: 0px 10px;
+	border: 1px solid #B4D6E6; 
+	background-color: #FAFAFA;
+	margin: 10px 0 5px 0;
+}
+.foorm label {
+	display:block;
+	font-weight:bold;
+	margin:5px 0;
+	color: #333333;
+}
+.foorm input {
+	padding: 0 3px;
+	border:1px solid #B4D6E6;
+	height: 20px;
+	line-height: 20px;
+}
+.foorm select {
+	border:1px solid #B4D6E6;
+	width: 100px;
+}
+.foorm textarea {
+	width:95%;
+	padding:2px;
+	border:1px solid #B4D6E6;
+	height:100px;
+	display: inline;
+	margin: 0 0 5px 0; 
+}
+.foorm input.button { 
+	height: 24px;
+	border: 0; 
+	background: #034f8a;
+	color: White;
+	font-weight: bold;
 }

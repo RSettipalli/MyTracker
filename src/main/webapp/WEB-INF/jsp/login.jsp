@@ -27,11 +27,7 @@ function login() {
       </div>
       <div class="clr"></div>
       <div class="menu_nav">
-        <ul>
-          <li><a href="./login.htm">Home</a></li>
-        </ul>
       </div>
-
       <div class="clr"></div>
 
     </div>
@@ -44,17 +40,16 @@ function login() {
           <h2><span>Login</span></h2>
           <div class="clr"></div>
 		<center>
-		 <form:form method="POST" id="loginForm" commandName="loginForm" action="./login.htm">
+		 <form:form method="POST" class="loginform" commandName="loginForm" action="./login.htm">
 		 	${message}
         	<p>
           	<label>User Id</label>
           	<form:input path="email" value="" /><br />
           	<label>Password</label>
-          	<form:password path="password" showPassword="true"/><br/>
-          	</p>
+          	<form:password path="password" showPassword="true"/><br/><br/>
           	<input class="button" type="submit" value="Submit" onclick="login()"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  	
-		  	<div><a href="./forgot.htm">Forgot Password</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		  	<!--  <a href="./signUp.htm">Not a Member Yet?</a>--></div>
+		  	<a href="./forgot.htm">Forgot Password</a>
+		  	</p>
       	</form:form>
 		</center>
         </div>

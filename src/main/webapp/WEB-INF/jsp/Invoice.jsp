@@ -24,9 +24,9 @@
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
-        	<li class="active"><a href="./Home.htm">Home</a></li>      		
+        	<li><a href="./Home.htm">Home</a></li>      		
       		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
-      		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
+      		<li class="active"><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
       		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
       		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
@@ -44,6 +44,8 @@
       <div class="mainbar">
         <div class="article">
           <h2><span>Invoice Info</span></h2>
+          	<jsp:include page="./SearchFragment.jsp"/>
+          
           <b> <u>Invoice Header Information</u> </b> <br/>
         ORDER_STATUS_CD : ${invoiceHeader.ORDER_STATUS_CD} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
         INVOI_NBR : ${invoiceHeader.INVOI_NBR} &nbsp;&nbsp;&nbsp;&nbsp; <br/>

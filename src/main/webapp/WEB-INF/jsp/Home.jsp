@@ -42,7 +42,8 @@
       <div class="clr"></div>
       <div class="mainbar">
       <div class="article">
-      <h2><span>Welcome ${sessionScope.user.fname}</span></h2>
+      <jsp:include page="./SearchFragment.jsp"/>
+      <h2><span>Welcome ${sessionScope.user.fname}</span></h2>      
       <b> <u>Company Information</u> </b> <br/>
         BUKRS : ${companyInfo.BUKRS} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
         ORT01 : ${companyInfo.ORT01} &nbsp;&nbsp;&nbsp;&nbsp; <br/>
@@ -72,16 +73,7 @@
    	 </div> 	  	     
       <div class="clr"></div>
       </div></div>
-      <div class="sidebar">
-        <div class="searchform">
-          <form id="formsearch" name="formsearch" method="post" action="#">
-            <span>
-            <input name="editbox_search" class="editbox_search" maxlength="80" value="" type="text" />
-            </span>
-            <input name="button_search" src="./images/search_btn.gif" type="text" class="button_search" type="image" />
-          </form>
-        </div>
-        <div class="clr"></div>
+       <div class="clr"></div>
         <div class="gadget">
           <div class="clr"></div>
           <ul class="sb_menu">
@@ -97,7 +89,6 @@
       <div class="clr"></div>
     </div>
   </div>
-  </div>
-  </div>
+  </div>  
   </body>
 </html>
