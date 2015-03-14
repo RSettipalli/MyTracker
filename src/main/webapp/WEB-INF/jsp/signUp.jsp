@@ -43,15 +43,18 @@
  		<form:form name="registerForm" class="foorm" method="POST" commandName="user" action="./signUp.htm">
  		   <div class="clr">${message}</div>
         	<p>
-          <label>First Name</label>
+          <form:label path="fname">First Name</form:label>
           <form:input path="fname"  value="" /><br />
-          <label>Last Name</label>
+          <form:label path="lname">Last Name</form:label>
           <form:input path="lname" value="" /><br />
-          <label>Email</label>
+          <form:label path="email">Email</form:label>
           <form:input path="email"  value="" /><br />
-		  <label>Password</label>
+		  <form:label path="password">Password</form:label>
 		  <form:password path="password" showPassword="true"/><br />
-          <label>Company/Consumer Id</label>
+		  <form:label path="UserType">Type</form:label>
+		  <form:radiobuttons path="UserType" items="${AllUserTypes}"  /><br />		  
+          <br />
+          <form:label path="userId">Consumer Id</form:label>
           <form:input path="userId"  value="" /><br />
           <br />
           <input class="button" type="submit" value="Sign In" onclick="register()"/>

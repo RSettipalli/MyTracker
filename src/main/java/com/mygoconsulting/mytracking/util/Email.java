@@ -9,10 +9,14 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-public class Email {
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 
-	   public static boolean send(String toMailId, String password)
-	   {    
+public class Email {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
+
+	   public static boolean send(String toMailId, String password){
+		   logger.debug("BEGIN");
 	      // Recipient's email ID needs to be mentioned.
 	      //String to = "abcd@gmail.com";
 
@@ -57,7 +61,7 @@ public class Email {
 	      }catch (MessagingException mex) {
 	         mex.printStackTrace();
 	      }
-	      
+	      logger.debug("END");
 	      return emailSent;
 	   }
 	

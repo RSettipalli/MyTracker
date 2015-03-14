@@ -7,16 +7,19 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_COMPANY;
 import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 
 public class CompanyParser extends BaseParser implements IParser {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
 
 	String parent;
 
 	public IDOC parse(String fileName) {
-
+		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
 		IMY_COMPANY myCompany = null;
 		List<IMY_COMPANY> myCompanies = new ArrayList<IMY_COMPANY>();		
@@ -140,13 +143,13 @@ public class CompanyParser extends BaseParser implements IParser {
 						parent = null;
 						break;
 					}
-
 					break;
 				}
 			}
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+		logger.debug("BEGIN");
 		return idoc;
 	}
 }

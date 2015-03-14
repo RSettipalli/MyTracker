@@ -1,5 +1,7 @@
 package com.mygoconsulting.mytracking.model;
 
+import com.mygoconsulting.mytracking.util.UserType;
+
 public class User {
 	
 	private String fname;
@@ -7,6 +9,7 @@ public class User {
 	private String email;
 	private String password;
 	private String userId;
+	private UserType userType;
 	
 	public String getFname() {
 		return fname;
@@ -38,4 +41,11 @@ public class User {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}	
+	
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
 }

@@ -19,18 +19,17 @@
       <div class="logo"><img src="./images/mygologo_smallsize.jpg" /></div>
       <div class="logoTitle"><h1>My Tracker</h1></div>
       <div class="logoSmallTitle"><a href="#"><img src="./images/mygologo_icon_sm.jpg" width = "50px" border="0" /></a>
-       <a href="#"><img src="./images/Contactusimage_sm.jpg" width = "50px" border="0" /></a>
+       <a href="#"><img src="./images/contactusimage_sm.jpg" width = "50px" border="0" /></a>
        <a href="./signUp.htm"><img src="./images/Registeration_sm.png" width = "50px" border="0" /></a>
       </div>
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
         	<li><a href="./Home.htm">Home</a></li>      		
-      		<li><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
+      		<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
       		<li class="active"><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
       		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
-      		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
 			<li><a href="./login.htm">Login</a></li>
         </ul>
       </div>
@@ -44,8 +43,7 @@
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
-        <jsp:include page="./SearchFragment.jsp"/><br/><br/>
-        <br/>       
+         <br/>       
           <h2><span>Invoice Info</span></h2>
           <b> <u>Invoice Header Information</u> </b> <br/>
           <display:table name="invoiceHeader" cellspacing ="12" style="border:solid 1px;"  id="current_row">

@@ -1,4 +1,4 @@
-package com.mygoconsulting.mytracking.util;
+package com.mygoconsulting.mytracking.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

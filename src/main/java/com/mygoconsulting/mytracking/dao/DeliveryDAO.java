@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER;
@@ -18,6 +20,7 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 
 @Component("DeliveryDAO")
 public class DeliveryDAO extends BaseDAO implements IDAO {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
 
 	@Autowired
 	@Qualifier("DeliveryHeaderCommentRowMapper")
@@ -40,7 +43,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 	RowMapper<IMY_MGOL_OD_ITEM_ATTACHM> detailItemAttachementRowMapper;
 
 	public void persist(IDOC doc) {
-
+		logger.debug("BEGIN");
 		IMY_MGOL_OD_HEADER header = doc.getIMY_MGOL_OD_HEADER();
 		
 		// create header
@@ -51,16 +54,18 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 		
 		// create detail item attachment
 		createDetailItemAttachment(doc.getIMY_MGOL_OD_DETAIL());
+		logger.debug("END");
 	}
 
 	private void createDetailItemAttachment(List<IMY_MGOL_OD_DETAIL> imy_MGOL_OD_DETAIL) {
+		logger.debug("BEGIN");
 		for (IMY_MGOL_OD_DETAIL detail : imy_MGOL_OD_DETAIL) {
 			if(detail.getIMY_MGOL_OD_ITEM_ATTACHM() != null){
 				String selectQuery = new String(
 						"select * from DELIVERY_ITEM_ATTACHMENT where DOKAR= ? and ORDER_NBR_OD_DETAIL = ? and ORDER_LINE_NBR_OD_DETAIL =?");
 				Object[] selectParams = { detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKAR(), detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
 				if (!isExists(selectQuery, selectParams, detailItemAttachementRowMapper)) {
-					System.out.println("Detail Item Attachement inserting");
+					logger.debug("Detail Item Attachement inserting");
 					String sqlQuery = new String(
 						"insert into DELIVERY_ITEM_ATTACHMENT (DOKAR, DOKNR, DOKTL, DOKVR, OBJKY, "
 						+ "ORDER_NBR_OD_DETAIL,ORDER_LINE_NBR_OD_DETAIL) Values(?,?,?,?,?,?,?)");
@@ -69,7 +74,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 							detail.getIMY_MGOL_OD_ITEM_ATTACHM().getOBJKY(),detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
 					insertOrUpdate(sqlQuery, params);
 				} else {
-					System.out.println("Detail Item Attachement updating");
+					logger.debug("Detail Item Attachement updating");
 					String sqlQuery = new String(
 						"update DELIVERY_ITEM_ATTACHMENT SET DOKNR=?, DOKTL=?, DOKVR=?, "
 						+ "OBJKY=? where DOKAR=? and ORDER_NBR_OD_DETAIL=? and ORDER_LINE_NBR_OD_DETAIL =?");
@@ -80,16 +85,18 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
-		}		
+		}
+		logger.debug("END");
 	}
 
 	private void createDetail(List<IMY_MGOL_OD_DETAIL> detailsList) {
+		logger.debug("BEGIN");
 		for (IMY_MGOL_OD_DETAIL detail : detailsList) {
 			String selectQuery = new String(
 					"select * from DELIVERY_DETAIL where ORDER_NBR= ? and ORDER_LINE_NBR=?");
 			Object[] selectParams = { detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
 			if (!isExists(selectQuery, selectParams, detailRowMapper)) {
-				System.out.println("Delivery Detail inserting");				
+				logger.debug("Delivery Detail inserting");				
 				String sqlQuery = new String(
 						"insert into DELIVERY_DETAIL (ORDER_NBR, ORDER_LINE_NBR, PRODUCT_NBR, OVERRIDE_PRODUCT, ITEM_CAT, "
 						+ "BASE_UOM, NET_VAL, ORD_QTY) Values(?,?,?,?,?,?,?,?)");
@@ -100,7 +107,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 						detail.getORD_QTY() };
 				insertOrUpdate(sqlQuery, params);
 			} else {
-				System.out.println("Delivery Detail updating");
+				logger.debug("Delivery Detail updating");
 				String sqlQuery = new String(
 						"update DELIVERY_DETAIL SET PRODUCT_NBR=?, OVERRIDE_PRODUCT=?, "
 						+ "ITEM_CAT=?, BASE_UOM=?, NET_VAL=?, ORD_QTY=? where ORDER_NBR=? and ORDER_LINE_NBR=?");
@@ -113,14 +120,16 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 			// create detail comment
 			createDetailComment(detail.get_IMY_MGOL_SO_DETAIL_COMMENT(),detail.getORDER_NBR(), detail.getORDER_LINE_NBR());
 		}
+		logger.debug("END");
 	}
 
 	private void createHeader(IMY_MGOL_OD_HEADER header) {
+		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from DELIVERY_HEADER where DELVI_NBR= ?");
 		Object[] selectParams = { header.getDELVI_NBR() };
 		if (!isExists(selectQuery, selectParams, headerRowMapper)) {
-			System.out.println("Header inserting");
+			logger.debug("Header inserting");
 			String sqlQuery = new String(
 					"insert into DELIVERY_HEADER (SOLD_TO_COMPANY_CD, SHIP_TO_COMPANY_CD, DELVI_NBR, ORDER_PLANT_CD, "
 					+ "ORDER_STATUS_CD, CUSTOMER_PO, END_USER, END_USER_COMPANY_CD, OVERRIDE_COMPANY_NAME, "
@@ -133,7 +142,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 					header.getORDER_REF_NUM() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
-			System.out.println("Header Comment updating");
+			logger.debug("Header Comment updating");
 			String sqlQuery = new String(
 					"update DELIVERY_HEADER SET SOLD_TO_COMPANY_CD=?, SHIP_TO_COMPANY_CD=?,  ORDER_PLANT_CD=?, "
 					+ "ORDER_STATUS_CD=?, CUSTOMER_PO=?, END_USER=?, END_USER_COMPANY_CD=?, OVERRIDE_COMPANY_NAME=?, "
@@ -148,24 +157,25 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 		
 		// create header comment
 		createHeaderComment(header.getIMY_MGOL_OD_HEADER_COMMENT(),header.getDELVI_NBR());
-
+		logger.debug("END");
 	}
 
 	private void createHeaderComment(List<IMY_MGOL_OD_HEADER_COMMENT> headerComments,String delviNum) {
+		logger.debug("BEGIN");
 		if(headerComments != null){
-			System.out.println("Header Comments are not null");
+			logger.debug("Header Comments are not null");
 			for(IMY_MGOL_OD_HEADER_COMMENT headerComment : headerComments){
 				String selectQuery = new String(
 						"select * from DELIVERY_OD_HEADER_COMMENT where ORDER_NBR= ? and LINE = ?");
 				Object[] selectParams = { headerComment.getORDER_NBR(), headerComment.getLINE() };
 				if (!isExists(selectQuery, selectParams, headerCommentRowMapper)) {
-					System.out.println("Header Comment inserting");
+					logger.debug("Header Comment inserting");
 					String sqlQuery = new String(
 							"insert into DELIVERY_OD_HEADER_COMMENT (ORDER_NBR, TYPE, LINE, DELVI_NBR_OD_HEADER) Values(?,?,?,?)");
 					Object[] params = { headerComment.getORDER_NBR(), headerComment.getTYPE(), headerComment.getLINE(), delviNum };
 					insertOrUpdate(sqlQuery, params);
 				} else {
-					System.out.println("Header Comment updating");
+					logger.debug("Header Comment updating");
 					String sqlQuery = new String(
 							"update DELIVERY_OD_HEADER_COMMENT SET TYPE=? where ORDER_NBR=? and LINE=? and DELVI_NBR_OD_HEADER = ?");
 					Object[] updateParams = { headerComment.getTYPE(), headerComment.getORDER_NBR(),headerComment.getLINE(),delviNum };
@@ -173,16 +183,18 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 				}
 			}
 		}
+		logger.debug("END");
 	}
 	
 	private void createDetailComment( List<IMY_MGOL_SO_DETAIL_COMMENT> detailComments, String orderNum, String orderLineNum) {
+		logger.debug("BEGIN");
 		if(detailComments != null){
 			for(IMY_MGOL_SO_DETAIL_COMMENT detailComment : detailComments){
 				String selectQuery = new String(
 						"select * from DELIVERY_OD_DETAIL_COMMENT where ORDER_NBR= ? and ORDER_LINE_NBR = ?");
 				Object[] selectParams = { detailComment.getORDER_NBR(), detailComment.getORDER_LINE_NBR() };
 				if (!isExists(selectQuery, selectParams, detailCommentRowMapper)) {
-					System.out.println("Detail Comment inserting");
+					logger.debug("Detail Comment inserting");
 					String sqlQuery = new String(
 							"insert into DELIVERY_OD_DETAIL_COMMENT (ORDER_NBR, ORDER_LINE_NBR, TYPE, LINE, ORDER_NBR_OD_DETAIL, "
 							+ "ORDER_LINE_NBR_OD_DETAIL) Values(?,?,?,?,?,?)");
@@ -190,7 +202,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 							detailComment.getTYPE(),detailComment.getLINE(), orderNum, orderLineNum  };
 					insertOrUpdate(sqlQuery, params);
 				} else {
-					System.out.println("Detail Comment updating");
+					logger.debug("Detail Comment updating");
 					String sqlQuery = new String(
 							"update DELIVERY_OD_DETAIL_COMMENT SET TYPE=?, LINE=? where ORDER_NBR=? and ORDER_LINE_NBR=?");
 					Object[] updateParams = {  detailComment.getTYPE(), detailComment.getLINE(),
@@ -198,30 +210,36 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
-		}		
+		}
+		logger.debug("END");
 	}
 	
 	public List<IMY_MGOL_OD_DETAIL> getOrderDetails(String orderNum){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from DELIVERY_DETAIL "); //where ORDER_NBR= ?
 		//Object[] selectParams = { orderNum };
 		List<Object> orderDetailObjects    = (List<Object>) getObjects(selectQuery,detailRowMapper);
 		List<IMY_MGOL_OD_DETAIL> orderDetails = new ArrayList<IMY_MGOL_OD_DETAIL>();
 		for(Iterator<Object> iterator = orderDetailObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_OD_DETAIL orderDetail = (IMY_MGOL_OD_DETAIL) iterator.next();
-			System.out.println("OrderDetails are "+orderDetail.getBASE_UOM());
+			logger.debug("OrderDetails are "+orderDetail.getBASE_UOM());
 			orderDetails.add(orderDetail);
 		}
+		logger.debug("END");
 		return orderDetails;		
 	}
 	
 	public IMY_MGOL_OD_HEADER getOrderHeader(String orderNum){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from DELIVERY_HEADER ");//where DELVI_NBR= ?
 		//Object[] selectParams = { orderNum };
-		IMY_MGOL_OD_HEADER orderHeader = (IMY_MGOL_OD_HEADER) get(selectQuery,headerRowMapper);//selectParams,		
+		IMY_MGOL_OD_HEADER orderHeader = (IMY_MGOL_OD_HEADER) get(selectQuery,headerRowMapper);//selectParams,
+		logger.debug("END");
 		return orderHeader;		
 	}
 	
 	public List<IMY_MGOL_SO_DETAIL_COMMENT> getODDetailComment(String orderNum){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from DELIVERY_OD_DETAIL_COMMENT");
 		List<Object> odDetailCommentObjects = (List<Object>) getObjects(selectQuery,detailCommentRowMapper);
 		List<IMY_MGOL_SO_DETAIL_COMMENT> odDetailComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
@@ -229,10 +247,12 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 			IMY_MGOL_SO_DETAIL_COMMENT odDetailComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
 			odDetailComments.add(odDetailComment);
 		}
+		logger.debug("END");
 		return odDetailComments;
 	}
 	
 	public List<IMY_MGOL_OD_ITEM_ATTACHM> getODItemAttachement(String orderNum){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from DELIVERY_ITEM_ATTACHMENT");
 		List<Object> odDetailItemAttachementObjects = (List<Object>) getObjects(selectQuery,detailItemAttachementRowMapper);
 		List<IMY_MGOL_OD_ITEM_ATTACHM> odDetailItemAttachements = new ArrayList<IMY_MGOL_OD_ITEM_ATTACHM>();
@@ -240,10 +260,12 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 			IMY_MGOL_OD_ITEM_ATTACHM odDetailItemAttachement = (IMY_MGOL_OD_ITEM_ATTACHM) iterator.next();
 			odDetailItemAttachements.add(odDetailItemAttachement);
 		}
+		logger.debug("END");
 		return odDetailItemAttachements;
 	}
 	
 	public List<IMY_MGOL_OD_HEADER_COMMENT> getODHeaderCommentDetails(String orderNum){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from DELIVERY_OD_HEADER_COMMENT");
 		List<Object> odHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
 		List<IMY_MGOL_OD_HEADER_COMMENT> odHeaderComments = new ArrayList<IMY_MGOL_OD_HEADER_COMMENT>();
@@ -251,6 +273,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 			IMY_MGOL_OD_HEADER_COMMENT odHeaderComment = (IMY_MGOL_OD_HEADER_COMMENT) iterator.next();
 			odHeaderComments.add(odHeaderComment);
 		}
+		logger.debug("END");
 		return odHeaderComments;
 	}
 }

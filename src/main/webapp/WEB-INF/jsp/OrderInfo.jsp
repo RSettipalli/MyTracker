@@ -19,18 +19,17 @@
       <div class="logo"><img src="./images/mygologo_smallsize.jpg" /></div>
       <div class="logoTitle"><h1>My Tracker</h1></div>
       <div class="logoSmallTitle"><a href="#"><img src="./images/mygologo_icon_sm.jpg" width = "50px" border="0" /></a>
-       <a href="#"><img src="./images/Contactusimage_sm.jpg" width = "50px" border="0" /></a>
+       <a href="#"><img src="./images/contactusimage_sm.jpg" width = "50px" border="0" /></a>
        <a href="./signUp.htm"><img src="./images/Registeration_sm.png" width = "50px" border="0" /></a>
       </div>
       <div class="clr"></div>
       <div class="menu_nav">
         <ul>
         	<li><a href="./Home.htm">Home</a></li>      		
-      		<li class="active"><a href='./OrderInfo.htm'><span>Order Info</span></a></li>
+      		<li class="active"><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
       		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
       		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
       		<li><a href='./Material.htm'><span>Material Info</span></a></li>
-      		<li><a href='./CompanyProfile.htm'><span>Company Profile</span></a></li>
 			<li><a href="./login.htm">Login</a></li>
         </ul>
       </div>
@@ -44,11 +43,9 @@
       <div class="clr"></div>
       <div class="mainbar">
         <div class="article">
-        		<jsp:include page="./SearchFragment.jsp"/><br/>
         <br/>
-        <br/>
-          <h2><span>Order Info</span></h2>          
-          <b> <u>Order Header Information</u> </b> <br/>
+          <h2><span>Delivery Info</span></h2>          
+          <b> <u>Delivery Header Information</u> </b> <br/>
           <display:table name="orderHeader" cellspacing ="12" style="border:solid 1px;"  id="current_row">
           	<display:column property="DELVI_NBR" title="DeliveryNumber"/>
   			<display:column property="ORDER_STATUS_CD" title="Status"/>
@@ -68,7 +65,7 @@
          <br/>
  	   <br />
  	   <div class="content">
- 	   <b> <u>Order Header Comments</u> </b> <br/>
+ 	   <b> <u>Delivery Header Comments</u> </b> <br/>
  	   <display:table name="orderHeaderComments" cellspacing ="12" style="border:solid 1px;" >
           	<display:column property="ORDER_NBR" title="OrderNumber"/>
   			<display:column property="LINE" title="Line"/>
@@ -79,7 +76,7 @@
  	    <br/>
  	   <br />
  	  <div class="content">
- 	  <b> <u>Order Details</u> </b> <br/>
+ 	  <b> <u>Delivery Details</u> </b> <br/>
  	  <display:table name="orderDetail" style="border:solid 1px;" cellspacing="10">
   			<display:column property="PRODUCT_NBR" title="Product_Number"/>
   			<display:column property="NET_VAL" title="Net_Value"/>
@@ -94,7 +91,7 @@
           <br/>
  	   <br />
    	 <div class="content">
-   	 <b> <u>Order Detail Comments</u> </b> <br/>
+   	 <b> <u>Delivery Detail Comments</u> </b> <br/>
  	   <display:table name="odDetailComments" cellspacing ="12" style="border:solid 1px;" >
           	<display:column property="ORDER_NBR" title="OrderNumber"/>
           	<display:column property="ORDER_LINE_NBR" title="OrderLineNumber"/>
@@ -105,7 +102,7 @@
  	    <br/>
  	   <br />
        <div class="content">
-       <b> <u>Order Item Attachments</u> </b> <br/>
+       <b> <u>Delivery Item Attachments</u> </b> <br/>
  	   <display:table name="odDetailItemAttachments" cellspacing ="12" style="border:solid 1px;" >
           	<display:column property="DOKAR" title="DOKAR"/>
   			<display:column property="DOKVR" title="DOKVR"/>

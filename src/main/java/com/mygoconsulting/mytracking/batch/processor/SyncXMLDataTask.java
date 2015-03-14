@@ -1,15 +1,15 @@
 package com.mygoconsulting.mytracking.batch.processor;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.TimerTask;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.dao.DAOFactory;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.parse.ParserFactory;
@@ -17,12 +17,12 @@ import com.mygoconsulting.mytracking.util.MyTrackerProperty;
 
 @Component("syncXml")
 public class SyncXMLDataTask extends TimerTask {
+	private static final MygoLogger LOG = LogFactory.getMygoLogger();
+	
+	//private String yearNow = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 
-	String yearNow = new SimpleDateFormat("yyyy").format(Calendar.getInstance()
-			.getTime());
-
-	File inboundfolder;
-	File outboundfolder;
+	private File inboundfolder = new File(MyTrackerProperty.getProperty("mytracker.sourcefolder"));
+	//private File outboundfolder = new File(MyTrackerProperty.getProperty("outputfolder"));
 
 	@Autowired
 	private ParserFactory parserFactory;
@@ -32,123 +32,82 @@ public class SyncXMLDataTask extends TimerTask {
 
 	@Override
 	public void run() {
-		System.out.println("SyncXMLDataTask--> run()");
+		LOG.debug("BEGIN");
+		LOG.debug("SyncXMLDataTask--> run()");
+		boolean isTaskSuccess = false;
 		try{
-			inboundfolder = new File(MyTrackerProperty.getProperty("sourcefolder"));
-			System.out.println("input folder: "+inboundfolder.getName());
+			LOG.debug("input folder: "+inboundfolder.getName());
 			List<String> files = listFilesForFolder(inboundfolder);
 			for (String file : files) {
-				System.out.println("file name is : "+file);
-				if(file.contains("CompanyCode.xml")){ 
-					System.out.println("This is Company code.xml");
-					IDOC doc = parserFactory.parseCompanyCodeXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
+				String[] fileName = file.split("_");
+				LOG.debug("file name is : "+file);
+				if(fileName[0].equals("COMP")){//file.contains("CompanyCode.xml") 
+					LOG.debug("This is Company code.xml");
+					IDOC doc = parserFactory.parseCompanyCodeXML(file);					
 					daoFactory.persistCompanyCodeData(doc);
-					System.out.println("doc saved in DB");
-				} else if(file.contains("Customer.xml")){
-					System.out.println("This is Customer.xml");
+					LOG.debug("Company Code data is saved to DB");
+					isTaskSuccess = true;
+				} else if(fileName[0].equals("CUST")){//file.contains("Customer.xml")
+					LOG.debug("This is Customer.xml");
 					IDOC doc = parserFactory.parseCustomerXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
 					daoFactory.persistCustomerData(doc);
-					System.out.println("doc saved in DB");
-				} else if(file.contains("Material.xml")){
-					System.out.println("This is Material.xml");
-					IDOC doc = parserFactory.parseMaterialXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
+					LOG.debug("Customer Info is saved to DB");
+					isTaskSuccess = true;
+				} else if(fileName[0].equals("MAT")){//file.contains("Material.xml")
+					LOG.debug("This is Material.xml");
+					IDOC doc = parserFactory.parseMaterialXML(file);					
 					daoFactory.persistMaterialData(doc);
-					System.out.println("doc saved in DB");
-				} else if(file.contains("Delivery.xml")){
-					System.out.println("This is Delivery.xml");
-					IDOC doc = parserFactory.parseDeliveryXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
+					LOG.debug("Material details are saved to DB");
+					isTaskSuccess = true;
+				} else if(fileName[0].equals("DEL")){//file.contains("Delivery.xml")
+					LOG.debug("This is Delivery.xml");
+					IDOC doc = parserFactory.parseDeliveryXML(file);					
 					daoFactory.persistDeliveryData(doc);
-					System.out.println("doc saved in DB");
-				} else if(file.contains("Sales.xml")){
-					System.out.println("This is Sales.xml");
+					LOG.debug("Delivery Order details are saved to DB");
+					isTaskSuccess = true;
+				} else if(fileName[0].equals("SORD")){ //file.contains("Sales.xml")
+					LOG.debug("This is Sales.xml");
 					IDOC doc = parserFactory.parseSalesXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
 					daoFactory.persistSalesData(doc);
-					System.out.println("doc saved in DB");
-				} else if(file.contains("Invoice.xml")){
-					System.out.println("This is Invoice.xml");
+					LOG.debug("Sales Order details are saved to DB");
+					isTaskSuccess = true;
+				} else if(fileName[0].equals("INV")){//file.contains("Invoice.xml")
+					LOG.debug("This is Invoice.xml");
 					IDOC doc = parserFactory.parseInvoiceXML(file);
-					System.out.println("IDOC: "+doc);
-					//store in DB
 					daoFactory.persistInvoiceData(doc);
-					System.out.println("doc saved in DB");
+					LOG.debug("Invoice details are saved to DB");
+					isTaskSuccess = true;
 				}
+				//if(isTaskSuccess)
+					//backupFile(file);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-
+		LOG.debug("BEGIN");
 	}
-
-	// @Override
-	// public void run() {
-	// System.out.println( "Converting XML to JSON and storing to MongoDB" );
-	// inboundfolder = new File(MyTrackerProperty.getProperty("sourcefolder"));
-	// outboundfolder = new File(MyTrackerProperty.getProperty("outputfolder"));
-	// //System.out.println(MyTrackerProperty.getProperty("sourcefolder"));
-	// //System.out.println(MyTrackerProperty.getProperty("outputfolder"));
-	// //System.out.println("input folder: "+inboundfolder.getName());
-	// //System.out.println("output folder: "+outboundfolder.getName());
-	// boolean isTaskSuccess = syncXmlDataToMySQL();
-	// if(isTaskSuccess)
-	// backupFiles();
-	// System.out.println( "Completed XML to JSON and stored to MongoDB" );
-	// }
-
-	private boolean syncXmlDataToMySQL() {
-		boolean isTaskSuccess = false;
-		try {
-			// System.out.println(inboundfolder.getName());
-			List<String> files = listFilesForFolder(inboundfolder);
-
-			for (String file : files) {
-				// String jsonString = xmlToJSONObject(inboundfolder+"/"+file);
-				// String fileName = file.substring(0, file.indexOf('.'));
-				// DBCollection table = db.getCollection(fileName);
-				// BasicDBObject document = new BasicDBObject();
-				// System.out.println(jsonString);
-				// document.put(fileName, jsonString);
-				// table.insert(document);
-			}
-			isTaskSuccess = true;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return isTaskSuccess;
-	}
-
-	private void backupFiles() {
-		List<String> files = listFilesForFolder(inboundfolder);
-		for (String file : files) {
-			File srcFile = new File(inboundfolder + "/" + file);
-			srcFile.renameTo(new File(outboundfolder, srcFile.getName()));
-			System.out.println("File moved");
-		}
-
+	
+	private void backupFile(String file) {
+		LOG.debug("BEGIN");		
+		File srcFile = new File(inboundfolder + "/" + file);
+		//srcFile.renameTo(new File(outboundfolder, srcFile.getName()));
+		LOG.debug(file+" file moved to output folder");		
+		LOG.debug("END");
 	}
 
 	private List<String> listFilesForFolder(final File folder) {
+		LOG.debug("BEGIN");
 		List<String> files = new ArrayList<String>();
 		if (folder != null) {
 			for (final File fileEntry : folder.listFiles()) {
 				if (fileEntry.isDirectory()) {
 					listFilesForFolder(fileEntry);
 				} else {
-					//System.out.println(fileEntry.getName());
-					//files.add(fileEntry.getName());
 					files.add(fileEntry.getAbsolutePath());
 				}
 			}
 		}
+		LOG.debug("END");
 		return files;
 	}
 }

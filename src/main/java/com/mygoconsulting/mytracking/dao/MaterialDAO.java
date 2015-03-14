@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
@@ -12,6 +14,7 @@ import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
 
 @Component("Material")
 public class MaterialDAO extends BaseDAO implements IDAO {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
 
 	@Autowired
 	@Qualifier("StorageDetailsRowMapper")
@@ -26,7 +29,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 	RowMapper<IMY_MAT_ONLINE> materialMapper;
 
 	public void persist(IDOC doc) {
-
+		logger.debug("BEGIN");
 		IMY_MAT_ONLINE material = doc.getIMY_MAT_ONLINE();
 
 		// create material Storage details
@@ -38,15 +41,16 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 
 		// create material Storage details
 		createMaterial(material);
+		logger.debug("END");
 	}
 
 	private void createMaterial(IMY_MAT_ONLINE material) {
+		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL where MATERIAL_CD= ?");
 		Object[] selectParams = { material.getMATERIAL() };
 		if (!isExists(selectQuery, selectParams, materialMapper)) {
-			System.out.println("Material inserting");
-
+			logger.debug("Material inserting");
 			String sqlQuery = new String(
 					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP, PLANT_CD) Values(?,?,?, ?,?, ?, ?,?,?,?)");
 			Object[] params = { material.getMATERIAL(), material.getMAT_DESC(),
@@ -56,7 +60,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 					material.getIMY_MAT_WERKS().getPLANT() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
-			System.out.println("Material updating");
+			logger.debug("Material updating");
 			String sqlQuery = new String(
 					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, NET_WEIGHT=?, MATERIAL_GROUP=?, PLANT_CD=? where MATERIAL_CD=?");
 			Object[] updateParams = { material.getMATERIAL(),
@@ -67,15 +71,16 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 					material.getIMY_MAT_WERKS().getPLANT() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
-
+		logger.debug("END");
 	}
 
 	private void createPlant(IMY_MAT_WERKS materialPlant) {
+		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL_PLANT where PLANT_CD= ?");
 		Object[] selectParams = { materialPlant.getPLANT() };
 		if (!isExists(selectQuery, selectParams, materialPlantMapper)) {
-			System.out.println("Material Plant inserting");
+			logger.debug("Material Plant inserting");
 
 			String sqlQuery = new String(
 					"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT, STO_LOCATION) Values(?,?,?, ?, ?)");
@@ -88,7 +93,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 							.getSTO_LOCATION() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
-			System.out.println("Material Plant updating");
+			logger.debug("Material Plant updating");
 			String sqlQuery = new String(
 					"update MATERIAL_PLANT SET MAINT_STATUS=?, MRP_TYPE=?, MRP_CONT=?, STO_LOCATION=?  where PLANT_CD=? ");
 			Object[] updateParams = {
@@ -99,15 +104,16 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 							.getSTO_LOCATION(), materialPlant.getPLANT() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
-
+		logger.debug("END");
 	}
 
 	private void createStorageDetails(IMY_MAT_STORAGE_DETIALS storageDetails) {
+		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL_STORAGE where STO_LOCATION= ?");
 		Object[] selectParams = { storageDetails.getSTO_LOCATION() };
 		if (!isExists(selectQuery, selectParams, storageMapper)) {
-			System.out.println("Material Storage details inserting");
+			logger.debug("Material Storage details inserting");
 
 			String sqlQuery = new String(
 					"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS ) Values(?,?,?)");
@@ -116,7 +122,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 					storageDetails.getSTOC_IN_QLTY_INS() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
-			System.out.println("Material Storage details updating");
+			logger.debug("Material Storage details updating");
 			String sqlQuery = new String(
 					"update MATERIAL_STORAGE set  MAINT_STATUS=?, STOC_IN_QLTY_INS=? where STO_LOCATION=? ");
 			Object[] updateParams = { storageDetails.getMAINT_STATUS(),
@@ -124,24 +130,31 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 					storageDetails.getSTO_LOCATION() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
+		logger.debug("END");
 
 	}
 	
 	public IMY_MAT_ONLINE getMaterialDetails(){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL");
 		IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery, materialMapper);
+		logger.debug("END");
 		return iMyMaterials;
 	}
 	
 	public IMY_MAT_WERKS getMaterialPlantDetails(){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL_PLANT");
 		IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery, materialPlantMapper);
+		logger.debug("END");
 		return iMyMaterialPlant;
 	}
 	
 	public IMY_MAT_STORAGE_DETIALS getMaterialStorageDetails(){
+		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL");
 		IMY_MAT_STORAGE_DETIALS iMyMaterialStorage = (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
+		logger.debug("END");
 		return iMyMaterialStorage;
 	}
 	

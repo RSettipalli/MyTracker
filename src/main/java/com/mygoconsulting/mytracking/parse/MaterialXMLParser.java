@@ -4,16 +4,20 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
 import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
 
 public class MaterialXMLParser extends BaseParser implements IParser {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
 
 	String parent;
 
 	@Override
 	public Object parse(String fileName) {
+		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
 		IMY_MAT_ONLINE materialOnline = null;
 		IMY_MAT_WERKS materialPlant = null;
@@ -112,6 +116,7 @@ public class MaterialXMLParser extends BaseParser implements IParser {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+		logger.debug("END");
 		return materialOnline;
 	}
 }

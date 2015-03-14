@@ -7,6 +7,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.mygoconsulting.mytracking.LogFactory;
+import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER;
@@ -15,10 +17,12 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_ITEM_ATTACHM;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 
 public class DeliveryXMLParser extends BaseParser implements IParser {
+	private final static MygoLogger logger = LogFactory.getMygoLogger();
 	
 	String parent;
 
 	public IDOC parse(String fileName) {
+		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
 		IDOC idoc = null;
 		IMY_MGOL_OD_HEADER myODHeader = null;
@@ -210,6 +214,7 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
+		logger.debug("END");
 		return idoc;
 	}
 }
