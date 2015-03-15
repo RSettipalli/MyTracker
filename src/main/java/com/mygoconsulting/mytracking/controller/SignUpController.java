@@ -1,6 +1,7 @@
 package com.mygoconsulting.mytracking.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,6 +25,8 @@ import com.mygoconsulting.mytracking.model.IMY_COMPANY;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
 import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_CUSTOMER;
+import com.mygoconsulting.mytracking.model.IMY_MGOL_CUST_BANK;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_HEADER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_HEADER_COMMEN;
@@ -82,15 +85,21 @@ public class SignUpController {
 		logger.debug("BEGIN");
 		logger.debug("email is: " + loginRecord.getEmail());
 		IMY_SHIP_POINT shipPoint = null;
+		IMY_MGOL_CUST_BANK customerBank = null;
 		User user = userDAO.validateUser(loginRecord.getEmail(),
 				loginRecord.getPassword());
 		if (user != null) {
 			logger.debug("Company id is "+user.getUserId());
-			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(user.getUserId());
-			model.addAttribute("companyInfo",companyInfo);
+			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(user.getUserId());			
 			if(companyInfo != null){
+				model.addAttribute("companyInfo",companyInfo);
 				shipPoint = companyManager.getShipPoints(user.getUserId());
 				model.addAttribute("shipPoint",shipPoint);
+			} else {
+				IMY_MGOL_CUSTOMER imyCustomer = customerManager.getCustomerInfo(user.getUserId());
+				model.addAttribute("companyInfo",imyCustomer);
+				customerBank = customerManager.getCustomerBank(user.getUserId());
+				model.addAttribute("shipPoint",customerBank);
 			}
 			model.addAttribute("user", user);
 			logger.debug("END");
@@ -113,8 +122,24 @@ public class SignUpController {
 	public String signUp(Model model) {
 		logger.debug("BEGIN");
 		User user = new User();
-		List<String> companyCodesList = companyManager.getCompanyCodes();
-		model.addAttribute("companyCodesList",companyCodesList);
+		Map<String,List<String>> companyCodesMap = companyManager.getCompanyCodes();		
+		for(Map.Entry<String, List<String>> entry: companyCodesMap.entrySet()) {
+			List<String> companyCodes = entry.getValue();
+			user.setCompanyId("BUKRS");
+			user.setBUKRSList(companyCodes);
+			for(String companyCode:companyCodes){
+				System.out.println(companyCode);
+			}
+		}
+		Map<String,List<String>> customerCodesMap = customerManager.getCustomerCodes();		
+		for(Map.Entry<String, List<String>> entry: customerCodesMap.entrySet()) {
+			List<String> customerCodes = entry.getValue();
+			user.setCompanyId("KUNNR");
+			user.setKUNNRList(customerCodes);
+			for(String customerCode:customerCodes){
+				System.out.println(customerCode);
+			}
+		}
 		model.addAttribute("user", user);
 		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
 		logger.debug("END");
@@ -153,13 +178,13 @@ public class SignUpController {
 	public String material(@ModelAttribute("user") User userInfo,Model model) {
 		logger.debug("BEGIN");
 		if(userInfo != null){
-			IMY_MAT_ONLINE imyMatOnline = materialManager.getMaterialInfo();
-			IMY_MAT_WERKS imyMatPlant = materialManager.getMaterialPlantDetails();
-			IMY_MAT_STORAGE_DETIALS imyMatStorageDetails = materialManager.getMaterialStorageDetails();
+			List<IMY_MAT_ONLINE> imyMatOnline = materialManager.getMaterialInfo();
+			List<IMY_MAT_WERKS> imyMatPlant = materialManager.getMaterialPlantDetails();
+			List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetailsList = materialManager.getMaterialStorageDetails();
 			
-			model.addAttribute("imyMatOnline",imyMatOnline);
-			model.addAttribute("imyMatPlant",imyMatPlant);
-			model.addAttribute("imyMatStorageDetails",imyMatStorageDetails);
+			model.addAttribute("imyMatOnlineList",imyMatOnline);
+			model.addAttribute("imyMatPlantList",imyMatPlant);
+			model.addAttribute("imyMatStorageDetailsList",imyMatStorageDetailsList);
 		}
 		logger.debug("END");
 		return "Material";

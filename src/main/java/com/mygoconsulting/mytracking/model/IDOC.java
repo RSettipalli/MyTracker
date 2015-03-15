@@ -7,7 +7,7 @@ public class IDOC
     
 	private List<IMY_COMPANY> IMY_COMPANY;;
     
-    private IMY_MAT_ONLINE IMY_MAT_ONLINE;
+	private List<IMY_MAT_ONLINE> IMY_MAT_ONLINE_List;
     
     private List<IMY_MGOL_CUSTOMER> IMY_MGOL_CUSTOMER;
     
@@ -34,7 +34,15 @@ public class IDOC
         this.IMY_COMPANY = IMY_COMPANY;
     }
     
-    public List<IMY_MGOL_CUSTOMER> getIMY_MGOL_CUSTOMER()
+    public List<IMY_MAT_ONLINE> getIMY_MAT_ONLINE_List() {
+		return IMY_MAT_ONLINE_List;
+	}
+
+	public void setIMY_MAT_ONLINE_List(List<IMY_MAT_ONLINE> iMY_MAT_ONLINE_List) {
+		IMY_MAT_ONLINE_List = iMY_MAT_ONLINE_List;
+	}
+
+	public List<IMY_MGOL_CUSTOMER> getIMY_MGOL_CUSTOMER()
     {
         return IMY_MGOL_CUSTOMER;
     }
@@ -44,16 +52,7 @@ public class IDOC
         this.IMY_MGOL_CUSTOMER = IMY_MGOL_CUSTOMER;
     }
     
-    public IMY_MAT_ONLINE getIMY_MAT_ONLINE ()
-    {
-        return IMY_MAT_ONLINE;
-    }
-
-    public void setIMY_MAT_ONLINE (IMY_MAT_ONLINE IMY_MAT_ONLINE)
-    {
-        this.IMY_MAT_ONLINE = IMY_MAT_ONLINE;
-    }
-    
+        
     public IMY_MGOL_SO_HEADER getIMY_MGOL_SO_HEADER ()
     {
         return IMY_MGOL_SO_HEADER;

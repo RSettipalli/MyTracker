@@ -1,5 +1,7 @@
 package com.mygoconsulting.mytracking.manager;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -19,23 +21,23 @@ public class MaterialManager {
 	@Qualifier("Material")
 	MaterialDAO materialDao;
 	
-	public IMY_MAT_ONLINE getMaterialInfo() {
+	public List<IMY_MAT_ONLINE> getMaterialInfo() {
 		logger.debug("BEGIN");
-		IMY_MAT_ONLINE imyMatOnline = materialDao.getMaterialDetails();
+		List<IMY_MAT_ONLINE> imyMatOnlineList = materialDao.getMaterialDetails();
 		logger.debug("END");
-		return imyMatOnline;
+		return imyMatOnlineList;
 	}
 	
-	public IMY_MAT_WERKS getMaterialPlantDetails() {
+	public List<IMY_MAT_WERKS> getMaterialPlantDetails() {
 		logger.debug("BEGIN");
-		IMY_MAT_WERKS imyMatPlant = materialDao.getMaterialPlantDetails();
+		List<IMY_MAT_WERKS> imyMatPlant = materialDao.getMaterialPlantDetails();
 		logger.debug("END");
 		return imyMatPlant;
 	}
 	
-	public IMY_MAT_STORAGE_DETIALS getMaterialStorageDetails() {
+	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails() {
 		logger.debug("BEGIN");
-		IMY_MAT_STORAGE_DETIALS imyMatStorageDetails = materialDao.getMaterialStorageDetails();
+		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetails = materialDao.getMaterialStorageDetails();
 		logger.debug("END");
 		return imyMatStorageDetails;
 	}

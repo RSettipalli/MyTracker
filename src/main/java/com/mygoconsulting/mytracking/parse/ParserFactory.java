@@ -1,5 +1,7 @@
 package com.mygoconsulting.mytracking.parse;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
@@ -30,14 +32,14 @@ public class ParserFactory {
 
 	
 	public IDOC parseMaterialXML(String file) {
-		LOG.debug("BEGIN");
-		IParser parser = new MaterialXMLParser();
-		IMY_MAT_ONLINE material = (IMY_MAT_ONLINE) parser.parse(file);
-		IDOC doc = new IDOC();
-		doc.setIMY_MAT_ONLINE(material);
-		LOG.debug("END");
-		return doc;
-	}
+        LOG.debug("BEGIN");
+        IParser parser = new MaterialXMLParser();
+        IDOC idoc = (IDOC) parser.parse(file);
+//         List<IMY_MAT_ONLINE> materialList = idoc.getIMY_MAT_ONLINE_List();
+        idoc.setIMY_MAT_ONLINE_List(idoc.getIMY_MAT_ONLINE_List());
+        LOG.debug("END");
+        return idoc;
+}
 
 	
 	public IDOC parseDeliveryXML(String file) {

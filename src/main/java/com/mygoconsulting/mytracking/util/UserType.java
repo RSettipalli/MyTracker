@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum UserType {
-	CONSUMER("1"), SUPPLIER("2"), GUEST("3");
+	COMPANY("1"), CUSTOMER("2");
 	
 	private String key;
 	

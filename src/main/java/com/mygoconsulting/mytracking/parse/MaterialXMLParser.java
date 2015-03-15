@@ -1,11 +1,15 @@
 package com.mygoconsulting.mytracking.parse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
 import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
@@ -16,9 +20,15 @@ public class MaterialXMLParser extends BaseParser implements IParser {
 	String parent;
 
 	@Override
-	public Object parse(String fileName) {
+	public IDOC parse(String fileName) {
 		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
+		IDOC idoc = new IDOC();
+		List<IMY_MAT_ONLINE> materialOnlineList = new ArrayList<IMY_MAT_ONLINE>();
+		// List<IMY_MAT_WERKS> materialPlantList = new
+		// ArrayList<IMY_MAT_WERKS>();
+		// List<IMY_MAT_STORAGE_DETIALS> materialOnlineList = new
+		// ArrayList<IMY_MAT_STORAGE_DETIALS>();
 		IMY_MAT_ONLINE materialOnline = null;
 		IMY_MAT_WERKS materialPlant = null;
 		IMY_MAT_STORAGE_DETIALS materialStorage = null;
@@ -97,26 +107,31 @@ public class MaterialXMLParser extends BaseParser implements IParser {
 						materialPlant
 								.setIMY_MAT_STORAGE_DETIALS(materialStorage);
 						parent = null;
+						break;
 					case "STO_LOCATION":
 						materialStorage.setSTO_LOCATION(tagContent);
 						break;
 					case "MAINT_STATUS":
 						if (parent.equals("_-IMY_-MAT_STORAGE_DETIALS")) {
 							materialStorage.setMAINT_STATUS(tagContent);
-						}else{
+						} else {
 							materialPlant.setMAINT_STATUS(tagContent);
 						}
 						break;
 					case "STOC_IN_QLTY_INS":
 						materialStorage.setSTOC_IN_QLTY_INS(tagContent);
 						break;
+					case "_-IMY_-MAT_ONLINE":
+						materialOnlineList.add(materialOnline);
+						break;
 					}
 				}
 			}
+			idoc.setIMY_MAT_ONLINE_List(materialOnlineList);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
 		logger.debug("END");
-		return materialOnline;
+		return idoc;
 	}
 }

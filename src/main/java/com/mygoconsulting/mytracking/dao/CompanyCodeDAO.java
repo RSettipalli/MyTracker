@@ -1,6 +1,7 @@
 package com.mygoconsulting.mytracking.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -128,8 +129,9 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 		return iMyShipPoints;
 	}
 	
-	public List<String> getALLBUKRS(){
+	public Map<String,List<String>> getALLBUKRS(){
 		logger.debug("BEGIN");
+		Map<String,List<String>> companyCodesMap = new HashMap<String,List<String>>();
 		List<String> companyCodesList = new ArrayList<String>();
 		companyCodesList.add("0005");
 		companyCodesList.add("0006");
@@ -137,12 +139,16 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 		
 		 List<Map<String, Object>> companyCodesMapList = (List<Map<String, Object>>) get(selectQuery);
 		if(!companyCodesMapList.isEmpty()){
-			for(Map.Entry<String, Object> entry: companyCodesMapList.get(0).entrySet()) {
-			    System.out.println(entry.getKey() + " : " + entry.getValue().toString());
+			for(int i=0;i<companyCodesMapList.size();i++){
+				for(Map.Entry<String, Object> entry: companyCodesMapList.get(i).entrySet()) {
+					System.out.println(entry.getKey() + " : " + entry.getValue().toString());
+					companyCodesList.add(entry.getValue().toString());
+				}
 			}
+			companyCodesMap.put("BUKRS",companyCodesList);
 		}
 		
 		logger.debug("END");		
-		return companyCodesList;
+		return companyCodesMap;
 	}
 }

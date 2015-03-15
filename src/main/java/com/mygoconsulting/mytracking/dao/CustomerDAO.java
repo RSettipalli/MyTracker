@@ -1,6 +1,9 @@
 package com.mygoconsulting.mytracking.dao;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -91,4 +94,50 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 		}
 		logger.debug("END");
 	}
+	
+	public IMY_MGOL_CUSTOMER getIMyCustomerByKUNNR(String kunnr){
+		logger.debug("BEGIN");
+		logger.debug("KUNNR value is "+kunnr);
+		String selectQuery = new String("select * from CUSTOMER where KUNNR = ?");
+		Object[] selectParams = { kunnr };
+		IMY_MGOL_CUSTOMER iMyCustomer = (IMY_MGOL_CUSTOMER) get(selectQuery, selectParams, customerRowMapper);
+		logger.debug("KUNNR value from DB is "+iMyCustomer.getKUNNR());
+		logger.debug("END");
+		return iMyCustomer;
+	}
+	
+	public IMY_MGOL_CUST_BANK getCustBank(String kunnr){
+		logger.debug("BEGIN");
+		logger.debug("KUNNR value is "+kunnr);
+		String selectQuery = new String("select * from CUST_BANK where CUST_NUMBER= ?");
+		Object[] selectParams = { kunnr };
+		IMY_MGOL_CUST_BANK iMyCustBank = (IMY_MGOL_CUST_BANK) get(selectQuery, selectParams, custBankRowMapper);
+		logger.debug("END");
+		return iMyCustBank;
+	}
+	
+	
+	public Map<String,List<String>> getALLKUNNR(){
+		logger.debug("BEGIN");
+		Map<String,List<String>> customerCodesMap = new HashMap<String,List<String>>();
+		List<String> customerCodesList = new ArrayList<String>();
+		customerCodesList.add("0005");
+		customerCodesList.add("0006");
+		String selectQuery = new String("select KUNNR from CUSTOMER");
+		
+		 List<Map<String, Object>> customerCodesMapList = (List<Map<String, Object>>) get(selectQuery);
+		if(!customerCodesMapList.isEmpty()){
+			for(int i=0;i<customerCodesMapList.size();i++){
+				for(Map.Entry<String, Object> entry: customerCodesMapList.get(i).entrySet()) {
+					System.out.println(entry.getKey() + " : " + entry.getValue().toString());
+					customerCodesList.add(entry.getValue().toString());
+				}
+			}
+			customerCodesMap.put("KUNNR",customerCodesList);
+		}
+		
+		logger.debug("END");		
+		return customerCodesMap;
+	}
+	
 }

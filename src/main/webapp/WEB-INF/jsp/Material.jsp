@@ -61,7 +61,7 @@
         <div class="article">
          <br />
           <h2><span>Material Info</span></h2>
-          <display:table name="imyMatOnline" cellspacing ="15" style="border:solid 1px;">
+          <display:table name="imyMatOnlineList" cellspacing ="15" style="border:solid 1px;" >
           	<display:column property="MATERIAL" title="Material Id"/>
   			<display:column property="MAT_TYPE" title="Type"/>
   			<display:column property="MATERIAL_GROUP" title="Group"/>
@@ -74,7 +74,7 @@
  	   <br />
  	  <div class="content">
  	  <b> <u>Material Plant Details</u> </b> <br/>
- 	  <display:table name="imyMatPlant" cellspacing ="15" style="border:solid 1px;">
+ 	  <display:table name="imyMatPlantList" cellspacing ="15" style="border:solid 1px;" >
           	<display:column property="PLANT" title="Plant"/>
   			<display:column property="MRP_CONT" title="Container"/>
   			<display:column property="MAINT_STATUS" title="Status"/>
@@ -84,7 +84,7 @@
    	 </div>
    	 <div class="content">
  	  <b> <u>Material Storage Details</u> </b> <br/>
- 	  <display:table name="imyMatStorageDetails" cellspacing ="15" style="border:solid 1px;">
+ 	  <display:table name="imyMatStorageDetailsList" cellspacing ="15" style="border:solid 1px;" >
           	<display:column property="PLANT" title="Plant"/>
   			<display:column property="MATERIAL" title="Material"/>
   			<display:column property="MAINT_STATUS" title="Status"/>

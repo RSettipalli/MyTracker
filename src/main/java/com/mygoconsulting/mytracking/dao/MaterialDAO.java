@@ -1,5 +1,8 @@
 package com.mygoconsulting.mytracking.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,17 +33,20 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 
 	public void persist(IDOC doc) {
 		logger.debug("BEGIN");
-		IMY_MAT_ONLINE material = doc.getIMY_MAT_ONLINE();
+		List<IMY_MAT_ONLINE> materialList = doc.getIMY_MAT_ONLINE_List();
 
-		// create material Storage details
-		createStorageDetails(material.getIMY_MAT_WERKS()
-				.getIMY_MAT_STORAGE_DETIALS());
+		for (IMY_MAT_ONLINE material : materialList) {
 
-		// create material Plant details
-		createPlant(material.getIMY_MAT_WERKS());
+			// create material Storage details
+			createStorageDetails(material.getIMY_MAT_WERKS()
+					.getIMY_MAT_STORAGE_DETIALS());
 
-		// create material Storage details
-		createMaterial(material);
+			// create material Plant details
+			createPlant(material.getIMY_MAT_WERKS());
+
+			// create material Storage details
+			createMaterial(material);
+		}
 		logger.debug("END");
 	}
 
@@ -133,30 +139,54 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 
 	}
-	
-	public IMY_MAT_ONLINE getMaterialDetails(){
+
+	public List<IMY_MAT_ONLINE> getMaterialDetails() {
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL");
-		IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery, materialMapper);
+		List<Object> objList = super.getObjects(selectQuery, materialMapper);
+		// IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery,
+		// materialMapper);
+		List<IMY_MAT_ONLINE> iMyMaterials = new ArrayList(objList.size());
+		for (Object obj : objList) {
+			IMY_MAT_ONLINE matOnline = (IMY_MAT_ONLINE) obj;
+			iMyMaterials.add(matOnline);
+		}
 		logger.debug("END");
 		return iMyMaterials;
 	}
-	
-	public IMY_MAT_WERKS getMaterialPlantDetails(){
+
+	public List<IMY_MAT_WERKS> getMaterialPlantDetails() {
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL_PLANT");
-		IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery, materialPlantMapper);
+		List<Object> objList = super.getObjects(selectQuery,
+				materialPlantMapper);
+		// IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery,
+		// materialPlantMapper);
+		List<IMY_MAT_WERKS> iMyMaterialPlant = new ArrayList(objList.size());
+		for (Object obj : objList) {
+			IMY_MAT_WERKS matOnline = (IMY_MAT_WERKS) obj;
+			iMyMaterialPlant.add(matOnline);
+		}
 		logger.debug("END");
 		return iMyMaterialPlant;
 	}
-	
-	public IMY_MAT_STORAGE_DETIALS getMaterialStorageDetails(){
+
+	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails() {
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from MATERIAL");
-		IMY_MAT_STORAGE_DETIALS iMyMaterialStorage = (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
+		String selectQuery = new String("select * from MATERIAL_storage");
+		List<Object> objList = getObjects(selectQuery, storageMapper);
+		// IMY_MAT_STORAGE_DETIALS iMyMaterialStorage =
+		// (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
+		List<IMY_MAT_STORAGE_DETIALS> iMyMaterialStorageList = new ArrayList<IMY_MAT_STORAGE_DETIALS>();
+		if (objList != null) {
+			iMyMaterialStorageList = new ArrayList(objList.size());
+			for (Object obj : objList) {
+				IMY_MAT_STORAGE_DETIALS storage = (IMY_MAT_STORAGE_DETIALS) obj;
+				iMyMaterialStorageList.add(storage);
+			}
+		}
 		logger.debug("END");
-		return iMyMaterialStorage;
+		return iMyMaterialStorageList;
 	}
-	
-	
+
 }

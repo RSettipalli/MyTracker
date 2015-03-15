@@ -48,27 +48,29 @@
 							<span>Register</span>
 						</h2>
 						<div class="clr"></div>
-						<form:form name="registerForm" class="foorm" method="POST"
+						<form:form name="registerForm" method="POST"
 							commandName="user" action="./signUp.htm">
 							<div class="clr">${message}</div>
 							<p>
-								<form:label path="fname">First Name</form:label>
-								<form:input path="fname" value="" />
-								<br />
-								<form:label path="lname">Last Name</form:label>
-								<form:input path="lname" value="" />
-								<br />
-								<form:label path="email">Email</form:label>
-								<form:input path="email" value="" />
-								<br />
-								<form:label path="password">Password</form:label>
-								<form:password path="password" showPassword="true" />
-								<br />
-								<form:label path="UserType">Type</form:label>
-								<form:radiobuttons path="UserType" items="${AllUserTypes}" />
-								<br /> <br />
-								<form:label path="userId">Consumer Id</form:label>
-								<form:input path="userId" value="" />
+								<form:label path="fname">First Name</form:label> :
+								<form:input path="fname" value="" /><br />							
+								<form:label path="lname">Last Name</form:label> :
+								<form:input path="lname" value="" /><br />								
+								<form:label path="email">Email</form:label> :
+								<form:input path="email" value="" /><br />						
+								<form:label path="password">Password</form:label> :
+								<form:password path="password" showPassword="true" /><br />								
+								<form:label path="UserType">Type</form:label> :
+								<form:radiobuttons path="UserType" items="${AllUserTypes}" /><br />								
+								<form:label path="companyId">Company Id</form:label> :
+          						<form:select path="BUKRSList">
+		  						<form:option value="0" label="Select" />
+		  						<form:options items="${user.BUKRSList}" />
+		  						</form:select>
+		  						<form:select path="KUNNRList">
+		  						<form:option value="0" label="Select" />
+		  						<form:options items="${user.KUNNRList}" />
+		  						</form:select>
 								<br /> <br /> <input class="button" type="submit"
 									value="Sign In" onclick="register()" />
 							</p>

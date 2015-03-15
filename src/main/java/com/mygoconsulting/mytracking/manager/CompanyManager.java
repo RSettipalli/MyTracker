@@ -1,6 +1,7 @@
 package com.mygoconsulting.mytracking.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,11 +30,11 @@ public class CompanyManager {
 		return imyCompany;
 	}
 	
-	public List<String> getCompanyCodes() {
+	public Map<String,List<String>> getCompanyCodes() {
 		logger.debug("BEGIN");
-		List<String> companyCodeslist = companyCodeDao.getALLBUKRS();
+		Map<String,List<String>> companyCodesMap = companyCodeDao.getALLBUKRS();
 		logger.debug("END");
-		return companyCodeslist;
+		return companyCodesMap;
 	}
 	
 	public IMY_SHIP_POINT getShipPoints(String companyCode){

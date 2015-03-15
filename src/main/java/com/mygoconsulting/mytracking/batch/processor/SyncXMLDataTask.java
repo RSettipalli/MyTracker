@@ -43,37 +43,37 @@ public class SyncXMLDataTask extends TimerTask {
 				LOG.debug("file name is : "+file);
 				if(fileName[0].equals("COMP")){//file.contains("CompanyCode.xml") 
 					LOG.debug("This is Company code.xml");
-					IDOC doc = parserFactory.parseCompanyCodeXML(file);					
+					IDOC doc = parserFactory.parseCompanyCodeXML(inboundfolder.getAbsolutePath()+"\\"+file);					
 					daoFactory.persistCompanyCodeData(doc);
 					LOG.debug("Company Code data is saved to DB");
 					isTaskSuccess = true;
 				} else if(fileName[0].equals("CUST")){//file.contains("Customer.xml")
 					LOG.debug("This is Customer.xml");
-					IDOC doc = parserFactory.parseCustomerXML(file);
+					IDOC doc = parserFactory.parseCustomerXML(inboundfolder.getAbsolutePath()+"\\"+file);
 					daoFactory.persistCustomerData(doc);
 					LOG.debug("Customer Info is saved to DB");
 					isTaskSuccess = true;
 				} else if(fileName[0].equals("MAT")){//file.contains("Material.xml")
 					LOG.debug("This is Material.xml");
-					IDOC doc = parserFactory.parseMaterialXML(file);					
+					IDOC doc = parserFactory.parseMaterialXML(inboundfolder.getAbsolutePath()+"\\"+file);					
 					daoFactory.persistMaterialData(doc);
 					LOG.debug("Material details are saved to DB");
 					isTaskSuccess = true;
 				} else if(fileName[0].equals("DEL")){//file.contains("Delivery.xml")
 					LOG.debug("This is Delivery.xml");
-					IDOC doc = parserFactory.parseDeliveryXML(file);					
+					IDOC doc = parserFactory.parseDeliveryXML(inboundfolder.getAbsolutePath()+"\\"+file);					
 					daoFactory.persistDeliveryData(doc);
 					LOG.debug("Delivery Order details are saved to DB");
 					isTaskSuccess = true;
 				} else if(fileName[0].equals("SORD")){ //file.contains("Sales.xml")
 					LOG.debug("This is Sales.xml");
-					IDOC doc = parserFactory.parseSalesXML(file);
+					IDOC doc = parserFactory.parseSalesXML(inboundfolder.getAbsolutePath()+"\\"+file);
 					daoFactory.persistSalesData(doc);
 					LOG.debug("Sales Order details are saved to DB");
 					isTaskSuccess = true;
 				} else if(fileName[0].equals("INV")){//file.contains("Invoice.xml")
 					LOG.debug("This is Invoice.xml");
-					IDOC doc = parserFactory.parseInvoiceXML(file);
+					IDOC doc = parserFactory.parseInvoiceXML(inboundfolder.getAbsolutePath()+"\\"+file);
 					daoFactory.persistInvoiceData(doc);
 					LOG.debug("Invoice details are saved to DB");
 					isTaskSuccess = true;
@@ -103,7 +103,7 @@ public class SyncXMLDataTask extends TimerTask {
 				if (fileEntry.isDirectory()) {
 					listFilesForFolder(fileEntry);
 				} else {
-					files.add(fileEntry.getAbsolutePath());
+					files.add(fileEntry.getName());
 				}
 			}
 		}
