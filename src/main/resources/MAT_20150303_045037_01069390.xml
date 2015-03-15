@@ -44,5 +44,77 @@
             </_-IMY_-MAT_STORAGE_DETIALS>
          </_-IMY_-MAT_WERKS>
       </_-IMY_-MAT_ONLINE>
+      <_-IMY_-MAT_ONLINE SEGMENT="1">
+         <MATERIAL>000000000000000898</MATERIAL>
+         <MAT_DESC>HK -02</MAT_DESC>
+         <UOM>ST</UOM>
+         <STOCK>X</STOCK>
+         <BOM>X</BOM>
+         <MAT_TYPE>HAWA</MAT_TYPE>
+         <GROSS_WEIGHT>1.000</GROSS_WEIGHT>
+         <NET_WEIGHT>1.000</NET_WEIGHT>
+         <MATERIAL_GROUP>00107</MATERIAL_GROUP>
+         <_-IMY_-MAT_WERKS SEGMENT="1">
+            <PLANT>3000</PLANT>
+            <MAINT_STATUS>VEDPLSQBG</MAINT_STATUS>
+            <MRP_TYPE>PD</MRP_TYPE>
+            <MRP_CONT>002</MRP_CONT>
+            <_-IMY_-MAT_STORAGE_DETIALS SEGMENT="1">
+               <MATERIAL>000000000000000898</MATERIAL>
+               <PLANT>3000</PLANT>
+               <STO_LOCATION>0001</STO_LOCATION>
+               <MAINT_STATUS>DL</MAINT_STATUS>
+               <STOC_IN_QLTY_INS>1.000</STOC_IN_QLTY_INS>
+            </_-IMY_-MAT_STORAGE_DETIALS>
+         </_-IMY_-MAT_WERKS>
+      </_-IMY_-MAT_ONLINE>
+      <_-IMY_-MAT_ONLINE SEGMENT="1">
+         <MATERIAL>000000000000000899</MATERIAL>
+         <MAT_DESC>HK -03</MAT_DESC>
+         <UOM>ST</UOM>
+         <STOCK>X</STOCK>
+         <BOM>X</BOM>
+         <MAT_TYPE>HAWA</MAT_TYPE>
+         <GROSS_WEIGHT>1.000</GROSS_WEIGHT>
+         <NET_WEIGHT>1.000</NET_WEIGHT>
+         <MATERIAL_GROUP>00107</MATERIAL_GROUP>
+         <_-IMY_-MAT_WERKS SEGMENT="1">
+            <PLANT>3000</PLANT>
+            <MAINT_STATUS>VEDPLSQBG</MAINT_STATUS>
+            <MRP_TYPE>PD</MRP_TYPE>
+            <MRP_CONT>002</MRP_CONT>
+            <_-IMY_-MAT_STORAGE_DETIALS SEGMENT="1">
+               <MATERIAL>000000000000000899</MATERIAL>
+               <PLANT>3000</PLANT>
+               <STO_LOCATION>0001</STO_LOCATION>
+               <MAINT_STATUS>DL</MAINT_STATUS>
+               <STOC_IN_QLTY_INS>1.000</STOC_IN_QLTY_INS>
+            </_-IMY_-MAT_STORAGE_DETIALS>
+         </_-IMY_-MAT_WERKS>
+      </_-IMY_-MAT_ONLINE>
+      <_-IMY_-MAT_ONLINE SEGMENT="1">
+         <MATERIAL>000000000000000900</MATERIAL>
+         <MAT_DESC>HK -04</MAT_DESC>
+         <UOM>ST</UOM>
+         <STOCK>X</STOCK>
+         <BOM>X</BOM>
+         <MAT_TYPE>HAWA</MAT_TYPE>
+         <GROSS_WEIGHT>1.000</GROSS_WEIGHT>
+         <NET_WEIGHT>1.000</NET_WEIGHT>
+         <MATERIAL_GROUP>00107</MATERIAL_GROUP>
+         <_-IMY_-MAT_WERKS SEGMENT="1">
+            <PLANT>3000</PLANT>
+            <MAINT_STATUS>VEDPLSQBG</MAINT_STATUS>
+            <MRP_TYPE>PD</MRP_TYPE>
+            <MRP_CONT>002</MRP_CONT>
+            <_-IMY_-MAT_STORAGE_DETIALS SEGMENT="1">
+               <MATERIAL>000000000000000900</MATERIAL>
+               <PLANT>3000</PLANT>
+               <STO_LOCATION>0001</STO_LOCATION>
+               <MAINT_STATUS>DL</MAINT_STATUS>
+               <STOC_IN_QLTY_INS>1.000</STOC_IN_QLTY_INS>
+            </_-IMY_-MAT_STORAGE_DETIALS>
+         </_-IMY_-MAT_WERKS>
+      </_-IMY_-MAT_ONLINE>
    </IDOC>
 </_-IMY_-MAT_IDOC>
