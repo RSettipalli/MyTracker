@@ -41,6 +41,7 @@ import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 import com.mygoconsulting.mytracking.model.LoginForm;
 import com.mygoconsulting.mytracking.model.User;
 import com.mygoconsulting.mytracking.util.Email;
+import com.mygoconsulting.mytracking.util.UserType;
 
 @Controller
 @SessionAttributes("user")
@@ -115,6 +116,7 @@ public class SignUpController {
 		List<String> companyCodesList = companyManager.getCompanyCodes();
 		model.addAttribute("companyCodesList",companyCodesList);
 		model.addAttribute("user", user);
+		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
 		logger.debug("END");
 		return "signUp";
 	}
