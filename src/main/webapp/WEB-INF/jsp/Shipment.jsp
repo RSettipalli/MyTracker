@@ -1,32 +1,25 @@
 <%@ page language="java" contentType="text/html"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>My Tracker Sales Order Info</title>
+<title>MyTracking Sales Order Info</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
-<!-- 	<script type="text/javascript" src="./js/jquery.reply.min.js"></script> -->
-<!-- <script type="text/javascript" src="./js/jquery-1.8.2.min.js"></script> -->
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./js/cufon-yui.js"></script>
 <script type="text/javascript" src="./js/arial.js"></script>
 <script type="text/javascript" src="./js/cuf_run.js"></script>
-<script type="text/javascript" src="./js/mygo.js"></script>
 <script>
-function show(divId) {
-	  document.getElementById(divId).style.display = "block";
-}
-
-function hideFilterContainer(divId) {
-	  document.getElementById(divId).style.display = "none";
-}
-
+	function toggle_visibility(id) {
+		var e = document.getElementById(id);
+		if (e.style.display == 'block')
+			e.style.display = 'none';
+		else
+			e.style.display = 'block';
+	}
 </script>
-
 </head>
 <body>
 	<div class="main">
@@ -36,14 +29,15 @@ function hideFilterContainer(divId) {
 					<img src="./images/mygologo_smallsize.jpg" />
 				</div>
 				<div class="logoTitle">
-					<h1>My Tracker</h1>
+					<h1>
+						MyTracking<sup>&reg;</sup>
+					</h1>
 				</div>
 				<div class="logoSmallTitle">
-					<a href="#"><img src="./images/mygologo_icon_sm.jpg"
-						width="50px" border="0" /></a> <a href="#"><img
-						src="./images/contactusimage_sm.jpg" width="50px" border="0" /></a> <a
-						href="./signUp.htm"><img src="./images/Registeration_sm.png"
-						width="50px" border="0" /></a>
+					<a href="#"><img src="./images/contactusimage_sm.jpg"
+						width="50px" border="0" /></a> 
+					<a href="./signUp.htm"><img
+						src="./images/Registeration_sm.png" width="50px" border="0" /></a>
 				</div>
 				<div class="clr"></div>
 				<div class="menu_nav">
@@ -51,15 +45,12 @@ function hideFilterContainer(divId) {
 						<li><a href="./Home.htm">Home</a></li>
 						<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
 						<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
-						<li class="active"><a href='./Shipment.htm'><span>Sales
-									Order Info</span></a></li>
+						<li class="active"><a href='./Shipment.htm'><span>Sales	Order Info</span></a></li>
 						<li><a href='./Material.htm'><span>Material Info</span></a></li>
 						<li><a href="./login.htm">Login</a></li>
 					</ul>
 				</div>
-
 				<div class="clr"></div>
-
 			</div>
 		</div>
 		<div class="content">
@@ -67,7 +58,6 @@ function hideFilterContainer(divId) {
 				<div class="clr"></div>
 				<div class="mainbar">
 					<div class="article">
-						<br />
 						<h2>
 							<span>Sales Order Info</span>
 						</h2>
@@ -92,8 +82,8 @@ function hideFilterContainer(divId) {
 								<th class="tg-qta8">Zip</th>
 							</tr>
 							<tr>
-								<td class="tg-031e">
-								<a href="#" onclick="show('${salesOrderHeader.ORDER_NBR}')">${salesOrderHeader.ORDER_NBR}</a>
+								<td class="tg-031e"><a href="#"
+									onclick="toggle_visibility('${salesOrderHeader.ORDER_NBR}')">${salesOrderHeader.ORDER_NBR}</a>
 								</td>
 								<td class="tg-031e">${salesOrderHeader.ORDER_TYPE}</td>
 								<td class="tg-031e">${salesOrderHeader.ORDER_STATUS_CD}</td>
@@ -110,16 +100,16 @@ function hideFilterContainer(divId) {
 								<td class="tg-031e">${salesOrderHeader.OVERRIDE_STATE}</td>
 								<td class="tg-031e">${salesOrderHeader.OVERRIDE_ZIP}</td>
 							</tr>
-
 						</table>
-						
 						<!--  expand collapse : start -->
 						<div id='${salesOrderHeader.ORDER_NBR}' class="filter-container">
 							<div class="triggear">
-								<a href="#" onclick="hideFilterContainer('${salesOrderHeader.ORDER_NBR}')">Hide</a>
+								<a href="#"
+									onclick="toggle_visibility('${salesOrderHeader.ORDER_NBR}')">Hide</a>
 							</div>
 							<div class="toggle-container">
-								<display:table name="soDetail" style="border: 1px solid; width: 797px; height: 20px;">
+								<display:table name="soDetail"
+									style="border: 1px solid; width: 950px; height: 20px;">
 									<display:column property="PRODUCT_NBR" title="Product_Number" />
 									<display:column property="NET_VAL" title="Net_Value" />
 									<display:column property="ITEM_CAT" title="Item_Category" />
@@ -131,44 +121,46 @@ function hideFilterContainer(divId) {
 									<display:column property="ORD_QTY" title="OrderQuantity" />
 								</display:table>
 							</div>
+							<table border="0">
+								<tr>
+									<td><div class="content">
+											<b> <u>Sales Order Detail Comments</u>
+											</b> <br />
+											<display:table name="soDetailComments" cellspacing="2"
+												style="border: 1px solid; width: 600px;">
+												<display:column property="ORDER_NBR" title="OrderNumber" />
+												<display:column property="ORDER_LINE_NBR"
+													title="OrderLineNumber" />
+												<display:column property="LINE" title="Line" />
+												<display:column property="TYPE" title="Type" />
+											</display:table>
+										</div></td>
+									<td><div class="content">
+											<b> <u>Sales Order Header Comments</u>
+											</b> <br />
+											<display:table name="salesOrderHeaderComments"
+												cellspacing="2" style="border: 1px solid; width: 300px;">
+												<display:column property="ORDER_NBR" title="OrderNumber" />
+												<display:column property="LINE" title="Line" />
+												<display:column property="TYPE" title="Type" />
+											</display:table>
+										</div></td>
+								</tr>
+							</table>
+							<div class="content">
+								<b> <u>Sales Order Item Attachments</u>
+								</b> <br />
+								<display:table name="soDetailItemAttachments" cellspacing="2"
+									style="border:solid 1px;">
+									<display:column property="DOKAR" title="DOKAR" />
+									<display:column property="DOKVR" title="DOKVR" />
+									<display:column property="DOKTL" title="DOKTL" />
+									<display:column property="DOKNR" title="DOKNR" />
+									<display:column property="OBJKY" title="OBJKY" />
+								</display:table>
+							</div>
 						</div>
 						<!--  expand collapse : end -->
-						<div class="content">
-							<b> <u>Sales Order Header Comments</u>
-							</b> <br />
-							<display:table name="salesOrderHeaderComments" cellspacing="2"
-								style="border:solid 1px;">
-								<display:column property="ORDER_NBR" title="OrderNumber" />
-								<display:column property="LINE" title="Line" />
-								<display:column property="TYPE" title="Type" />
-							</display:table>
-						</div>
-						<div class="content">
-							<b> <u>Sales Order Detail Comments</u>
-							</b> <br />
-							<display:table name="soDetailComments" cellspacing="2"
-								style="border:solid 1px;">
-								<display:column property="ORDER_NBR" title="OrderNumber" />
-								<display:column property="ORDER_LINE_NBR"
-									title="OrderLineNumber" />
-								<display:column property="LINE" title="Line" />
-								<display:column property="TYPE" title="Type" />
-							</display:table>
-						</div>
-						<br /> <br />
-						<div class="content">
-							<b> <u>Sales Order Item Attachments</u>
-							</b> <br />
-							<display:table name="soDetailItemAttachments" cellspacing="2"
-								style="border:solid 1px;">
-								<display:column property="DOKAR" title="DOKAR" />
-								<display:column property="DOKVR" title="DOKVR" />
-								<display:column property="DOKTL" title="DOKTL" />
-								<display:column property="DOKNR" title="DOKNR" />
-								<display:column property="OBJKY" title="OBJKY" />
-							</display:table>
-						</div>
-						<br /> <br />
 						<div class="clr"></div>
 					</div>
 				</div>

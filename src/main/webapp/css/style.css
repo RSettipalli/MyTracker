@@ -34,7 +34,7 @@ html, .main {
 
 .logoSmallTitle {
 	padding:15px 90px;
-	float:left;
+	float:right;
 	width:auto;
 }
 .Contactus {
@@ -44,12 +44,11 @@ html, .main {
 }
 h1 {
 	margin:0;
-	padding:29px 24px;
+	padding:25px 24px;
 	float:left;
 	color:#e4e5e5;
 	font:bold 36px/1.2em Arial, Helvetica, sans-serif;
 	letter-spacing:-3px;
-	text-transform:uppercase;
 }
 
 .sorow {
@@ -88,7 +87,7 @@ h1 small {
 }
 h2 {
 	font:normal 24px/1.5em Arial, Helvetica, sans-serif;
-	padding:8px 0;
+	padding:0px;
 	margin:8px 0;
 	color:#595959;
 }
@@ -171,7 +170,7 @@ img.readmore {
 .content_resize {
 	margin:0 auto;
 	padding:0 0 24px;
-	width:970px;
+	width:1080px;
 	background-color:#fff;
 }
 .content .mainbar {
@@ -190,7 +189,7 @@ img.readmore {
 }
 .content .mainbar .article {
 	margin:0 0 12px;
-	padding:8px 24px 0 24px;
+	padding:0px 24px 0 24px;
 }
 .content .sidebar {
 	padding:0;
