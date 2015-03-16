@@ -47,7 +47,7 @@
 						<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
 						<li class="active"><a href='./Shipment.htm'><span>Sales	Order Info</span></a></li>
 						<li><a href='./Material.htm'><span>Material Info</span></a></li>
-						<li><a href="./login.htm">Login</a></li>
+						<li><a href="./logout.htm">SignOut</a></li>
 					</ul>
 				</div>
 				<div class="clr"></div>

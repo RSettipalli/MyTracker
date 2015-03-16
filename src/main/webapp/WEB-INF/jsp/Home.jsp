@@ -32,13 +32,13 @@
 				<div class="clr"></div>
 				<div class="menu_nav">
 					<ul>
-						<li><a href="./Home.htm">Home</a></li>
+						<li class="active"><a href="./Home.htm">Home</a></li>
 						<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
 						<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
 						<li><a href='./Shipment.htm'><span>Sales Order
 									Info</span></a></li>
 						<li><a href='./Material.htm'><span>Material Info</span></a></li>
-						<li><a href="./login.htm">Login</a></li>
+						<li><a href="./logout.htm">SignOut</a></li>
 					</ul>
 				</div>
 				<div class="clr"></div>
@@ -53,30 +53,68 @@
 							<span>Company Profile</span>
 						</h2>
 						<b> <u>Company Information</u>
-						</b> <br />
-						<br /> Company Code : ${companyInfo.BUKRS}
-						&nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Name of Company : ${companyInfo.BUTXT}
-						&nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Language : ${companyInfo.SPRAS} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Currency : ${companyInfo.WAERS} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> City : ${companyInfo.ORT01} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Address : ${companyInfo.ADRNR} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Street : ${companyInfo.ADDRESS1} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Street 2 : ${companyInfo.ADDRESS2} &nbsp;&nbsp;&nbsp;&nbsp;
-						<br />
-						<br /> Country : ${companyInfo.COUNTRY} &nbsp;&nbsp;&nbsp;&nbsp;<br />
-						<br /> City postal code : ${companyInfo.ZIP}
-						&nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Telephone number : ${companyInfo.PHONE}
-						&nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> Fax Number : ${companyInfo.FAX} &nbsp;&nbsp;&nbsp;&nbsp; <br />
-						<br /> <br />
+						</b> 
+						<table>
+							<tr>
+								<td><b>Company Code</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.BUKRS}</td>
+								<td>&nbsp;</td>
+								<td><b>Name of Company</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.BUTXT}</td>
+							</tr>
+							<tr>
+								<td><b>Language</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.SPRAS}</td>
+								<td>&nbsp;</td>
+								<td><b>Currency</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.WAERS}</td>
+							</tr>
+							<tr>
+								<td><b>City</b></td>
+								<td><b>:</b></td>							
+								<td>${companyInfo.ORT01}</td>
+								<td>&nbsp;</td>
+								<td><b>Address</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.ADRNR}</td>
+							</tr>
+							<tr>
+								<td><b>Street</b></td>
+								<td><b>:</b></td>							
+								<td>${companyInfo.ADDRESS1}</td>
+								<td>&nbsp;</td>
+								<td><b>Street 2</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.ADDRESS2}</td>
+							</tr>
+							<tr>
+								<td><b>Country</b></td>
+								<td><b>:</b></td>							
+								<td>${companyInfo.COUNTRY}</td>
+								<td>&nbsp;</td>
+								<td><b>City postal code</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.ZIP}</td>
+							</tr>
+							<tr>
+								<td><b>Telephone number </b></td>
+								<td><b>:</b></td>							
+								<td>${companyInfo.PHONE}</td>
+								<td>&nbsp;</td>
+								<td><b>Fax Number</b></td>
+								<td><b>:</b></td>
+								<td>${companyInfo.FAX}</td>
+							</tr>
+						</table>
 						<div class="content">
 							<b> <u>Company Ship Points</u>
 							</b> <br />
-							<display:table name="shipPoint" cellspacing="15"
-								style="border:solid 1px;">
+							<display:table name="shipPoint" cellspacing="2"
+								 style="border: 1px solid; width: 600px;">
 								<display:column property="BUKRS" title="Company Code" />
 								<display:column property="ADDRESS1" title="Street" />
 								<display:column property="ADDRESS2" title="Street 2" />

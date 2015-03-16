@@ -3,6 +3,8 @@ package com.mygoconsulting.mytracking.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -172,6 +174,15 @@ public class SignUpController {
 		model.addAttribute("user", user);
 		logger.debug("END");
 		return "forgot";
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request,Model model) {
+		logger.debug("BEGIN");
+		request.getSession().removeAttribute("user");
+		loginForm(model);
+		logger.debug("END");
+		return "login";
 	}
 	
 	@RequestMapping(value = "/Material", method = RequestMethod.GET)
