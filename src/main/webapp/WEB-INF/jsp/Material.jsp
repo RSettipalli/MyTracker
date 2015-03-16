@@ -26,7 +26,8 @@
 		<div class="header">
 			<div class="header_resize">
 				<div class="logo">
-					<img src="./images/mygologo_smallsize.jpg" />
+					<a href="http://mygoconsulting.com/"><img
+						src="./images/mygologo_smallsize.jpg" /></a>
 				</div>
 				<div class="logoTitle">
 					<h1>
@@ -34,68 +35,81 @@
 					</h1>
 				</div>
 				<div class="logoSmallTitle">
-					<a href="#"><img src="./images/contactusimage_sm.jpg"
-						width="50px" border="0" /></a> <a href="./signUp.htm"><img
-						src="./images/Registeration_sm.png" width="50px" border="0" /></a>
+					<a href="http://mygoconsulting.com/contact-us"><img
+						src="./images/contactusimage_sm.jpg" width="50px" border="0" /></a> <a
+						href="./signUp.htm"><img src="./images/Registeration_sm.png"
+						width="50px" border="0" /></a>
 				</div>
 				<div class="clr"></div>
 				<div class="menu_nav">
 					<ul>
 						<li><a href="./Home.htm">Home</a></li>
-      		<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
-      		<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
-      		<li><a href='./Shipment.htm'><span>Sales Order Info</span></a></li>
-      		<li class="active"><a href='./Material.htm'><span>Material Info</span></a></li>
-			<li><a href="./logout.htm">SignOut</a></li>
-        </ul>
-      </div>
+						<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
+						<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
+						<li><a href='./Shipment.htm'><span>Sales Order
+									Info</span></a></li>
+						<li class="active"><a href='./Material.htm'><span>Material
+									Info</span></a></li>
+						<li><a href="./logout.htm">SignOut</a></li>
+					</ul>
+				</div>
 
-      <div class="clr"></div>
+				<div class="clr"></div>
 
-    </div>
-  </div>
-  <div class="content">
-    <div class="content_resize">
-      <div class="clr"></div>
-      <div class="mainbar">
-        <div class="article">
-         <br />
-          <h2><span>Material Info</span></h2>
-          <display:table name="imyMatOnlineList" cellspacing ="2" style="border: 1px solid; width: 600px;" >
-          	<display:column property="MATERIAL" title="Material Id"/>
-  			<display:column property="MAT_TYPE" title="Type"/>
-  			<display:column property="MATERIAL_GROUP" title="Group"/>
-  			<display:column property="MAT_DESC" title="Description"/>  			
-  			<display:column property="STOCK" title="Stock"/>
-  			<display:column property="NET_WEIGHT" title="Net Weight"/>
-  			<display:column property="UOM" title="Unit of Measure"/>
-  			<display:column property="BOM" title="BOM"/>  			  			  			
-		</display:table>
- 	   <br />
- 	  <div class="content">
- 	  <b> <u>Material Plant Details</u> </b> <br/>
- 	  <display:table name="imyMatPlantList" cellspacing ="2" style="border: 1px solid; width: 600px;" >
-          	<display:column property="PLANT" title="Plant"/>
-  			<display:column property="MRP_CONT" title="Container"/>
-  			<display:column property="MAINT_STATUS" title="Status"/>
-  			<display:column property="MRP_TYPE" title="Type"/>  			
-  	</display:table>
-	  	<br /><br />
-   	 </div>
-   	 <div class="content">
- 	  <b> <u>Material Storage Details</u> </b> <br/>
- 	  <display:table name="imyMatStorageDetailsList" cellspacing ="2" style="border: 1px solid; width: 600px;" >
-  			<display:column property="MAINT_STATUS" title="Status"/>
-  			<display:column property="STO_LOCATION" title="StorageLocation"/>
-  			<display:column property="STOC_IN_QLTY_INS" title="Quality"/>
-  	</display:table>
- 	   	<br /><br />
-   	 </div>          
-          <div class="clr"></div>
-        </div>
-      </div>     
-  </div>
-</div>
-</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="content_resize">
+				<div class="clr"></div>
+				<div class="mainbar">
+					<div class="article">
+						<br />
+						<h2>
+							<span>Material Info</span>
+						</h2>
+						<display:table name="imyMatOnlineList" cellspacing="2"
+							style="border: 1px solid; width: 600px;">
+							<display:column property="MATERIAL" title="Material Id" />
+							<display:column property="MAT_TYPE" title="Type" />
+							<display:column property="MATERIAL_GROUP" title="Group" />
+							<display:column property="MAT_DESC" title="Description" />
+							<display:column property="STOCK" title="Stock" />
+							<display:column property="NET_WEIGHT" title="Net Weight" />
+							<display:column property="UOM" title="Unit of Measure" />
+							<display:column property="BOM" title="BOM" />
+						</display:table>
+						<br />
+						<div class="content">
+							<b> <u>Material Plant Details</u>
+							</b> <br />
+							<display:table name="imyMatPlantList" cellspacing="2"
+								style="border: 1px solid; width: 600px;">
+								<display:column property="PLANT" title="Plant" />
+								<display:column property="MRP_CONT" title="Container" />
+								<display:column property="MAINT_STATUS" title="Status" />
+								<display:column property="MRP_TYPE" title="Type" />
+							</display:table>
+							<br /> <br />
+						</div>
+						<div class="content">
+							<b> <u>Material Storage Details</u>
+							</b> <br />
+							<display:table name="imyMatStorageDetailsList" cellspacing="2"
+								style="border: 1px solid; width: 600px;">
+								<display:column property="MAINT_STATUS" title="Status" />
+								<display:column property="STO_LOCATION" title="StorageLocation" />
+								<display:column property="STOC_IN_QLTY_INS" title="Quality" />
+							</display:table>
+							<br /> <br />
+						</div>
+						<div class="clr"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<p>Copyright © 2015 Mygo Consulting Inc.</p>
+	</div>
 </body>
 </html>

@@ -171,7 +171,7 @@ public class SignUpController {
 	public String forgot(Model model) {
 		logger.debug("BEGIN");
 		User user = new User();
-		model.addAttribute("user", user);
+		model.addAttribute("forgotUser", user);
 		logger.debug("END");
 		return "forgot";
 	}

@@ -17,7 +17,8 @@
 		<div class="header">
 			<div class="header_resize">
 				<div class="logo">
-					<img src="./images/mygologo_smallsize.jpg" />
+					<a href="http://mygoconsulting.com/"><img
+						src="./images/mygologo_smallsize.jpg" /></a>
 				</div>
 				<div class="logoTitle">
 					<h1>
@@ -25,9 +26,10 @@
 					</h1>
 				</div>
 				<div class="logoSmallTitle">
-					<a href="#"><img src="./images/contactusimage_sm.jpg"
-						width="50px" border="0" /></a> <a href="./signUp.htm"><img
-						src="./images/Registeration_sm.png" width="50px" border="0" /></a>
+					<a href="http://mygoconsulting.com/contact-us"><img
+						src="./images/contactusimage_sm.jpg" width="50px" border="0" /></a> <a
+						href="./signUp.htm"><img src="./images/Registeration_sm.png"
+						width="50px" border="0" /></a>
 				</div>
 				<div class="clr"></div>
 				<div class="menu_nav">
@@ -53,7 +55,7 @@
 							<span>Company Profile</span>
 						</h2>
 						<b> <u>Company Information</u>
-						</b> 
+						</b>
 						<table>
 							<tr>
 								<td><b>Company Code</b></td>
@@ -75,7 +77,7 @@
 							</tr>
 							<tr>
 								<td><b>City</b></td>
-								<td><b>:</b></td>							
+								<td><b>:</b></td>
 								<td>${companyInfo.ORT01}</td>
 								<td>&nbsp;</td>
 								<td><b>Address</b></td>
@@ -84,7 +86,7 @@
 							</tr>
 							<tr>
 								<td><b>Street</b></td>
-								<td><b>:</b></td>							
+								<td><b>:</b></td>
 								<td>${companyInfo.ADDRESS1}</td>
 								<td>&nbsp;</td>
 								<td><b>Street 2</b></td>
@@ -93,7 +95,7 @@
 							</tr>
 							<tr>
 								<td><b>Country</b></td>
-								<td><b>:</b></td>							
+								<td><b>:</b></td>
 								<td>${companyInfo.COUNTRY}</td>
 								<td>&nbsp;</td>
 								<td><b>City postal code</b></td>
@@ -102,7 +104,7 @@
 							</tr>
 							<tr>
 								<td><b>Telephone number </b></td>
-								<td><b>:</b></td>							
+								<td><b>:</b></td>
 								<td>${companyInfo.PHONE}</td>
 								<td>&nbsp;</td>
 								<td><b>Fax Number</b></td>
@@ -114,7 +116,7 @@
 							<b> <u>Company Ship Points</u>
 							</b> <br />
 							<display:table name="shipPoint" cellspacing="2"
-								 style="border: 1px solid; width: 600px;">
+								style="border: 1px solid; width: 600px;">
 								<display:column property="BUKRS" title="Company Code" />
 								<display:column property="ADDRESS1" title="Street" />
 								<display:column property="ADDRESS2" title="Street 2" />
@@ -132,6 +134,9 @@
 				</div>
 				<div class="clr"></div>
 				<div class="clr"></div>
+			</div>
+			<div class="content">
+				<p>Copyright © 2015 Mygo Consulting Inc.</p>
 			</div>
 		</div>
 	</div>
