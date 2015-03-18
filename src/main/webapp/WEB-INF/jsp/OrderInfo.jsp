@@ -1,28 +1,5 @@
-<%@ page language="java" contentType="text/html"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://displaytag.sf.net" prefix="display"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>MyTracking Delivery Info</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
-<link href="./css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./js/arial.js"></script>
-<script type="text/javascript" src="./js/cuf_run.js"></script>
-<script>
-	function toggle_visibility(id) {
-		var e = document.getElementById(id);
-		if (e.style.display == 'block')
-			e.style.display = 'none';
-		else
-			e.style.display = 'block';
-	}
-</script>
-</head>
-<body>
-	<div class="main">
+<%@include file="./header.jsp" %>
+<div class="main">
 		<div class="header">
 			<div class="header_resize">
 				<div class="logo">
@@ -41,7 +18,8 @@
 						width="50px" border="0" /></a>
 				</div>
 				<div class="clr"></div>
-				<div class="menu_nav">
+
+	<div class="menu_nav">
 					<ul>
 						<li><a href="./Home.htm">Home</a></li>
 						<li class="active"><a href='./OrderInfo.htm'><span>Delivery
@@ -60,7 +38,7 @@
 		<div class="content">
 			<div class="content_resize">
 				<div class="clr"></div>
-				<div class="mainbar">
+				<div>
 					<div class="article">
 						<br />
 						<h2>
@@ -128,7 +106,7 @@
 
 							<table border="0">
 								<tr>
-									<td><div class="content">
+									<td><div class="article">
 											<b> <u>Delivery Detail Comments</u>
 											</b> <br />
 											<display:table name="odDetailComments" cellspacing="2"
@@ -140,7 +118,7 @@
 												<display:column property="TYPE" title="Type" />
 											</display:table>
 										</div></td>
-									<td><div class="content">
+									<td><div class="article">
 											<b> <u>Delivery Header Comments</u>
 											</b> <br />
 											<display:table name="orderHeaderComments" cellspacing="2"
@@ -152,9 +130,8 @@
 													title="OrderDetailNumber" />
 											</display:table>
 										</div></td>
-								</tr>
-							</table>
-							<div class="content">
+								</tr><tr><td>
+								<div class="article">
 								<b> <u>Delivery Item Attachments</u>
 								</b> <br />
 								<display:table name="odDetailItemAttachments" cellspacing="2"
@@ -165,7 +142,8 @@
 									<display:column property="DOKNR" title="DOKNR" />
 									<display:column property="OBJKY" title="OBJKY" />
 								</display:table>
-							</div>
+							</div></td><td></td></tr>
+							</table>							
 						</div>
 						<!--  expand collapse : end -->
 						<div class="clr"></div>
@@ -173,9 +151,8 @@
 				</div>
 			</div>
 		</div>
+		<%@include file="./footer.jsp" %>
 	</div>
-	<div class="content">
-		<p>Copyright © 2015 Mygo Consulting Inc.</p>
-	</div>
+	
 </body>
 </html>

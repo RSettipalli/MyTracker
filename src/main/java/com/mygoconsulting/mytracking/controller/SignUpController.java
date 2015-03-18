@@ -129,19 +129,14 @@ public class SignUpController {
 			List<String> companyCodes = entry.getValue();
 			user.setCompanyId("BUKRS");
 			user.setBUKRSList(companyCodes);
-			for(String companyCode:companyCodes){
-				System.out.println(companyCode);
-			}
 		}
 		Map<String,List<String>> customerCodesMap = customerManager.getCustomerCodes();		
 		for(Map.Entry<String, List<String>> entry: customerCodesMap.entrySet()) {
 			List<String> customerCodes = entry.getValue();
 			user.setCompanyId("KUNNR");
 			user.setKUNNRList(customerCodes);
-			for(String customerCode:customerCodes){
-				System.out.println(customerCode);
-			}
 		}
+		user.setUserType(UserType.COMPANY);
 		model.addAttribute("user", user);
 		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
 		logger.debug("END");

@@ -1,20 +1,4 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>MyTracking Login</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="./css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="./js/arial.js"></script>
-<script type="text/javascript" src="./js/cuf_run.js"></script>
-
-<script>
-	function login() {
-		document.loginForm.submit();
-	}
-</script>
-</head>
-<body>
+<%@include file="./header.jsp" %>
 	<div class="main">
 		<div class="header">
 			<div class="header_resize">
@@ -34,18 +18,15 @@
 						width="50px" border="0" /></a>
 				</div>
 				<div class="clr"></div>
-				<div class="menu_nav"></div>
+
+			<div class="menu_nav"></div>
 				<div class="clr"></div>
 
 			</div>
 		</div>
 		<div class="content">
 			<div class="content_resize">
-				<center>
-					<img src="./images/mygologo_smallsize.jpg" alt="" class="hbg_img" />
-				</center>
-				<div class="clr"></div>
-				<div class="mainbar">
+				<div>
 					<div class="article">
 						<h2>
 							<span>Login</span>
@@ -71,9 +52,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="content">
-		<p>Copyright © 2015 Mygo Consulting Inc.</p>
+		<%@include file="./footer.jsp" %>
 	</div>
 </body>
 </html>
