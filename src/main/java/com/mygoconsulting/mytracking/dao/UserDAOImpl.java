@@ -20,10 +20,16 @@ public class UserDAOImpl implements MyTrackingDAO {
 	
 	public boolean createUser(User user) {
 		logger.debug("BEGIN");
-		String createQuery = "insert into customer_info (email,fname,lname,password,userId) values (?,?,?,?,?)";
+		String companyId = null;
+		String createQuery = "insert into customer_info (email,fname,lname,password,companyId) values (?,?,?,?,?)";
 		// MyTrackingDAOProperty.getProperty("createQuery");
+		if(user.getCompanyId() != null && user.getCompanyId().trim().length() != 0 && !user.getCompanyId().equals("-1")){
+			companyId = user.getCompanyId();
+		} else {
+			companyId = user.getCustomerId();
+		}
 		int recordsCreated = jdbcTemplateObject.update(createQuery, user.getEmail(),user.getFname(),
-				user.getLname(),user.getPassword(),user.getUserId()); //user.getUserType().getKey()
+				user.getLname(),user.getPassword(),companyId); //user.getUserType().getKey()
 		logger.debug("END");
 		if(recordsCreated >= 1)
 			return true;

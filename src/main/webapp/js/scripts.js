@@ -4,7 +4,6 @@ function setDefaults()
 	document.getElementById("UserType1").checked;
 	document.getElementById("bukrsList").value = 'Select';
 	document.getElementById("kunnrList").value = 'Select';
-	
 	showHideSelects();
 }
 

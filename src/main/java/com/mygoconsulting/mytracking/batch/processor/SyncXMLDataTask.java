@@ -22,9 +22,8 @@ public class SyncXMLDataTask extends TimerTask {
 	
 	//private String yearNow = new SimpleDateFormat("yyyy").format(Calendar.getInstance().getTime());
 	
-	private File inboundfolder = new File(MyTrackerProperty.getProperty(ApplicationConstants.INPUT_FOLDER));
-	//private File inboundfolder = new File("/home/portal23/mytracker/props/in");
-	//private File outboundfolder = new File(MyTrackerProperty.getProperty(ApplicationConstants.OUTPUT_FOLDER));
+	private static File inboundfolder = new File(MyTrackerProperty.getProperty(ApplicationConstants.INPUT_FOLDER));
+	private File outboundfolder = new File(MyTrackerProperty.getProperty(ApplicationConstants.OUTPUT_FOLDER));
 
 	@Autowired
 	private ParserFactory parserFactory;

@@ -4,6 +4,7 @@
 window.onload = setDefaults;
 </script>
 
+
 <div class="main">
 	<div class="header">
 		<div class="header_resize">
@@ -56,15 +57,15 @@ window.onload = setDefaults;
 							<li>
 							<form:label path="UserType">Type</form:label> : 
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							<form:radiobuttons path="UserType" items="${AllUserTypes}"  onclick="showHideSelects()"/><br /></li>
-							<li><form:label path="companyId">Company Id</form:label> :
+							<form:radiobuttons path="UserType" items="${AllUserTypes}" onclick="showHideSelects()" /><br /></li>
+							<li><label>Company Id</label> :
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 							 <form:select id="bukrsList" multiple="single"
-									path="BUKRSList">
-									<form:option value="Select"/>
+									path="companyId">
+									<form:option value="-1" selected="selected">Select</form:option>
 									<form:options items="${user.BUKRSList}" />
-								</form:select> <form:select id="kunnrList" multiple="single" path="KUNNRList">
-									<form:option value="Select"/>
+								</form:select> <form:select id="kunnrList" multiple="single" path="customerId">
+									<form:option value="-1" selected="selected">Select</form:option>
 									<form:options items="${user.KUNNRList}" />
 								</form:select></li>
 							<br />

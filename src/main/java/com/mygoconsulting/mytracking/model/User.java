@@ -14,6 +14,7 @@ public class User {
 	private UserType userType;
 	private String companyId;	
 	private List<String> BUKRSList;
+	private String customerId;
 	private List<String> KUNNRList;
 	
 	public String getFname() {
@@ -65,6 +66,12 @@ public class User {
 	}
 	public void setBUKRSList(List<String> bUKRSList) {
 		BUKRSList = bUKRSList;
+	}
+	public String getCustomerId() {
+		return customerId;
+	}
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
 	}
 	public List<String> getKUNNRList() {
 		return KUNNRList;

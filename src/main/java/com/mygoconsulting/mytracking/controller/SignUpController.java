@@ -127,13 +127,13 @@ public class SignUpController {
 		Map<String,List<String>> companyCodesMap = companyManager.getCompanyCodes();		
 		for(Map.Entry<String, List<String>> entry: companyCodesMap.entrySet()) {
 			List<String> companyCodes = entry.getValue();
-			user.setCompanyId("BUKRS");
+			//user.setCompanyId("BUKRS");
 			user.setBUKRSList(companyCodes);
 		}
 		Map<String,List<String>> customerCodesMap = customerManager.getCustomerCodes();		
 		for(Map.Entry<String, List<String>> entry: customerCodesMap.entrySet()) {
-			List<String> customerCodes = entry.getValue();
-			user.setCompanyId("KUNNR");
+			List<String> customerCodes = entry.getValue();			
+			//user.setCustomerId("KUNNR");
 			user.setKUNNRList(customerCodes);
 		}
 		user.setUserType(UserType.COMPANY);

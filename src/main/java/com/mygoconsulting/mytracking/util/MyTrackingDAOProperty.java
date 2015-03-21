@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class MyTrackingDAOProperty  {
 	
-	private static String fileName = "sqlqueries.properties";
+	private static String fileName = ApplicationConstants.DB_PROPS_FILE;//"sqlqueries.properties";
 	
 	private static Properties prop; 
 	
