@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class MyTrackerProperty {
 	
-private static String fileName = "mytracker.properties";
+private static String fileName = ApplicationConstants.PROPS_FILE; //"mytracker.properties";
 	
 	private static Properties prop; 
 	

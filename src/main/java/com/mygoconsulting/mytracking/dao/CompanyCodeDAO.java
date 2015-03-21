@@ -133,15 +133,12 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 		logger.debug("BEGIN");
 		Map<String,List<String>> companyCodesMap = new HashMap<String,List<String>>();
 		List<String> companyCodesList = new ArrayList<String>();
-		companyCodesList.add("0005");
-		companyCodesList.add("0006");
 		String selectQuery = new String("select BUKRS from COMPANY_CODE");
 		
-		 List<Map<String, Object>> companyCodesMapList = (List<Map<String, Object>>) get(selectQuery);
+		List<Map<String, Object>> companyCodesMapList = (List<Map<String, Object>>) get(selectQuery);
 		if(!companyCodesMapList.isEmpty()){
 			for(int i=0;i<companyCodesMapList.size();i++){
 				for(Map.Entry<String, Object> entry: companyCodesMapList.get(i).entrySet()) {
-					System.out.println(entry.getKey() + " : " + entry.getValue().toString());
 					companyCodesList.add(entry.getValue().toString());
 				}
 			}

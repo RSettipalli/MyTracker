@@ -20,7 +20,8 @@ public class UserDAOImpl implements MyTrackingDAO {
 	
 	public boolean createUser(User user) {
 		logger.debug("BEGIN");
-		String createQuery = MyTrackingDAOProperty.getProperty("createQuery");
+		String createQuery = "insert into customer_info (email,fname,lname,password,userId) values (?,?,?,?,?)";
+		// MyTrackingDAOProperty.getProperty("createQuery");
 		int recordsCreated = jdbcTemplateObject.update(createQuery, user.getEmail(),user.getFname(),
 				user.getLname(),user.getPassword(),user.getUserId()); //user.getUserType().getKey()
 		logger.debug("END");
@@ -33,7 +34,7 @@ public class UserDAOImpl implements MyTrackingDAO {
 	public User validateUser(String email, String password) {
 		logger.debug("BEGIN");
 		logger.debug(email);
-		String validUserQuery = MyTrackingDAOProperty.getProperty("getUser");
+		String validUserQuery = "select * from customer_info where email = ? and password = ?";//MyTrackingDAOProperty.getProperty("getUser");
 		logger.debug(validUserQuery);
 		User user = jdbcTemplateObject.queryForObject(validUserQuery, new Object[]{email,password},new UserMapper());
 		logger.debug("END");
@@ -45,7 +46,7 @@ public class UserDAOImpl implements MyTrackingDAO {
 
 	public User getUserDetails(String email) {
 		logger.debug("BEGIN");
-		String validUserEmailQuery = MyTrackingDAOProperty.getProperty("getUserDetailsByEmail");
+		String validUserEmailQuery = "select * from customer_info where email = ?";//MyTrackingDAOProperty.getProperty("getUserDetailsByEmail");
 		logger.debug(validUserEmailQuery);
 		List<User> usersList = jdbcTemplateObject.query(validUserEmailQuery, new Object[]{email},new UserMapper());
 		logger.debug("END");

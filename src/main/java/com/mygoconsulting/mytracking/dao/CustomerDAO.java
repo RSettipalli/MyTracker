@@ -121,15 +121,12 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 		logger.debug("BEGIN");
 		Map<String,List<String>> customerCodesMap = new HashMap<String,List<String>>();
 		List<String> customerCodesList = new ArrayList<String>();
-		customerCodesList.add("0005");
-		customerCodesList.add("0006");
 		String selectQuery = new String("select KUNNR from CUSTOMER");
 		
 		 List<Map<String, Object>> customerCodesMapList = (List<Map<String, Object>>) get(selectQuery);
 		if(!customerCodesMapList.isEmpty()){
 			for(int i=0;i<customerCodesMapList.size();i++){
 				for(Map.Entry<String, Object> entry: customerCodesMapList.get(i).entrySet()) {
-					System.out.println(entry.getKey() + " : " + entry.getValue().toString());
 					customerCodesList.add(entry.getValue().toString());
 				}
 			}

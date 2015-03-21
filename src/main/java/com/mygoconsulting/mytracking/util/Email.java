@@ -56,8 +56,7 @@ public class Email {
 
 	         // Send message
 	         Transport.send(message);
-	         emailSent = true;
-	         System.out.println("Sent message successfully....");
+	         emailSent = true;	         
 	      }catch (MessagingException mex) {
 	         mex.printStackTrace();
 	      }

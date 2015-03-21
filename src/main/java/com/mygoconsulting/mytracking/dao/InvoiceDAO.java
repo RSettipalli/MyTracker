@@ -195,14 +195,12 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 					"select * from INV_HEADER_COMMENT where ORDER_NBR= ? and LINE=?");
 				Object[] selectParams = { headerComment.getORDER_NBR(), headerComment.getLINE() };
 				if (!isExists(selectQuery, selectParams, headerCommentRowMapper)) {
-					System.out.println("Header Comment inserting");
 					String sqlQuery = new String(
 						"insert into INV_HEADER_COMMENT (ORDER_NBR, TYPE, LINE, INVOI_NBR_SO_HEADER) Values(?,?,?,?)");
 					Object[] params = { headerComment.getORDER_NBR(), headerComment.getTYPE(), headerComment.getLINE(),
 							header.getINVOI_NBR()};
 					insertOrUpdate(sqlQuery, params);
 				} else {
-					System.out.println("Header Comment updating");
 					String sqlQuery = new String(
 						"update INV_HEADER_COMMENT SET TYPE=?  where ORDER_NBR=? and INVOI_NBR_SO_HEADER = ? and LINE=?");
 					Object[] updateParams = { headerComment.getTYPE(), headerComment.getORDER_NBR(),

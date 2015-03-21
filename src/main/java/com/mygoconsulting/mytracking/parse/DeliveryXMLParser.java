@@ -49,7 +49,6 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 						myODHeader.setSEGMENT(reader.getAttributeValue(0));
 						parent = "_-IMY_-MGOL_OD_HEADER";
 					} else if ("_-IMY_-MGOL_OD_HEADER_COMMENT".equals(reader.getLocalName())) {
-						System.out.println("Delivery Header Comment");
 						myODHeaderComment = new IMY_MGOL_OD_HEADER_COMMENT();
 						myODHeaderComment.setSEGMENT(reader.getAttributeValue(0));
 						parent = "_-IMY_-MGOL_OD_HEADER_COMMENT";
@@ -187,7 +186,6 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 						myODItemAttachm.setOBJKY(tagContent);
 						break;
 					case "_-IMY_-MGOL_OD_HEADER_COMMENT":
-						System.out.println("Header comment added");
 						myODHeaderComments.add(myODHeaderComment);
 						parent = null;
 					    break;
