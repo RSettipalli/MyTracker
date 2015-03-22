@@ -10,7 +10,6 @@ public class User {
 	private String lname;
 	private String email;
 	private String password;
-	private String userId;
 	private UserType userType;
 	private String companyId;	
 	private List<String> BUKRSList;
@@ -41,12 +40,6 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}	
 	
 	public UserType getUserType() {
 		return userType;
