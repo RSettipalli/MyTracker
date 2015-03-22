@@ -45,6 +45,14 @@
 						<h2>
 							<span>Material Info</span>
 						</h2>
+						<form:form name="registerForm" method="POST" commandName="materialForm"	action="./Material.htm"> 
+						<form:select id="materialIds" multiple="single"
+									path="materialId">
+									<form:option value="-1" selected="selected">Select</form:option>
+									<form:options items="${materialForm.materialIdList}" />
+								</form:select>
+							<input type=button value="go"/>
+						</form:form>
 						<display:table name="imyMatOnlineList" cellspacing="2"
 							style="border: 1px solid; width: 600px;">
 							<display:column property="MATERIAL" title="Material Id" />

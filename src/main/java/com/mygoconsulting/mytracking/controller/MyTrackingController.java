@@ -1,5 +1,6 @@
 package com.mygoconsulting.mytracking.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,7 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_ITEM_ATTACHM;
 import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 import com.mygoconsulting.mytracking.model.LoginForm;
+import com.mygoconsulting.mytracking.model.MaterialForm;
 import com.mygoconsulting.mytracking.model.User;
 
 @Controller
@@ -115,13 +117,24 @@ public class MyTrackingController {
 			List<IMY_MAT_ONLINE> imyMatOnline = materialManager.getMaterialInfo();
 			List<IMY_MAT_WERKS> imyMatPlant = materialManager.getMaterialPlantDetails();
 			List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetailsList = materialManager.getMaterialStorageDetails();
+			MaterialForm materialForm = new MaterialForm();
+			materialForm.setMaterialIdList(getMaterialIdList(imyMatOnline));
 			
+			model.addAttribute("materialForm",materialForm);
 			model.addAttribute("imyMatOnlineList",imyMatOnline);
 			model.addAttribute("imyMatPlantList",imyMatPlant);
 			model.addAttribute("imyMatStorageDetailsList",imyMatStorageDetailsList);
 		}
 		logger.debug("END");
 		return "Material";
+	}
+	
+	private List<String> getMaterialIdList(List<IMY_MAT_ONLINE> imyMatOnline) {
+		List<String> materialIdList = new ArrayList<String>();
+		for(IMY_MAT_ONLINE matObj: imyMatOnline){
+			materialIdList.add(matObj.getMATERIAL()+":"+matObj.getMAT_DESC());
+		}
+		return materialIdList;
 	}
 	
 	@RequestMapping(value = "/Invoice", method = RequestMethod.GET)
