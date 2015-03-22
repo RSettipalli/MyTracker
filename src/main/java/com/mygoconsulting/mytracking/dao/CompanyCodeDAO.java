@@ -119,12 +119,21 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 		return iMyCompany;
 	}
 	
-	public IMY_SHIP_POINT getShipPointsList(String bukrs){
+	public List<IMY_SHIP_POINT> getShipPointsList(String bukrs){
 		logger.debug("BEGIN");
-		logger.debug("BUKRS value is "+bukrs);
-		String selectQuery = new String("select * from SHIP_POINT where BUKRS= ?");
-		Object[] selectParams = { bukrs };
-		IMY_SHIP_POINT iMyShipPoints = (IMY_SHIP_POINT) get(selectQuery, selectParams, shipPointRowMapper);
+		System.out.println("BUKRS value is "+bukrs);
+		String selectQuery = new String("select * from SHIP_POINT where BUKRS= '"+bukrs+"'");
+		List<Object> objectsList = null;
+		List<IMY_SHIP_POINT> iMyShipPoints = new ArrayList<IMY_SHIP_POINT>();
+		if(bukrs != null){
+			objectsList = getObjects(selectQuery, shipPointRowMapper);
+			if(objectsList != null){
+				for(Object obj: objectsList){
+					IMY_SHIP_POINT imyShipPoint = (IMY_SHIP_POINT) obj;
+					iMyShipPoints.add(imyShipPoint);
+				}
+			}
+		}
 		logger.debug("END");
 		return iMyShipPoints;
 	}

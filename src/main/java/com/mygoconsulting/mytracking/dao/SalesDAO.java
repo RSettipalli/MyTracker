@@ -17,6 +17,7 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_ITEM_ATTACHM;
+import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 
 @Component("SalesDAO")
 public class SalesDAO extends BaseDAO implements IDAO {
@@ -203,13 +204,20 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 	
-	public IMY_MGOL_SO_HEADER getSalesOrderHeader(String soNum){
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String soNum){
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from SO_HEADER");
-		//Object[] selectParams = { header.getINVOI_NBR() };
-		IMY_MGOL_SO_HEADER soHeader = (IMY_MGOL_SO_HEADER) get(selectQuery,headerRowMapper);
+		List<Object> objectsList = null;
+		List<IMY_MGOL_SO_HEADER> soHeaderList = new ArrayList<IMY_MGOL_SO_HEADER>();
+		objectsList = (List<Object>) getObjects(selectQuery,headerRowMapper);
+		if(objectsList != null){
+			for(Object obj: objectsList){
+				IMY_MGOL_SO_HEADER imySoHeader = (IMY_MGOL_SO_HEADER) obj;
+				soHeaderList.add(imySoHeader);
+			}
+		}
 		logger.debug("END");
-		return soHeader;
+		return soHeaderList;
 	}
 	
 	public List<IMY_MGOL_SO_ITEM_ATTACHM> getSODetailAttachement(String soNum){

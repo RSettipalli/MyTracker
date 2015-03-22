@@ -109,6 +109,7 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 
 	public IMY_MGOL_CUSTOMER getIMyCustomerByKUNNR(String kunnr) {
 		logger.debug("BEGIN");
+		System.out.println("KUNNR value is " + kunnr);
 		logger.debug("KUNNR value is " + kunnr);
 		String selectQuery = new String(
 				"select * from CUSTOMER where KUNNR = ?");
@@ -126,8 +127,13 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 		String selectQuery = new String(
 				"select * from CUST_BANK where CUST_NUMBER= ?");
 		Object[] selectParams = { kunnr };
-		IMY_MGOL_CUST_BANK iMyCustBank = (IMY_MGOL_CUST_BANK) get(selectQuery,
+		IMY_MGOL_CUST_BANK iMyCustBank = null;
+		try{
+		iMyCustBank = (IMY_MGOL_CUST_BANK) get(selectQuery,
 				selectParams, custBankRowMapper);
+		} catch(Exception ex){
+			ex.printStackTrace();
+		}
 		logger.debug("END");
 		return iMyCustBank;
 	}

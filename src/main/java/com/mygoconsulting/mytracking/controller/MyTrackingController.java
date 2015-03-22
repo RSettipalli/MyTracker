@@ -83,25 +83,32 @@ public class MyTrackingController {
 			Model model) {
 		logger.debug("BEGIN");
 		logger.debug("email is: " + loginRecord.getEmail());
-		IMY_SHIP_POINT shipPoint = null;
+		List<IMY_SHIP_POINT> shipPoint = null;
 		IMY_MGOL_CUST_BANK customerBank = null;
 		User user = userDAO.validateUser(loginRecord.getEmail(),
 				loginRecord.getPassword());
 		if (user != null) {
-			logger.debug("Company id is " + user.getCompanyId());
-			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(user
+			IMY_COMPANY companyInfo = null;
+			if(user.getCompanyId() != null){
+				logger.debug("Company id is " + user.getCompanyId());
+				companyInfo = companyManager.getCompanyInfo(user
 					.getCompanyId());
+			}
 			if (companyInfo != null) {
 				model.addAttribute("companyInfo", companyInfo);
+				model.addAttribute("customerInfo", null);
 				shipPoint = companyManager.getShipPoints(user.getCompanyId());
 				model.addAttribute("shipPoint", shipPoint);
+				model.addAttribute("customerBank", null);
 			} else {
 				IMY_MGOL_CUSTOMER imyCustomer = customerManager
 						.getCustomerInfo(user.getCustomerId());
-				model.addAttribute("companyInfo", imyCustomer);
+				model.addAttribute("customerInfo", imyCustomer);
+				model.addAttribute("companyInfo", null);
 				customerBank = customerManager.getCustomerBank(user
 						.getCustomerId());
-				model.addAttribute("shipPoint", customerBank);
+				model.addAttribute("customerBank", customerBank);
+				model.addAttribute("shipPoint", null);
 			}
 			model.addAttribute("user", user);
 			logger.debug("END");
@@ -222,7 +229,7 @@ public class MyTrackingController {
 	public String companyProfile(@ModelAttribute("user") User userInfo,
 			Model model) {
 		logger.debug("BEGIN");
-		IMY_SHIP_POINT shipPoint = null;
+		List<IMY_SHIP_POINT> shipPoint = null;
 		if (userInfo != null) {
 			logger.debug("User Id is " + userInfo.getCompanyId());
 			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(userInfo
@@ -242,26 +249,39 @@ public class MyTrackingController {
 	public String shipment(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_SO_DETAIL> soDetail = salesOrderManager
-					.getSalesOrderDetail(userInfo.getCompanyId());
-			model.addAttribute("soDetail", soDetail);
+			List<IMY_MGOL_SO_DETAIL> soDetail = null;
+			List<IMY_MGOL_SO_HEADER> salesOrderHeaderList = null;
+			if(userInfo.getCompanyId() != null){
+				soDetail = salesOrderManager.getSalesOrderDetail(userInfo.getCompanyId());
+				model.addAttribute("soDetail", soDetail);
+			
+				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCompanyId());
+				model.addAttribute("salesOrderHeader", salesOrderHeaderList);
 
-			IMY_MGOL_SO_HEADER salesOrderHeader = salesOrderManager
-					.getSalesOrderHeader(userInfo.getCompanyId());
-			model.addAttribute("salesOrderHeader", salesOrderHeader);
+				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCompanyId());
+				model.addAttribute("salesOrderHeaderComments", soHeaderComments);
 
-			List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager
-					.getSOHeaderCommentDetails(userInfo.getCompanyId());
-			model.addAttribute("salesOrderHeaderComments", soHeaderComments);
+				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCompanyId());
+				model.addAttribute("soDetailComments", soDetailComments);
 
-			List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager
-					.getSODetailComment(userInfo.getCompanyId());
-			model.addAttribute("soDetailComments", soDetailComments);
+				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCompanyId());
+				model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
+			} else {
+				soDetail = salesOrderManager.getSalesOrderDetail(userInfo.getCustomerId());
+				model.addAttribute("soDetail", soDetail);
+			
+				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCustomerId());
+				model.addAttribute("salesOrderHeader", salesOrderHeaderList);
 
-			List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager
-					.getSODetailAttachement(userInfo.getCompanyId());
-			model.addAttribute("soDetailItemAttachments",
-					soDetailItemAttachments);
+				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCompanyId());
+				model.addAttribute("salesOrderHeaderComments", soHeaderComments);
+
+				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCompanyId());
+				model.addAttribute("soDetailComments", soDetailComments);
+
+				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCompanyId());
+				model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
+			}
 		}
 		logger.debug("END");
 		return "Shipment";
@@ -270,7 +290,7 @@ public class MyTrackingController {
 	@RequestMapping(value = "/Home", method = RequestMethod.GET)
 	public String home(@ModelAttribute("user") User user, Model model) {
 		logger.debug("BEGIN");
-		IMY_SHIP_POINT shipPoint = null;
+		List<IMY_SHIP_POINT> shipPoint = null;
 		if (user != null) {
 			logger.debug("User Id is " + user.getCompanyId());
 			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(user

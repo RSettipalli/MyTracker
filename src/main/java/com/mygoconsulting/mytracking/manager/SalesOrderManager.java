@@ -30,9 +30,9 @@ public class SalesOrderManager {
 		return imyMGolSoDetail;
 	}
 	
-	public IMY_MGOL_SO_HEADER getSalesOrderHeader(String soNum) {
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String soNum) {
 		logger.debug("BEGIN");
-		IMY_MGOL_SO_HEADER imyMGolSoHeader = salesDao.getSalesOrderHeader(soNum);
+		List<IMY_MGOL_SO_HEADER> imyMGolSoHeader = salesDao.getSalesOrderHeader(soNum);
 		logger.debug("END");
 		return imyMGolSoHeader;
 	}

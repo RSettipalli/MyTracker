@@ -24,8 +24,8 @@ public class CompanyManager {
 	public IMY_COMPANY getCompanyInfo(String companyCode) {
 		logger.debug("BEGIN");
 		logger.debug("Company Code "+ companyCode);
-		imyCompany = new IMY_COMPANY();
-		imyCompany = companyCodeDao.getIMyCompanyByBUKRS(companyCode);
+		if(companyCode != null)
+			imyCompany = companyCodeDao.getIMyCompanyByBUKRS(companyCode);
 		logger.debug("END");
 		return imyCompany;
 	}
@@ -37,9 +37,9 @@ public class CompanyManager {
 		return companyCodesMap;
 	}
 	
-	public IMY_SHIP_POINT getShipPoints(String companyCode){
+	public List<IMY_SHIP_POINT> getShipPoints(String companyCode){
 		logger.debug("BEGIN");
-		IMY_SHIP_POINT shipPoints = companyCodeDao.getShipPointsList(companyCode);
+		List<IMY_SHIP_POINT> shipPoints = companyCodeDao.getShipPointsList(companyCode);
 		logger.debug("END");
 		return shipPoints;
 	}

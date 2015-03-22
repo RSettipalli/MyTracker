@@ -37,6 +37,7 @@
 				<div class="clr"></div>
 				<div>
 					<div class="article">
+					<c:if test="${companyInfo != null}">
 						<h2>
 							<span>Company Profile</span>
 						</h2>
@@ -70,33 +71,6 @@
 								<td><b>:</b></td>
 								<td>${companyInfo.ADRNR}</td>
 							</tr>
-							<tr>
-								<td><b>Street</b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.ADDRESS1}</td>
-								<td>&nbsp;</td>
-								<td><b>Street 2</b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.ADDRESS2}</td>
-							</tr>
-							<tr>
-								<td><b>Country</b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.COUNTRY}</td>
-								<td>&nbsp;</td>
-								<td><b>City postal code</b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.ZIP}</td>
-							</tr>
-							<tr>
-								<td><b>Telephone number </b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.PHONE}</td>
-								<td>&nbsp;</td>
-								<td><b>Fax Number</b></td>
-								<td><b>:</b></td>
-								<td>${companyInfo.FAX}</td>
-							</tr>
 						</table>
 						<div>
 							<b> <u>Company Ship Points</u>
@@ -114,6 +88,66 @@
 								<display:column property="LANGUAGE" title="Language" />
 							</display:table>
 						</div>
+						</c:if>
+						<c:if test="${customerInfo != null }">
+						<h2>
+							<span>Customer Profile</span>
+						</h2>
+						<b> <u>Customer Information</u>
+						</b>
+						<table>
+							<tr>
+								<td><b>Customer Code</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.KUNNR}</td>
+								<td>&nbsp;</td>
+								<td><b>Name of Customer</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.NAME1}</td>
+							</tr>
+							<tr>
+								<td><b>Street Address</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.STREET}</td>
+								<td>&nbsp;</td>
+								<td><b>City</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.CITY}</td>
+							</tr>
+							<tr>
+								<td><b>State</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.REGION}</td>
+								<td>&nbsp;</td>
+								<td><b>Country</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.COUNTRY}</td>
+							</tr>
+							<tr>
+								<td><b>Zip</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.POSTL_COD1}</td>
+								<td>&nbsp;</td>
+								<td><b>Phone Number</b></td>
+								<td><b>:</b></td>
+								<td>${customerInfo.TELEPHONE}</td>
+							</tr>
+						</table>
+						<c:if test="${customerBank != null }">
+						<div>
+							<b> <u>Customer Bank</u>
+							</b> <br />
+							<display:table name="customerBank" cellspacing="2"
+								style="border: 1px solid; width: 600px;">
+								<display:column property="CUST_NUMBER" title="Customer Number" />
+								<display:column property="BANK_KEY" title="Bank Key" />
+								<display:column property="BANK_TYPE" title="Bank Type" />
+								<display:column property="BANK_ACC" title="Bank Account" />
+								<display:column property="BANK_COUNTRY" title="Bank Country" />
+							</display:table>
+						</div>
+						</c:if>
+						</c:if>
 						<div class="clr"></div>
 					</div>
 				</div>				
