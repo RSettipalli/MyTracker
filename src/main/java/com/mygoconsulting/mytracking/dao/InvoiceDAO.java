@@ -77,7 +77,7 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 					logger.debug("Invoice Item Attachement updating");
 					String sqlQuery = new String(
 						"update INV_ITEM_ATTACHMENT SET DOKNR=?, DOKTL=?, DOKVR=?, "
-						+ "OBJKY=? where ORDER_NBR=? and INVOI_NUM_SO=? and INVOI_ORD_NUM = ?");
+						+ "OBJKY=? where DOKAR = ? and INVOI_NUM_SO=? and INVOI_ORD_NUM = ?");
 					Object[] updateParams = { invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKNR(),
 							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKTL(),invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKVR(),
 							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getOBJKY(),invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKAR(),

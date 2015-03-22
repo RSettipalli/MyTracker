@@ -16,9 +16,6 @@ public class MaterialStorageRowMapper implements RowMapper<IMY_MAT_STORAGE_DETIA
 			throws SQLException {
 		IMY_MAT_STORAGE_DETIALS storageDetails = new IMY_MAT_STORAGE_DETIALS();
 		storageDetails.setMAINT_STATUS(rs.getString("MAINT_STATUS"));
-		//storageDetails.setMATERIAL(rs.getString("MATERIAL"));
-		//storageDetails.setPLANT(rs.getString("PLANT"));
-		//storageDetails.setSEGMENT(rs.getString("SEGMENT"));
 		storageDetails.setSTO_LOCATION(rs.getString("STO_LOCATION"));
 		storageDetails.setSTOC_IN_QLTY_INS(rs.getString("STOC_IN_QLTY_INS"));
 		return storageDetails;

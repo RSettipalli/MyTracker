@@ -51,6 +51,8 @@ public class BaseDAO {
 			RowMapper rowMapper) {
 		logger.debug("BEGIN");
 		Object obj = get(sqlQuery, params, rowMapper);
+		if(obj != null)
+			System.out.println(" MATERIAL is NOT NULL");
 		logger.debug("END");
 		if (obj == null)
 			return false;

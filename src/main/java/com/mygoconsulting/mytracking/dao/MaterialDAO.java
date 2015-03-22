@@ -38,14 +38,13 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		for (IMY_MAT_ONLINE material : materialList) {
 
 			// create material Storage details
-			createStorageDetails(material.getIMY_MAT_WERKS()
-					.getIMY_MAT_STORAGE_DETIALS());
-
-			// create material Plant details
-			createPlant(material.getIMY_MAT_WERKS());
-
-			// create material Storage details
 			createMaterial(material);
+			
+			// create material Plant details
+			createPlant(material);
+			
+			// create material Storage details
+			createStorageDetails(material);			
 		}
 		logger.debug("END");
 	}
@@ -54,87 +53,95 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL where MATERIAL_CD= ?");
+		System.out.println(" MATERIAL_CD is "+material.getMATERIAL());
 		Object[] selectParams = { material.getMATERIAL() };
 		if (!isExists(selectQuery, selectParams, materialMapper)) {
 			logger.debug("Material inserting");
 			String sqlQuery = new String(
-					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP, PLANT_CD) Values(?,?,?, ?,?, ?, ?,?,?,?)");
+					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP) Values(?,?,?, ?,?, ?, ?,?,?)");
 			Object[] params = { material.getMATERIAL(), material.getMAT_DESC(),
 					material.getUOM(), material.getSTOCK(), material.getBOM(),
 					material.getMAT_TYPE(), material.getGROSS_WEIGHT(),
-					material.getNET_WEIGHT(), material.getMATERIAL_GROUP(),
-					material.getIMY_MAT_WERKS().getPLANT() };
+					material.getNET_WEIGHT(), material.getMATERIAL_GROUP()
+					};
 			insertOrUpdate(sqlQuery, params);
 		} else {
 			logger.debug("Material updating");
 			String sqlQuery = new String(
-					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, NET_WEIGHT=?, MATERIAL_GROUP=?, PLANT_CD=? where MATERIAL_CD=?");
-			Object[] updateParams = { material.getMATERIAL(),
-					material.getMAT_DESC(), material.getUOM(),
+					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, NET_WEIGHT=?, MATERIAL_GROUP=? where MATERIAL_CD=?");
+			Object[] updateParams = {material.getMAT_DESC(), material.getUOM(),
 					material.getSTOCK(), material.getBOM(),
 					material.getMAT_TYPE(), material.getGROSS_WEIGHT(),
 					material.getNET_WEIGHT(), material.getMATERIAL_GROUP(),
-					material.getIMY_MAT_WERKS().getPLANT() };
+					material.getMATERIAL()
+					};
 			insertOrUpdate(sqlQuery, updateParams);
 		}
 		logger.debug("END");
 	}
 
-	private void createPlant(IMY_MAT_WERKS materialPlant) {
+	private void createPlant(IMY_MAT_ONLINE material) {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
-				"select * from MATERIAL_PLANT where PLANT_CD= ?");
-		Object[] selectParams = { materialPlant.getPLANT() };
-		if (!isExists(selectQuery, selectParams, materialPlantMapper)) {
-			logger.debug("Material Plant inserting");
-
-			String sqlQuery = new String(
-					"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT, STO_LOCATION) Values(?,?,?, ?, ?)");
-			Object[] params = {
-					materialPlant.getPLANT(),
-					materialPlant.getMAINT_STATUS(),
-					materialPlant.getMRP_TYPE(),
-					materialPlant.getMRP_CONT(),
-					materialPlant.getIMY_MAT_STORAGE_DETIALS()
-							.getSTO_LOCATION() };
-			insertOrUpdate(sqlQuery, params);
-		} else {
-			logger.debug("Material Plant updating");
-			String sqlQuery = new String(
-					"update MATERIAL_PLANT SET MAINT_STATUS=?, MRP_TYPE=?, MRP_CONT=?, STO_LOCATION=?  where PLANT_CD=? ");
-			Object[] updateParams = {
-					materialPlant.getMAINT_STATUS(),
-					materialPlant.getMRP_TYPE(),
-					materialPlant.getMRP_CONT(),
-					materialPlant.getIMY_MAT_STORAGE_DETIALS()
-							.getSTO_LOCATION(), materialPlant.getPLANT() };
-			insertOrUpdate(sqlQuery, updateParams);
+				"select * from MATERIAL_PLANT where PLANT_CD= ? and MATERIAL_CD_REF=?");
+		IMY_MAT_WERKS materialPlant = material.getIMY_MAT_WERKS();
+		if (materialPlant != null && materialPlant.getPLANT() != null) {
+			Object[] selectParams = { materialPlant.getPLANT(), material.getMATERIAL()};
+			if (!isExists(selectQuery, selectParams, materialPlantMapper)) {
+				logger.debug("Material Plant inserting");
+				String sqlQuery = new String(
+						"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT,MATERIAL_CD_REF) Values(?,?,?, ?, ?)");
+				Object[] params = {
+						materialPlant.getPLANT(),
+						materialPlant.getMAINT_STATUS(),
+						materialPlant.getMRP_TYPE(),
+						materialPlant.getMRP_CONT(),
+						material.getMATERIAL() };
+				
+				insertOrUpdate(sqlQuery, params);
+			} else {
+				logger.debug("Material Plant updating");
+				String sqlQuery = new String(
+						"update MATERIAL_PLANT SET MAINT_STATUS=?, MRP_TYPE=?, MRP_CONT=?, MATERIAL_CD_REF=?  where PLANT_CD=? ");
+				Object[] updateParams = {
+						materialPlant.getMAINT_STATUS(),
+						materialPlant.getMRP_TYPE(),
+						materialPlant.getMRP_CONT(),
+						material.getMATERIAL(),
+						materialPlant.getPLANT() };
+				insertOrUpdate(sqlQuery, updateParams);
+			}
 		}
 		logger.debug("END");
 	}
 
-	private void createStorageDetails(IMY_MAT_STORAGE_DETIALS storageDetails) {
+	private void createStorageDetails(IMY_MAT_ONLINE material) {
 		logger.debug("BEGIN");
+		IMY_MAT_STORAGE_DETIALS  storageDetails = material.getIMY_MAT_WERKS().getIMY_MAT_STORAGE_DETIALS();
 		String selectQuery = new String(
-				"select * from MATERIAL_STORAGE where STO_LOCATION= ?");
-		Object[] selectParams = { storageDetails.getSTO_LOCATION() };
-		if (!isExists(selectQuery, selectParams, storageMapper)) {
-			logger.debug("Material Storage details inserting");
+				"select * from MATERIAL_STORAGE where STO_LOCATION= ? and PLANT_CD_REF=?");
+		if (storageDetails != null) {
+			Object[] selectParams = { storageDetails.getSTO_LOCATION(), material.getIMY_MAT_WERKS().getPLANT()};
+			if (!isExists(selectQuery, selectParams, storageMapper)) {
+				logger.debug("Material Storage details inserting");
 
-			String sqlQuery = new String(
-					"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS ) Values(?,?,?)");
-			Object[] params = { storageDetails.getSTO_LOCATION(),
-					storageDetails.getMAINT_STATUS(),
-					storageDetails.getSTOC_IN_QLTY_INS() };
-			insertOrUpdate(sqlQuery, params);
-		} else {
-			logger.debug("Material Storage details updating");
-			String sqlQuery = new String(
-					"update MATERIAL_STORAGE set  MAINT_STATUS=?, STOC_IN_QLTY_INS=? where STO_LOCATION=? ");
-			Object[] updateParams = { storageDetails.getMAINT_STATUS(),
-					storageDetails.getSTOC_IN_QLTY_INS(),
-					storageDetails.getSTO_LOCATION() };
-			insertOrUpdate(sqlQuery, updateParams);
+				String sqlQuery = new String(
+						"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS, PLANT_CD_REF) Values(?,?,?,?)");
+				Object[] params = { storageDetails.getSTO_LOCATION(),
+						storageDetails.getMAINT_STATUS(),
+						storageDetails.getSTOC_IN_QLTY_INS(),
+						material.getIMY_MAT_WERKS().getPLANT()};
+				insertOrUpdate(sqlQuery, params);
+			} else {
+				logger.debug("Material Storage details updating");
+				String sqlQuery = new String(
+						"update MATERIAL_STORAGE set  MAINT_STATUS=?, STOC_IN_QLTY_INS=? where STO_LOCATION=? and PLANT_CD_REF=? ");
+				Object[] updateParams = { storageDetails.getMAINT_STATUS(),
+						storageDetails.getSTOC_IN_QLTY_INS(),
+						storageDetails.getSTO_LOCATION(),
+						material.getIMY_MAT_WERKS().getPLANT()};
+				insertOrUpdate(sqlQuery, updateParams);
+			}
 		}
 		logger.debug("END");
 

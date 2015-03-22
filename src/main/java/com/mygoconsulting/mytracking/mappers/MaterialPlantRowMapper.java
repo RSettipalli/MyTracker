@@ -15,17 +15,16 @@ public class MaterialPlantRowMapper implements RowMapper<IMY_MAT_WERKS> {
 	@Override
 	public IMY_MAT_WERKS mapRow(ResultSet rs, int rowNum)
 			throws SQLException {
-		IMY_MAT_WERKS materialPalnt = new IMY_MAT_WERKS();
-		
+		IMY_MAT_WERKS materialPlant = new IMY_MAT_WERKS();
 		IMY_MAT_STORAGE_DETIALS storageDetails = new IMY_MAT_STORAGE_DETIALS();
 		storageDetails.setSTO_LOCATION(rs.getString("STO_LOCATION"));
-		materialPalnt.setIMY_MAT_STORAGE_DETIALS(storageDetails);
-		materialPalnt.setMAINT_STATUS(rs.getString("MAINT_STATUS"));
-		materialPalnt.setMRP_CONT(rs.getString("MRP_CONT"));
-		materialPalnt.setMRP_TYPE(rs.getString("MRP_TYPE"));
-		materialPalnt.setPLANT(rs.getString("PLANT_CD"));
-		materialPalnt.setSEGMENT(rs.getString("STO_LOCATION"));
-		return materialPalnt;
+		materialPlant.setIMY_MAT_STORAGE_DETIALS(storageDetails);
+		materialPlant.setMAINT_STATUS(rs.getString("MAINT_STATUS"));
+		materialPlant.setMRP_CONT(rs.getString("MRP_CONT"));
+		materialPlant.setMRP_TYPE(rs.getString("MRP_TYPE"));
+		materialPlant.setPLANT(rs.getString("PLANT_CD"));
+		//materialPlant.setSEGMENT(rs.getString("STO_LOCATION"));
+		return materialPlant;
 	}
 
 }

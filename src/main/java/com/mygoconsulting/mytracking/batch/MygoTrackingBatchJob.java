@@ -24,7 +24,7 @@ public class MygoTrackingBatchJob {
 		System.out.println("BEGIN");
 		LOG.debug("In init:::::syncXmlDataTask: "+syncXmlDataTask);
 		Timer timer = new Timer(true);
-		timer.schedule(syncXmlDataTask, 0, 3*60*1000);
+		timer.schedule(syncXmlDataTask, 0, 60*1000);
 		LOG.info("END");
 	}
 

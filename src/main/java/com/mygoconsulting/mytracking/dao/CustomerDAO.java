@@ -33,7 +33,7 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 
 		// create customer
 		createCustomer(iMyCustomers);
-		
+
 		// create customer bank
 		createCustomerBank(iMyCustomers);
 		logger.debug("END");
@@ -41,27 +41,34 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 
 	private void createCustomerBank(List<IMY_MGOL_CUSTOMER> iMyCustomers) {
 		logger.debug("BEGIN");
-		for(IMY_MGOL_CUSTOMER iMyCustomer : iMyCustomers){
-			IMY_MGOL_CUST_BANK iMyCustBank =  iMyCustomer.getIMY_MGOL_CUST_BANK();
+		for (IMY_MGOL_CUSTOMER iMyCustomer : iMyCustomers) {
+			IMY_MGOL_CUST_BANK iMyCustBank = iMyCustomer
+					.getIMY_MGOL_CUST_BANK();
 			String selectQuery = new String(
-				"select * from CUST_BANK where CUST_NUMBER= ?");
-			Object[] selectParams = { iMyCustBank.getCUST_NUMBER() };
-			if (!isExists(selectQuery, selectParams, custBankRowMapper)) {
-				logger.debug("Customer Bank inserting");
-				String sqlQuery = new String(
-					"insert into CUST_BANK (CUST_NUMBER, BANK_COUNTRY, BANK_KEY, BANK_ACC, BANK_TYPE) Values(?,?,?,?,?)");
-				Object[] params = { iMyCustBank.getCUST_NUMBER(),
-						iMyCustBank.getBANK_COUNTRY(), iMyCustBank.getBANK_KEY(),
-						iMyCustBank.getBANK_ACC(), iMyCustBank.getBANK_TYPE() };
-				insertOrUpdate(sqlQuery, params);
-			} else {
-				logger.debug("Customer Bank updating");
-				String sqlQuery = new String(
-						"update CUST_BANK set BANK_COUNTRY=?, BANK_KEY=?, BANK_ACC=?, BANK_TYPE=? where CUST_NUMBER=? ");
-				Object[] updateParams = {
-						iMyCustBank.getBANK_COUNTRY(), iMyCustBank.getBANK_KEY(),
-						iMyCustBank.getBANK_ACC(), iMyCustBank.getBANK_TYPE(),  iMyCustBank.getCUST_NUMBER() };
-				insertOrUpdate(sqlQuery, updateParams);
+					"select * from CUST_BANK where CUST_NUMBER= ?");
+			if (iMyCustBank != null && iMyCustBank.getCUST_NUMBER() != null) {
+				Object[] selectParams = { iMyCustBank.getCUST_NUMBER() };
+				if (!isExists(selectQuery, selectParams, custBankRowMapper)) {
+					logger.debug("Customer Bank inserting");
+					String sqlQuery = new String(
+							"insert into CUST_BANK (CUST_NUMBER, BANK_COUNTRY, BANK_KEY, BANK_ACC, BANK_TYPE) Values(?,?,?,?,?)");
+					Object[] params = { iMyCustBank.getCUST_NUMBER(),
+							iMyCustBank.getBANK_COUNTRY(),
+							iMyCustBank.getBANK_KEY(),
+							iMyCustBank.getBANK_ACC(),
+							iMyCustBank.getBANK_TYPE() };
+					insertOrUpdate(sqlQuery, params);
+				} else {
+					logger.debug("Customer Bank updating");
+					String sqlQuery = new String(
+							"update CUST_BANK set BANK_COUNTRY=?, BANK_KEY=?, BANK_ACC=?, BANK_TYPE=? where CUST_NUMBER=? ");
+					Object[] updateParams = { iMyCustBank.getBANK_COUNTRY(),
+							iMyCustBank.getBANK_KEY(),
+							iMyCustBank.getBANK_ACC(),
+							iMyCustBank.getBANK_TYPE(),
+							iMyCustBank.getCUST_NUMBER() };
+					insertOrUpdate(sqlQuery, updateParams);
+				}
 			}
 		}
 		logger.debug("END");
@@ -69,72 +76,81 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 
 	private void createCustomer(List<IMY_MGOL_CUSTOMER> iMyCustomers) {
 		logger.debug("BEGIN");
-		for(IMY_MGOL_CUSTOMER iMyCustomer : iMyCustomers ){
-			String selectQuery = new String("select * from CUSTOMER where KUNNR= ?");
+		for (IMY_MGOL_CUSTOMER iMyCustomer : iMyCustomers) {
+			String selectQuery = new String(
+					"select * from CUSTOMER where KUNNR= ?");
 			Object[] selectParams = { iMyCustomer.getKUNNR() };
 			if (!isExists(selectQuery, selectParams, customerRowMapper)) {
 				logger.debug("Customer inserting");
 				String sqlQuery = new String(
-					"insert into CUSTOMER (KUNNR, NAME1, STREET, STR_SUPPL3, CITY, REGION, COUNTRY, POSTL_COD1, TELEPHONE, FAX) Values(?,?,?,?,?,?,?,?,?,?)");
-				Object[] params = { iMyCustomer.getKUNNR(), iMyCustomer.getNAME1(),
-					iMyCustomer.getSTREET(), iMyCustomer.getSTR_SUPPL3(),
-					iMyCustomer.getCITY(), iMyCustomer.getREGION(), iMyCustomer.getCOUNTRY(),
-					iMyCustomer.getPOSTL_COD1(), iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX() };
+						"insert into CUSTOMER (KUNNR, NAME1, STREET, STR_SUPPL3, CITY, REGION, COUNTRY, POSTL_COD1, TELEPHONE, FAX) Values(?,?,?,?,?,?,?,?,?,?)");
+				Object[] params = { iMyCustomer.getKUNNR(),
+						iMyCustomer.getNAME1(), iMyCustomer.getSTREET(),
+						iMyCustomer.getSTR_SUPPL3(), iMyCustomer.getCITY(),
+						iMyCustomer.getREGION(), iMyCustomer.getCOUNTRY(),
+						iMyCustomer.getPOSTL_COD1(),
+						iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX() };
 				insertOrUpdate(sqlQuery, params);
 			} else {
 				logger.debug("Customer updating");
 				String sqlQuery = new String(
-					"update CUSTOMER SET NAME1=?, STREET=?, STR_SUPPL3=?, CITY=?, REGION=?, COUNTRY=?, POSTL_COD1=?, TELEPHONE=?, FAX=? where KUNNR=? ");
-				Object[] updateParams = { iMyCustomer.getNAME1(),iMyCustomer.getSTREET(), iMyCustomer.getSTR_SUPPL3(),
-					iMyCustomer.getCITY(), iMyCustomer.getREGION(), iMyCustomer.getCOUNTRY(),
-					iMyCustomer.getPOSTL_COD1(), iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX(),
-					iMyCustomer.getKUNNR() };
+						"update CUSTOMER SET NAME1=?, STREET=?, STR_SUPPL3=?, CITY=?, REGION=?, COUNTRY=?, POSTL_COD1=?, TELEPHONE=?, FAX=? where KUNNR=? ");
+				Object[] updateParams = { iMyCustomer.getNAME1(),
+						iMyCustomer.getSTREET(), iMyCustomer.getSTR_SUPPL3(),
+						iMyCustomer.getCITY(), iMyCustomer.getREGION(),
+						iMyCustomer.getCOUNTRY(), iMyCustomer.getPOSTL_COD1(),
+						iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX(),
+						iMyCustomer.getKUNNR() };
 				insertOrUpdate(sqlQuery, updateParams);
 			}
 		}
 		logger.debug("END");
 	}
-	
-	public IMY_MGOL_CUSTOMER getIMyCustomerByKUNNR(String kunnr){
+
+	public IMY_MGOL_CUSTOMER getIMyCustomerByKUNNR(String kunnr) {
 		logger.debug("BEGIN");
-		logger.debug("KUNNR value is "+kunnr);
-		String selectQuery = new String("select * from CUSTOMER where KUNNR = ?");
+		logger.debug("KUNNR value is " + kunnr);
+		String selectQuery = new String(
+				"select * from CUSTOMER where KUNNR = ?");
 		Object[] selectParams = { kunnr };
-		IMY_MGOL_CUSTOMER iMyCustomer = (IMY_MGOL_CUSTOMER) get(selectQuery, selectParams, customerRowMapper);
-		logger.debug("KUNNR value from DB is "+iMyCustomer.getKUNNR());
+		IMY_MGOL_CUSTOMER iMyCustomer = (IMY_MGOL_CUSTOMER) get(selectQuery,
+				selectParams, customerRowMapper);
+		logger.debug("KUNNR value from DB is " + iMyCustomer.getKUNNR());
 		logger.debug("END");
 		return iMyCustomer;
 	}
-	
-	public IMY_MGOL_CUST_BANK getCustBank(String kunnr){
+
+	public IMY_MGOL_CUST_BANK getCustBank(String kunnr) {
 		logger.debug("BEGIN");
-		logger.debug("KUNNR value is "+kunnr);
-		String selectQuery = new String("select * from CUST_BANK where CUST_NUMBER= ?");
+		logger.debug("KUNNR value is " + kunnr);
+		String selectQuery = new String(
+				"select * from CUST_BANK where CUST_NUMBER= ?");
 		Object[] selectParams = { kunnr };
-		IMY_MGOL_CUST_BANK iMyCustBank = (IMY_MGOL_CUST_BANK) get(selectQuery, selectParams, custBankRowMapper);
+		IMY_MGOL_CUST_BANK iMyCustBank = (IMY_MGOL_CUST_BANK) get(selectQuery,
+				selectParams, custBankRowMapper);
 		logger.debug("END");
 		return iMyCustBank;
 	}
-	
-	
-	public Map<String,List<String>> getALLKUNNR(){
+
+	public Map<String, List<String>> getALLKUNNR() {
 		logger.debug("BEGIN");
-		Map<String,List<String>> customerCodesMap = new HashMap<String,List<String>>();
+		Map<String, List<String>> customerCodesMap = new HashMap<String, List<String>>();
 		List<String> customerCodesList = new ArrayList<String>();
 		String selectQuery = new String("select KUNNR from CUSTOMER");
-		
-		 List<Map<String, Object>> customerCodesMapList = (List<Map<String, Object>>) get(selectQuery);
-		if(!customerCodesMapList.isEmpty()){
-			for(int i=0;i<customerCodesMapList.size();i++){
-				for(Map.Entry<String, Object> entry: customerCodesMapList.get(i).entrySet()) {
+
+		List<Map<String, Object>> customerCodesMapList = (List<Map<String, Object>>) get(selectQuery);
+		if (!customerCodesMapList.isEmpty()) {
+			for (int i = 0; i < customerCodesMapList.size(); i++) {
+				for (Map.Entry<String, Object> entry : customerCodesMapList
+						.get(i).entrySet()) {
 					customerCodesList.add(entry.getValue().toString());
 				}
 			}
-			customerCodesMap.put("KUNNR",customerCodesList);
+			customerCodesMap.put("KUNNR", customerCodesList);
 		}
-		
-		logger.debug("END");		
+
+		logger.debug("END");
 		return customerCodesMap;
 	}
-	
+
 }
