@@ -37,12 +37,11 @@
 			<div class="content_resize">
 				<div class="clr"></div>
 				<div>
-					<div class="article">
+					<div class="article">					
 						<h2>
 							<span>Sales Order Info</span>
 						</h2>
-						<b> <u>Sales Order Header Information</u>
-						</b> <br />
+						<b> Sales Order Header Information</b> <br />
 						<table class="tg">
 							<tr>
 								<th class="tg-kkr7">Order Number</th>
@@ -61,31 +60,34 @@
 								<th class="tg-t8h0">State</th>
 								<th class="tg-qta8">Zip</th>
 							</tr>
+							<c:forEach var="soHeader" items="${salesOrderHeader}">
 							<tr>
 								<td class="tg-031e"><a href="#"
-									onclick="toggle_visibility('${salesOrderHeader.ORDER_NBR}')">${salesOrderHeader.ORDER_NBR}</a>
+									onclick="toggle_visibility('${soHeader.ORDER_NBR}')">${soHeader.ORDER_NBR}</a>
 								</td>
-								<td class="tg-031e">${salesOrderHeader.ORDER_TYPE}</td>
-								<td class="tg-031e">${salesOrderHeader.ORDER_STATUS_CD}</td>
-								<td class="tg-031e">${salesOrderHeader.SOLD_FROM_COMPANY_CD}</td>
-								<td class="tg-031e">${salesOrderHeader.SHIP_TO_COMPANY_CD}</td>
-								<td class="tg-031e">${salesOrderHeader.END_USER}</td>
-								<!-- <td class="tg-031e">${salesOrderHeader.END_USER_COMPANY_CD}</td> -->
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_COMPANY_NAME}</td>
-								<td class="tg-031e">${salesOrderHeader.CUSTOMER_PO}</td>
-								<td class="tg-031e">${salesOrderHeader.ORDER_NBR_VER}</td>
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_ADDRESS1}</td>
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_ADDRESS2}</td>
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_CITY}</td>
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_STATE}</td>
-								<td class="tg-031e">${salesOrderHeader.OVERRIDE_ZIP}</td>
+								<td class="tg-031e">${soHeader.ORDER_TYPE}</td>
+								<td class="tg-031e">${soHeader.ORDER_STATUS_CD}</td>
+								<td class="tg-031e">${soHeader.SOLD_FROM_COMPANY_CD}</td>
+								<td class="tg-031e">${soHeader.SHIP_TO_COMPANY_CD}</td>
+								<td class="tg-031e">${soHeader.END_USER}</td>								
+								<td class="tg-031e">${soHeader.OVERRIDE_COMPANY_NAME}</td>
+								<td class="tg-031e">${soHeader.CUSTOMER_PO}</td>
+								<td class="tg-031e">${soHeader.ORDER_NBR_VER}</td>
+								<td class="tg-031e">${soHeader.OVERRIDE_ADDRESS1}</td>
+								<td class="tg-031e">${soHeader.OVERRIDE_ADDRESS2}</td>
+								<td class="tg-031e">${soHeader.OVERRIDE_CITY}</td>
+								<td class="tg-031e">${soHeader.OVERRIDE_STATE}</td>
+								<td class="tg-031e">${soHeader.OVERRIDE_ZIP}</td>
 							</tr>
+							</c:forEach>
 						</table>
 						<!--  expand collapse : start -->
 						<div id='${salesOrderHeader.ORDER_NBR}' class="filter-container">
 							<div class="triggear">
+							<c:forEach var="soHeader" items="${salesOrderHeader}">
 								<a href="#"
-									onclick="toggle_visibility('${salesOrderHeader.ORDER_NBR}')">Hide</a>
+									onclick="toggle_visibility('${soHeader.ORDER_NBR}')">Hide</a>
+							</c:forEach>
 							</div>
 							<div class="toggle-container">
 								<b> <u>Sales Order Detail Information</u></b>

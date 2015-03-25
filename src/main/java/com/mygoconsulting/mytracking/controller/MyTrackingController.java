@@ -273,13 +273,13 @@ public class MyTrackingController {
 				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCustomerId());
 				model.addAttribute("salesOrderHeader", salesOrderHeaderList);
 
-				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCompanyId());
+				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCustomerId());
 				model.addAttribute("salesOrderHeaderComments", soHeaderComments);
 
-				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCompanyId());
+				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCustomerId());
 				model.addAttribute("soDetailComments", soDetailComments);
 
-				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCompanyId());
+				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCustomerId());
 				model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
 			}
 		}
