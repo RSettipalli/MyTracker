@@ -11,6 +11,10 @@ public class IMY_MGOL_SO_DETAIL_COMMENT
     private String LINE;
 
     private String TYPE;
+    
+    private String ORDER_NBR_SO_DETAIL;
+    
+    private String ORDER_LINE_NBR_SO_DETAIL;
 
     public String getORDER_NBR ()
     {
@@ -61,4 +65,20 @@ public class IMY_MGOL_SO_DETAIL_COMMENT
     {
         this.TYPE = TYPE;
     }
+
+	public String getORDER_NBR_SO_DETAIL() {
+		return ORDER_NBR_SO_DETAIL;
+	}
+
+	public void setORDER_NBR_SO_DETAIL(String oRDER_NBR_SO_DETAIL) {
+		ORDER_NBR_SO_DETAIL = oRDER_NBR_SO_DETAIL;
+	}
+
+	public String getORDER_LINE_NBR_SO_DETAIL() {
+		return ORDER_LINE_NBR_SO_DETAIL;
+	}
+
+	public void setORDER_LINE_NBR_SO_DETAIL(String oRDER_LINE_NBR_SO_DETAIL) {
+		ORDER_LINE_NBR_SO_DETAIL = oRDER_LINE_NBR_SO_DETAIL;
+	}
 }

@@ -141,7 +141,8 @@ public class MyTrackingController {
 	}
 
 	@RequestMapping(value = "/Material", method = RequestMethod.POST)
-	public String showMaterial(@ModelAttribute("materialForm") MaterialForm materialForm,Model model) {
+	public String showMaterial(@ModelAttribute("user") User userInfo,
+			@ModelAttribute("materialForm") MaterialForm materialForm,Model model) {
 		logger.debug("BEGIN");
 		List<IMY_MAT_ONLINE> imyMatOnline = materialManager.getMaterialInfo();
 		List<IMY_MAT_WERKS> imyMatPlant = materialManager
@@ -249,38 +250,13 @@ public class MyTrackingController {
 	public String shipment(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_SO_DETAIL> soDetail = null;
 			List<IMY_MGOL_SO_HEADER> salesOrderHeaderList = null;
 			if(userInfo.getCompanyId() != null){
-				soDetail = salesOrderManager.getSalesOrderDetail(userInfo.getCompanyId());
-				model.addAttribute("soDetail", soDetail);
-			
 				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCompanyId());
 				model.addAttribute("salesOrderHeader", salesOrderHeaderList);
-
-				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCompanyId());
-				model.addAttribute("salesOrderHeaderComments", soHeaderComments);
-
-				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCompanyId());
-				model.addAttribute("soDetailComments", soDetailComments);
-
-				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCompanyId());
-				model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
 			} else {
-				soDetail = salesOrderManager.getSalesOrderDetail(userInfo.getCustomerId());
-				model.addAttribute("soDetail", soDetail);
-			
-				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCustomerId());
+				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(null);
 				model.addAttribute("salesOrderHeader", salesOrderHeaderList);
-
-				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = salesOrderManager.getSOHeaderCommentDetails(userInfo.getCustomerId());
-				model.addAttribute("salesOrderHeaderComments", soHeaderComments);
-
-				List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = salesOrderManager.getSODetailComment(userInfo.getCustomerId());
-				model.addAttribute("soDetailComments", soDetailComments);
-
-				List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesOrderManager.getSODetailAttachement(userInfo.getCustomerId());
-				model.addAttribute("soDetailItemAttachments",soDetailItemAttachments);
 			}
 		}
 		logger.debug("END");

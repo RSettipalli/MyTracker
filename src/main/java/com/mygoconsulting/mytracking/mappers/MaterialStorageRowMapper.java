@@ -18,6 +18,7 @@ public class MaterialStorageRowMapper implements RowMapper<IMY_MAT_STORAGE_DETIA
 		storageDetails.setMAINT_STATUS(rs.getString("MAINT_STATUS"));
 		storageDetails.setSTO_LOCATION(rs.getString("STO_LOCATION"));
 		storageDetails.setSTOC_IN_QLTY_INS(rs.getString("STOC_IN_QLTY_INS"));
+		storageDetails.setPLANT(rs.getString("PLANT_CD_REF"));
 		return storageDetails;
 	}
 

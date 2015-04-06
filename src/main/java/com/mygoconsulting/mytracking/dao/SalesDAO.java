@@ -17,7 +17,6 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_ITEM_ATTACHM;
-import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 
 @Component("SalesDAO")
 public class SalesDAO extends BaseDAO implements IDAO {
@@ -31,7 +30,7 @@ public class SalesDAO extends BaseDAO implements IDAO {
 	RowMapper<IMY_MGOL_SO_DETAIL> soDetailRowMapper;
 	
 	@Autowired
-	@Qualifier("DeliveryDetailCommentRowMapper")
+	@Qualifier("SalesOrderDetailCommentRowMapper")
 	RowMapper<IMY_MGOL_SO_DETAIL_COMMENT> soDetailCommentRowMapper;
 	
 	@Autowired
@@ -220,17 +219,12 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		return soHeaderList;
 	}
 	
-	public List<IMY_MGOL_SO_ITEM_ATTACHM> getSODetailAttachement(String soNum){
+	public IMY_MGOL_SO_ITEM_ATTACHM getSODetailAttachement(String soNum){
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from SO_ITEM_ATTACHMENT");
-		List<Object> soDetailItemAttachementObjects = (List<Object>) getObjects(selectQuery,soDetailItemAttachementRowMapper);
-		List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachements = new ArrayList<IMY_MGOL_SO_ITEM_ATTACHM>();
-		for(Iterator<Object> iterator = soDetailItemAttachementObjects.iterator();iterator.hasNext();){
-			IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachement = (IMY_MGOL_SO_ITEM_ATTACHM) iterator.next();
-			soDetailItemAttachements.add(soDetailItemAttachement);
-		}
+		IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachementObjects = (IMY_MGOL_SO_ITEM_ATTACHM) get(selectQuery,soDetailItemAttachementRowMapper);
 		logger.debug("END");
-		return soDetailItemAttachements;
+		return soDetailItemAttachementObjects;
 	}
 	
 	public List<IMY_MGOL_SO_HEADER_COMMENT> getSOHeaderCommentDetails(String soNum){
@@ -259,10 +253,14 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		return soDetails;
 	}
 	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getSODetailComment(String soNum){
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getSODetailComment(String soNum,String soLineNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from SO_DETAIL_COMMENT");
-		List<Object> soDetailCommentObjects = (List<Object>) getObjects(selectQuery,soDetailCommentRowMapper);
+		StringBuilder sb = new StringBuilder();
+		sb.append("select * from SO_DETAIL_COMMENT");		
+		if(soNum != null && soLineNum != null){
+			sb.append(" where ORDER_NBR_SO_DETAIL = "+soNum+" and ORDER_LINE_NBR_SO_DETAIL = "+soLineNum);
+		}
+		List<Object> soDetailCommentObjects = (List<Object>) getObjects(sb.toString(),soDetailCommentRowMapper);
 		List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
 		for(Iterator<Object> iterator = soDetailCommentObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_SO_DETAIL_COMMENT soDetailComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();

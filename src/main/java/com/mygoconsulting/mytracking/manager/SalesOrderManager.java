@@ -25,21 +25,59 @@ public class SalesOrderManager {
 		
 	public List<IMY_MGOL_SO_DETAIL> getSalesOrderDetail(String soNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_DETAIL> imyMGolSoDetail = salesDao.getSalesOrderDetails(soNum);
+		List<IMY_MGOL_SO_DETAIL> imyMGolSoDetailList = null;
+		if(soNum != null){
+			imyMGolSoDetailList = salesDao.getSalesOrderDetails(soNum);
+			for(IMY_MGOL_SO_DETAIL imyMGolSoDetail:imyMGolSoDetailList){
+				IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachments = getSODetailAttachement(imyMGolSoDetail.getORDER_NBR());
+				imyMGolSoDetail.setIMY_MGOL_SO_ITEM_ATTACHM(soDetailItemAttachments);
+				List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolSoDetailComments = 
+						getSODetailComment(imyMGolSoDetail.getORDER_NBR(),imyMGolSoDetail.getORDER_LINE_NBR());
+				imyMGolSoDetail.setIMY_MGOL_SO_DETAIL_COMMENT(imyMGolSoDetailComments);
+			}
+		} else {
+			imyMGolSoDetailList = salesDao.getSalesOrderDetails(null);
+			for(IMY_MGOL_SO_DETAIL imyMGolSoDetail:imyMGolSoDetailList){
+				IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachments = getSODetailAttachement(imyMGolSoDetail.getORDER_NBR());
+				imyMGolSoDetail.setIMY_MGOL_SO_ITEM_ATTACHM(soDetailItemAttachments);
+				List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolSoDetailComments = 
+						getSODetailComment(imyMGolSoDetail.getORDER_NBR(),imyMGolSoDetail.getORDER_LINE_NBR());
+				imyMGolSoDetail.setIMY_MGOL_SO_DETAIL_COMMENT(imyMGolSoDetailComments);
+			}
+		}
 		logger.debug("END");
-		return imyMGolSoDetail;
+		return imyMGolSoDetailList;
 	}
 	
 	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String soNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_HEADER> imyMGolSoHeader = salesDao.getSalesOrderHeader(soNum);
+		List<IMY_MGOL_SO_HEADER> imyMGolSoHeaderList = null;
+		if(soNum != null){
+			imyMGolSoHeaderList = salesDao.getSalesOrderHeader(soNum);
+			for(IMY_MGOL_SO_HEADER imyMGolSoHeader:imyMGolSoHeaderList){
+				List<IMY_MGOL_SO_DETAIL> imyMGolSoDetailList = getSalesOrderDetail(imyMGolSoHeader.getORDER_NBR());
+				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = getSOHeaderCommentDetails(imyMGolSoHeader.getORDER_NBR());
+				imyMGolSoHeader.setIMY_MGOL_SO_DETAIL(imyMGolSoDetailList);
+				imyMGolSoHeader.setIMY_MGOL_SO_HEADER_COMMENT(soHeaderComments);
+			}
+		} else {
+			imyMGolSoHeaderList = salesDao.getSalesOrderHeader(null);
+			for(IMY_MGOL_SO_HEADER imyMGolSoHeader:imyMGolSoHeaderList){
+				List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = getSOHeaderCommentDetails(imyMGolSoHeader.getORDER_NBR());
+				List<IMY_MGOL_SO_DETAIL> imyMGolSoDetailList = getSalesOrderDetail(imyMGolSoHeader.getORDER_NBR());
+				imyMGolSoHeader.setIMY_MGOL_SO_DETAIL(imyMGolSoDetailList);
+				imyMGolSoHeader.setIMY_MGOL_SO_HEADER_COMMENT(soHeaderComments);
+			}
+		}
+		
 		logger.debug("END");
-		return imyMGolSoHeader;
+		return imyMGolSoHeaderList;
 	}
 	
-	public List<IMY_MGOL_SO_ITEM_ATTACHM> getSODetailAttachement(String soNum) {
+	public IMY_MGOL_SO_ITEM_ATTACHM getSODetailAttachement(String soNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_ITEM_ATTACHM> soDetailItemAttachments = salesDao.getSODetailAttachement(soNum);
+		IMY_MGOL_SO_ITEM_ATTACHM soDetailItemAttachments = new  IMY_MGOL_SO_ITEM_ATTACHM();
+		soDetailItemAttachments = salesDao.getSODetailAttachement(soNum);
 		logger.debug("END");
 		return soDetailItemAttachments;
 	}
@@ -51,9 +89,9 @@ public class SalesOrderManager {
 		return soHeaderComments;
 	}
 	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getSODetailComment(String soNum) {
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getSODetailComment(String soNum,String soLineNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolSoDetailComments = salesDao.getSODetailComment(soNum);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolSoDetailComments = salesDao.getSODetailComment(soNum,soLineNum);
 		logger.debug("END");
 		return imyMGolSoDetailComments;
 	}

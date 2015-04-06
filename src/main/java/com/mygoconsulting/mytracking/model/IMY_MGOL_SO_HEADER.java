@@ -42,8 +42,17 @@ public class IMY_MGOL_SO_HEADER
     
     private String CUSTOMER_PO;
     
+    private List<IMY_MGOL_SO_DETAIL> IMY_MGOL_SO_DETAIL;
+    
+    public List<IMY_MGOL_SO_DETAIL> getIMY_MGOL_SO_DETAIL() {
+		return IMY_MGOL_SO_DETAIL;
+	}
 
-    public String getORDER_TYPE ()
+	public void setIMY_MGOL_SO_DETAIL(List<IMY_MGOL_SO_DETAIL> iMY_MGOL_SO_DETAIL) {
+		IMY_MGOL_SO_DETAIL = iMY_MGOL_SO_DETAIL;
+	}
+
+	public String getORDER_TYPE ()
     {
         return ORDER_TYPE;
     }

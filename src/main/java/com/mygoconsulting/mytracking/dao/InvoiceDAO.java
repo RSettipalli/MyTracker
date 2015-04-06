@@ -31,7 +31,7 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 	RowMapper<IMY_MGOL_INV_DETAIL> invoiceRowMapper;
 	
 	@Autowired
-	@Qualifier("DeliveryDetailCommentRowMapper")
+	@Qualifier("InvoiceDetailCommentRowMapper")
 	RowMapper<IMY_MGOL_SO_DETAIL_COMMENT> invoiceCommentRowMapper;
 	
 	@Autowired

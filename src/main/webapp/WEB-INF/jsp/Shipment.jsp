@@ -82,16 +82,15 @@
 							</c:forEach>
 						</table>
 						<!--  expand collapse : start -->
-						<div id='${salesOrderHeader.ORDER_NBR}' class="filter-container">
+						<c:forEach var="soHeader" items="${salesOrderHeader}">
+						<div id='${soHeader.ORDER_NBR}' class="filter-container">
 							<div class="triggear">
-							<c:forEach var="soHeader" items="${salesOrderHeader}">
-								<a href="#"
-									onclick="toggle_visibility('${soHeader.ORDER_NBR}')">Hide</a>
-							</c:forEach>
+							<a href="#"
+									onclick="toggle_visibility('${soHeader.ORDER_NBR}')">Hide</a>							
 							</div>
 							<div class="toggle-container">
-								<b> <u>Sales Order Detail Information</u></b>
-								<display:table name="soDetail"
+								<b> Sales Order Detail Information</b>
+								<display:table list="${soHeader.getIMY_MGOL_SO_DETAIL()}"
 									style="border: 1px solid; width: 950px; height: 20px;">
 									<display:column property="PRODUCT_NBR" title="Product Number" />
 									<display:column property="NET_VAL" title="Net Value" />
@@ -107,9 +106,9 @@
 							<table border="0">
 								<tr>
 									<td><div class="article">
-											<b> <u>Sales Order Detail Comments</u>
-											</b> <br />
-											<display:table name="soDetailComments" cellspacing="2"
+											<b> Sales Order Detail Comments	</b> <br />
+											<c:forEach var="soDetail" items="${soHeader.getIMY_MGOL_SO_DETAIL()}">
+											<display:table name="${soDetail.getIMY_MGOL_SO_DETAIL_COMMENT ()}" cellspacing="2"
 												style="border: 1px solid; width: 600px;">
 												<display:column property="ORDER_NBR" title="Order Number" />
 												<display:column property="ORDER_LINE_NBR"
@@ -117,11 +116,11 @@
 												<display:column property="LINE" title="Line" />
 												<display:column property="TYPE" title="Type" />
 											</display:table>
+											</c:forEach>
 										</div></td>
 									<td><div class="article">
-											<b> <u>Sales Order Header Comments</u>
-											</b> <br />
-											<display:table name="salesOrderHeaderComments"
+											<b> Sales Order Header Comments</b> <br />
+											<display:table list="${soHeader.getIMY_MGOL_SO_HEADER_COMMENT ()}"
 												cellspacing="2" style="border: 1px solid; width: 300px;">
 												<display:column property="ORDER_NBR" title="Order Number" />
 												<display:column property="LINE" title="Line" />
@@ -130,9 +129,10 @@
 										</div></td>
 								</tr><tr><td>
 								<div class="article">
-								<b> <u>Sales Order Item Attachments</u>
-								</b> <br />
-								<display:table name="soDetailItemAttachments" cellspacing="2"
+								<b> Sales Order Item Attachments</b> <br />							
+								<c:forEach var="soDetail" items="${soHeader.getIMY_MGOL_SO_DETAIL()}">
+								<c:if test="${not empty soDetail.getIMY_MGOL_SO_ITEM_ATTACHM ()}">
+								<display:table name="${soDetail.getIMY_MGOL_SO_ITEM_ATTACHM ()}" cellspacing="2"
 									style="border:solid 1px;">
 									<display:column property="DOKAR" title="DOKAR" />
 									<display:column property="DOKVR" title="DOKVR" />
@@ -140,10 +140,13 @@
 									<display:column property="DOKNR" title="DOKNR" />
 									<display:column property="OBJKY" title="OBJKY" />
 								</display:table>
+								</c:if>
+								</c:forEach>
 							</div></td><td></td></tr>
 							</table>
 							
 						</div>
+						</c:forEach>
 						<!--  expand collapse : end -->
 						<div class="clr"></div>
 					</div>

@@ -16,7 +16,7 @@ public class MaterialRowMapper implements RowMapper<IMY_MAT_ONLINE> {
 		
 		IMY_MAT_ONLINE material = new IMY_MAT_ONLINE();
 		IMY_MAT_WERKS materialPlant = new IMY_MAT_WERKS();
-		materialPlant.setPLANT(rs.getString("PLANT_CD"));
+		//materialPlant.setPLANT(rs.getString("PLANT_CD"));
 		material.setIMY_MAT_WERKS(materialPlant);
 
 		material.setBOM(rs.getString("BOM"));

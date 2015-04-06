@@ -10,10 +10,12 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.mappers.UserMapper;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
 import com.mygoconsulting.mytracking.model.IMY_MAT_WERKS;
+import com.mygoconsulting.mytracking.model.MaterialWrapper;
 
 @Component("Material")
 public class MaterialDAO extends BaseDAO implements IDAO {
@@ -39,12 +41,13 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 
 			// create material Storage details
 			createMaterial(material);
-			
+
 			// create material Plant details
 			createPlant(material);
-			
+
 			// create material Storage details
-			createStorageDetails(material);			
+			createStorageDetails(material.getIMY_MAT_WERKS());
+
 		}
 		logger.debug("END");
 	}
@@ -53,28 +56,25 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL where MATERIAL_CD= ?");
-		System.out.println(" MATERIAL_CD is "+material.getMATERIAL());
 		Object[] selectParams = { material.getMATERIAL() };
 		if (!isExists(selectQuery, selectParams, materialMapper)) {
 			logger.debug("Material inserting");
 			String sqlQuery = new String(
-					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP) Values(?,?,?, ?,?, ?, ?,?,?)");
+					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP) Values(?,?, ?,?, ?, ?,?,?,?)");
 			Object[] params = { material.getMATERIAL(), material.getMAT_DESC(),
 					material.getUOM(), material.getSTOCK(), material.getBOM(),
 					material.getMAT_TYPE(), material.getGROSS_WEIGHT(),
-					material.getNET_WEIGHT(), material.getMATERIAL_GROUP()
-					};
+					material.getNET_WEIGHT(), material.getMATERIAL_GROUP() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
 			logger.debug("Material updating");
 			String sqlQuery = new String(
 					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, NET_WEIGHT=?, MATERIAL_GROUP=? where MATERIAL_CD=?");
-			Object[] updateParams = {material.getMAT_DESC(), material.getUOM(),
+			Object[] updateParams = { material.getMATERIAL(),
+					material.getMAT_DESC(), material.getUOM(),
 					material.getSTOCK(), material.getBOM(),
 					material.getMAT_TYPE(), material.getGROSS_WEIGHT(),
-					material.getNET_WEIGHT(), material.getMATERIAL_GROUP(),
-					material.getMATERIAL()
-					};
+					material.getNET_WEIGHT(), material.getMATERIAL_GROUP() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
 		logger.debug("END");
@@ -82,69 +82,76 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 
 	private void createPlant(IMY_MAT_ONLINE material) {
 		logger.debug("BEGIN");
-		String selectQuery = new String(
-				"select * from MATERIAL_PLANT where PLANT_CD= ? and MATERIAL_CD_REF=?");
 		IMY_MAT_WERKS materialPlant = material.getIMY_MAT_WERKS();
-		if (materialPlant != null && materialPlant.getPLANT() != null) {
-			Object[] selectParams = { materialPlant.getPLANT(), material.getMATERIAL()};
-			if (!isExists(selectQuery, selectParams, materialPlantMapper)) {
-				logger.debug("Material Plant inserting");
+		String selectQuery = new String(
+				"select * from MATERIAL_PLANT where PLANT_CD= ?");
+		Object[] selectParams = { materialPlant.getPLANT() };
+		if (!isExists(selectQuery, selectParams, materialPlantMapper)) {
+			logger.debug("Material Plant inserting");
+
+			String sqlQuery = new String(
+					"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT, MATERIAL_CD_REF) Values(?,?,?, ?, ?)");
+			Object[] params = { materialPlant.getPLANT(),
+					materialPlant.getMAINT_STATUS(),
+					materialPlant.getMRP_TYPE(), materialPlant.getMRP_CONT(),
+					material.getMATERIAL() };
+			insertOrUpdate(sqlQuery, params);
+		} else {
+			logger.debug("Material Plant updating");
+			String sqlQuery = new String(
+					"update MATERIAL_PLANT SET MAINT_STATUS=?, MRP_TYPE=?, MRP_CONT=?, MATERIAL_CD_REF=?  where PLANT_CD=? ");
+			Object[] updateParams = { materialPlant.getMAINT_STATUS(),
+					materialPlant.getMRP_TYPE(), materialPlant.getMRP_CONT(),
+					material.getMATERIAL(), materialPlant.getPLANT() };
+			insertOrUpdate(sqlQuery, updateParams);
+		}
+		logger.debug("END");
+	}
+
+	private void createStorageDetails(IMY_MAT_WERKS materialPlant) {
+		logger.debug("BEGIN");
+		IMY_MAT_STORAGE_DETIALS storageDetails = materialPlant
+				.getIMY_MAT_STORAGE_DETIALS();
+		if (storageDetails != null) {
+			String selectQuery = new String(
+					"select * from MATERIAL_STORAGE where STO_LOCATION= ?");
+			Object[] selectParams = { storageDetails.getSTO_LOCATION() };
+			if (!isExists(selectQuery, selectParams, storageMapper)) {
+				logger.debug("Material Storage details inserting");
+
 				String sqlQuery = new String(
-						"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT,MATERIAL_CD_REF) Values(?,?,?, ?, ?)");
-				Object[] params = {
-						materialPlant.getPLANT(),
-						materialPlant.getMAINT_STATUS(),
-						materialPlant.getMRP_TYPE(),
-						materialPlant.getMRP_CONT(),
-						material.getMATERIAL() };
-				
+						"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS, PLANT_CD_REF ) Values(?,?,?, ?)");
+				Object[] params = { storageDetails.getSTO_LOCATION(),
+						storageDetails.getMAINT_STATUS(),
+						storageDetails.getSTOC_IN_QLTY_INS(),
+						materialPlant.getPLANT() };
 				insertOrUpdate(sqlQuery, params);
 			} else {
-				logger.debug("Material Plant updating");
+				logger.debug("Material Storage details updating");
 				String sqlQuery = new String(
-						"update MATERIAL_PLANT SET MAINT_STATUS=?, MRP_TYPE=?, MRP_CONT=?, MATERIAL_CD_REF=?  where PLANT_CD=? ");
-				Object[] updateParams = {
-						materialPlant.getMAINT_STATUS(),
-						materialPlant.getMRP_TYPE(),
-						materialPlant.getMRP_CONT(),
-						material.getMATERIAL(),
+						"update MATERIAL_STORAGE set  MAINT_STATUS=?, STOC_IN_QLTY_INS=?, PLANT_CD_REF=? where STO_LOCATION=? ");
+				Object[] updateParams = { storageDetails.getMAINT_STATUS(),
+						storageDetails.getSTOC_IN_QLTY_INS(),
+						storageDetails.getSTO_LOCATION(),
 						materialPlant.getPLANT() };
 				insertOrUpdate(sqlQuery, updateParams);
 			}
 		}
 		logger.debug("END");
+
 	}
 
-	private void createStorageDetails(IMY_MAT_ONLINE material) {
-		logger.debug("BEGIN");
-		IMY_MAT_STORAGE_DETIALS  storageDetails = material.getIMY_MAT_WERKS().getIMY_MAT_STORAGE_DETIALS();
+	public MaterialWrapper getAllMaterialDetails(String material_cd) {
+
 		String selectQuery = new String(
-				"select * from MATERIAL_STORAGE where STO_LOCATION= ? and PLANT_CD_REF=?");
-		if (storageDetails != null) {
-			Object[] selectParams = { storageDetails.getSTO_LOCATION(), material.getIMY_MAT_WERKS().getPLANT()};
-			if (!isExists(selectQuery, selectParams, storageMapper)) {
-				logger.debug("Material Storage details inserting");
+				" select * from material m,material_plant mp, material_storage ms where m.plant_cd = mp.plant_cd and mp.sto_location = ms.sto_location and m.material_cd="
+						+ material_cd);
+		// List<Object> objList = jdbcTemplateObject.queryForObject(selectQuery,
+		// new Object[]{material_cd},new UserMapper());
 
-				String sqlQuery = new String(
-						"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS, PLANT_CD_REF) Values(?,?,?,?)");
-				Object[] params = { storageDetails.getSTO_LOCATION(),
-						storageDetails.getMAINT_STATUS(),
-						storageDetails.getSTOC_IN_QLTY_INS(),
-						material.getIMY_MAT_WERKS().getPLANT()};
-				insertOrUpdate(sqlQuery, params);
-			} else {
-				logger.debug("Material Storage details updating");
-				String sqlQuery = new String(
-						"update MATERIAL_STORAGE set  MAINT_STATUS=?, STOC_IN_QLTY_INS=? where STO_LOCATION=? and PLANT_CD_REF=? ");
-				Object[] updateParams = { storageDetails.getMAINT_STATUS(),
-						storageDetails.getSTOC_IN_QLTY_INS(),
-						storageDetails.getSTO_LOCATION(),
-						material.getIMY_MAT_WERKS().getPLANT()};
-				insertOrUpdate(sqlQuery, updateParams);
-			}
-		}
-		logger.debug("END");
+		MaterialWrapper matWrap = new MaterialWrapper();
 
+		return matWrap;
 	}
 
 	public List<IMY_MAT_ONLINE> getMaterialDetails() {
@@ -153,7 +160,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		List<Object> objList = super.getObjects(selectQuery, materialMapper);
 		// IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery,
 		// materialMapper);
-		List<IMY_MAT_ONLINE> iMyMaterials = new ArrayList(objList.size());
+		List<IMY_MAT_ONLINE> iMyMaterials = new ArrayList<IMY_MAT_ONLINE>(objList.size());
 		for (Object obj : objList) {
 			IMY_MAT_ONLINE matOnline = (IMY_MAT_ONLINE) obj;
 			iMyMaterials.add(matOnline);
@@ -186,7 +193,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		// (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
 		List<IMY_MAT_STORAGE_DETIALS> iMyMaterialStorageList = new ArrayList<IMY_MAT_STORAGE_DETIALS>();
 		if (objList != null) {
-			iMyMaterialStorageList = new ArrayList(objList.size());
+			iMyMaterialStorageList = new ArrayList<IMY_MAT_STORAGE_DETIALS>(objList.size());
 			for (Object obj : objList) {
 				IMY_MAT_STORAGE_DETIALS storage = (IMY_MAT_STORAGE_DETIALS) obj;
 				iMyMaterialStorageList.add(storage);
