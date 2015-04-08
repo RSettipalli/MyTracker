@@ -420,7 +420,10 @@ ol li .send {
 .loginform {
 	border: 1px solid #B4D6E6; 
 	background-color: #FAFAFA;
-	margin: 1px 400px 1px 0;
+	/* margin: 1px 400px 1px 0; */
+	margin-left: auto;
+    margin-right: auto;
+    width: 70%;
 }
 
 .loginform label {
@@ -518,3 +521,26 @@ th, td {
 .register li span input {
     float: none;
 }
+
+/* .box {border:2px solid #0094ff;} */
+.box h2 {black;padding:20px;}
+.box p {color:#333;padding:5px;}
+.box {
+    -moz-border-radius-topright:5px;
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-right-radius:5px;
+    -webkit-border-top-left-radius:5px;
+    border-top-left-radius:15px;
+    border-top-right-radius:5px;
+}
+.hide {
+    display: none;
+}
+/* 
+:-moz-placeholder {
+    color: blue;
+}
+ 
+::-webkit-input-placeholder {
+    color: blue;
+} */

@@ -24,23 +24,40 @@ public class OrderManager {
 		
 	public List<IMY_MGOL_OD_DETAIL> getOrderDetail(String orderNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_OD_DETAIL> imyMGolODDetail = deliveryDao.getOrderDetails(orderNum);
+		List<IMY_MGOL_OD_DETAIL> imyMGolODDetailList = deliveryDao.getOrderDetails(orderNum);
+		for(IMY_MGOL_OD_DETAIL imyMGolODDetail:imyMGolODDetailList){
+			IMY_MGOL_OD_ITEM_ATTACHM odDetailItemAttachment = getOrderDetailAttachement(imyMGolODDetail.getORDER_NBR());
+			imyMGolODDetail.setIMY_MGOL_OD_ITEM_ATTACHM(odDetailItemAttachment);
+			List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolODDetailComments = getOrderDetailComment(imyMGolODDetail.getORDER_NBR()
+					,imyMGolODDetail.getORDER_LINE_NBR());
+			imyMGolODDetail.setIMY_MGOL_SO_DETAIL_COMMENT(imyMGolODDetailComments);
+		}
 		logger.debug("END");
-		return imyMGolODDetail;
+		return imyMGolODDetailList;
 	}
 	
-	public IMY_MGOL_OD_HEADER getOrderHeaderDetail(String orderNum) {
+	public List<IMY_MGOL_OD_HEADER> getOrderHeaderDetail(String customerId) {
 		logger.debug("BEGIN");
-		IMY_MGOL_OD_HEADER imyMGolODHeader = deliveryDao.getOrderHeader(orderNum);
+		List<IMY_MGOL_OD_HEADER> imyMGolODHeaderList = deliveryDao.getOrderHeader(customerId);
+		if(imyMGolODHeaderList.size() > 0){
+			for(IMY_MGOL_OD_HEADER imyMGolODHeader:imyMGolODHeaderList){
+				List<IMY_MGOL_OD_DETAIL> imyMGolODDetailList = getOrderDetail(imyMGolODHeader.getDELVI_NBR());
+				List<IMY_MGOL_OD_HEADER_COMMENT> oDHeaderComments = getOrderHeaderCommentDetails(imyMGolODHeader.getDELVI_NBR());
+				imyMGolODHeader.setIMY_MGOL_OD_DETAIL(imyMGolODDetailList);
+				imyMGolODHeader.setIMY_MGOL_OD_HEADER_COMMENT(oDHeaderComments);
+			}
+		}
 		logger.debug("END");
-		return imyMGolODHeader;
+		return imyMGolODHeaderList;
 	}
 	
-	public List<IMY_MGOL_OD_ITEM_ATTACHM> getOrderDetailAttachement(String orderNum) {
+	public IMY_MGOL_OD_ITEM_ATTACHM getOrderDetailAttachement(String orderNum) {
 		logger.debug("BEGIN");
 		List<IMY_MGOL_OD_ITEM_ATTACHM> odDetailItemAttachments = deliveryDao.getODItemAttachement(orderNum);
+		if(odDetailItemAttachments != null && odDetailItemAttachments.size() > 0)
+			return odDetailItemAttachments.get(0);
 		logger.debug("END");
-		return odDetailItemAttachments;
+		return null;
 	}
 	
 	public List<IMY_MGOL_OD_HEADER_COMMENT> getOrderHeaderCommentDetails(String orderNum) {
@@ -50,9 +67,9 @@ public class OrderManager {
 		return odHeaderComments;
 	}
 	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getOrderDetailComment(String orderNum) {
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getOrderDetailComment(String orderNum,String orderLineNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolODDetailComments = deliveryDao.getODDetailComment(orderNum);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolODDetailComments = deliveryDao.getODDetailComment(orderNum,orderLineNum);
 		logger.debug("END");
 		return imyMGolODDetailComments;
 	}

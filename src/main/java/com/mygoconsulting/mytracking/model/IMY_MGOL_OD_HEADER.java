@@ -35,6 +35,8 @@ public class IMY_MGOL_OD_HEADER
     private String ORDER_REF_NUM;    
 
     private List<IMY_MGOL_OD_HEADER_COMMENT> IMY_MGOL_OD_HEADER_COMMENT;
+    
+    private List<IMY_MGOL_OD_DETAIL>  IMY_MGOL_OD_DETAIL; 
 
     private String SOLD_TO_COMPANY_CD;
 
@@ -207,4 +209,12 @@ public class IMY_MGOL_OD_HEADER
     {
         this.SOLD_TO_COMPANY_CD = SOLD_TO_COMPANY_CD;
     }
+
+	public List<IMY_MGOL_OD_DETAIL> getIMY_MGOL_OD_DETAIL() {
+		return IMY_MGOL_OD_DETAIL;
+	}
+
+	public void setIMY_MGOL_OD_DETAIL(List<IMY_MGOL_OD_DETAIL> iMY_MGOL_OD_DETAIL) {
+		IMY_MGOL_OD_DETAIL = iMY_MGOL_OD_DETAIL;
+	}
 }

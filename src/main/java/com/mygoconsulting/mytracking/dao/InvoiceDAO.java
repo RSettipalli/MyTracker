@@ -212,19 +212,29 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 	
-	public IMY_MGOL_INV_HEADER getInvHeader(String invNum){
+	public List<IMY_MGOL_INV_HEADER> getInvHeader(String customerId){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from INV_HEADER");
-		//Object[] selectParams = { header.getINVOI_NBR() };
-		IMY_MGOL_INV_HEADER invHeader = (IMY_MGOL_INV_HEADER) get(selectQuery,headerInvoiceRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from INV_HEADER");		
+		List<IMY_MGOL_INV_HEADER> invHeaderList = new ArrayList<IMY_MGOL_INV_HEADER>();
+		if(customerId != null)
+			selectQuery.append(" where SOLD_TO_COMPANY_CD = "+customerId);
+		List<Object> objectsList = (List<Object>) getObjects(selectQuery.toString(),headerInvoiceRowMapper);
+		if(objectsList != null){
+			for(Object obj: objectsList){
+				IMY_MGOL_INV_HEADER invHeader = (IMY_MGOL_INV_HEADER)obj;
+				invHeaderList.add(invHeader);
+			}
+		}
 		logger.debug("END");
-		return invHeader;
+		return invHeaderList;
 	}
 	
 	public List<IMY_MGOL_INV_DETAIL> getInvDetails(String invNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from INV_DETAIL");
-		List<Object> invDetailObjects = (List<Object>) getObjects(selectQuery,invoiceRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from INV_DETAIL");
+		if(invNum != null)
+			selectQuery.append(" where ORDER_NBR = "+invNum);
+		List<Object> invDetailObjects = (List<Object>) getObjects(selectQuery.toString(),invoiceRowMapper);
 		List<IMY_MGOL_INV_DETAIL> invDetails = new ArrayList<IMY_MGOL_INV_DETAIL>();
 		for(Iterator<Object> iterator = invDetailObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_INV_DETAIL invDetail = (IMY_MGOL_INV_DETAIL) iterator.next();
@@ -234,10 +244,12 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 		return invDetails;
 	}
 	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvoiceDetailComment(String invNum){
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvoiceDetailComment(String invNum,String invLineNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from INV_DETAIL_COMMENT");
-		List<Object> invCommentObjects = (List<Object>) getObjects(selectQuery,invoiceCommentRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from INV_DETAIL_COMMENT");
+		if(invNum != null && invLineNum != null)
+			selectQuery.append(" where ORDER_NBR_SO_DETAIL = "+invNum+" and ORDER_LINE_NBR_SO_DETAIL = "+invLineNum);
+		List<Object> invCommentObjects = (List<Object>) getObjects(selectQuery.toString(),invoiceCommentRowMapper);
 		List<IMY_MGOL_SO_DETAIL_COMMENT> invComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
 		for(Iterator<Object> iterator = invCommentObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_SO_DETAIL_COMMENT invComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
@@ -262,8 +274,10 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 	
 	public List<IMY_MGOL_INV_HEADER_COMMEN> getInvoiceHeaderCommentDetails(String invNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from INV_HEADER_COMMENT");
-		List<Object> invHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from INV_HEADER_COMMENT");
+		if(invNum != null)
+			selectQuery.append(" where INVOI_NBR_SO_HEADER = "+invNum);
+		List<Object> invHeaderCommentObjects = (List<Object>) getObjects(selectQuery.toString(),headerCommentRowMapper);
 		List<IMY_MGOL_INV_HEADER_COMMEN> invHeaderComments = new ArrayList<IMY_MGOL_INV_HEADER_COMMEN>();
 		for(Iterator<Object> iterator = invHeaderCommentObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_INV_HEADER_COMMEN invHeaderComment = (IMY_MGOL_INV_HEADER_COMMEN) iterator.next();

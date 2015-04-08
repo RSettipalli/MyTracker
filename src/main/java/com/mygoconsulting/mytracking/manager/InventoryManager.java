@@ -25,23 +25,40 @@ public class InventoryManager {
 		
 	public List<IMY_MGOL_INV_DETAIL> getInventoryDetail(String invNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_INV_DETAIL> imyMGolInvDetail = invoiceDao.getInvDetails(invNum);
+		List<IMY_MGOL_INV_DETAIL> imyMGolInvDetailList = invoiceDao.getInvDetails(invNum);
+		for(IMY_MGOL_INV_DETAIL imyMGolInvDetail:imyMGolInvDetailList){
+			IMY_MGOL_INV_ITEM_ATMT invItemAttachment = getInvAttachement(imyMGolInvDetail.getORDER_NBR());
+			imyMGolInvDetail.setIMY_MGOL_INV_ITEM_ATMT(invItemAttachment);
+			List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolInvComments = getInvDetailComment(imyMGolInvDetail.getORDER_NBR(),
+					imyMGolInvDetail.getORDER_LINE_NBR());
+			imyMGolInvDetail.setIMY_MGOL_SO_DETAIL_COMMENT(imyMGolInvComments);
+		}
 		logger.debug("END");
-		return imyMGolInvDetail;
+		return imyMGolInvDetailList;
 	}
 	
-	public IMY_MGOL_INV_HEADER getInventoryHeader(String invNum) {
-		logger.debug("BEGIN");
-		IMY_MGOL_INV_HEADER imyMGolInvHeader = invoiceDao.getInvHeader(invNum);
+	public List<IMY_MGOL_INV_HEADER> getInventoryHeader(String customerId) {
+		logger.debug("BEGIN");		
+		List<IMY_MGOL_INV_HEADER> imyMGolInvHeaderList = invoiceDao.getInvHeader(customerId);
+		if(imyMGolInvHeaderList.size() > 0){
+			for(IMY_MGOL_INV_HEADER imyMGolInvHeader:imyMGolInvHeaderList){
+				List<IMY_MGOL_INV_DETAIL> imyMGolInvDetailList = getInventoryDetail(imyMGolInvHeader.getINVOI_NBR());
+				List<IMY_MGOL_INV_HEADER_COMMEN> invHeaderComments =getInvHeaderCommentDetails(imyMGolInvHeader.getINVOI_NBR());
+				imyMGolInvHeader.setIMY_MGOL_INV_DETAIL(imyMGolInvDetailList);
+				imyMGolInvHeader.setIMY_MGOL_INV_HEADER_COMMEN(invHeaderComments);
+			}
+		}
 		logger.debug("END");
-		return imyMGolInvHeader;
+		return imyMGolInvHeaderList;
 	}
 	
-	public List<IMY_MGOL_INV_ITEM_ATMT> getInvAttachement(String invNum) {
+	public IMY_MGOL_INV_ITEM_ATMT getInvAttachement(String invNum) {
 		logger.debug("BEGIN");
 		List<IMY_MGOL_INV_ITEM_ATMT> invItemAttachments = invoiceDao.getInvoiceItemAttachement(invNum);
+		if(invItemAttachments != null && invItemAttachments.size() > 0)
+			return invItemAttachments.get(0);
 		logger.debug("END");
-		return invItemAttachments;
+		return null;
 	}
 	
 	public List<IMY_MGOL_INV_HEADER_COMMEN> getInvHeaderCommentDetails(String invNum) {
@@ -51,9 +68,9 @@ public class InventoryManager {
 		return invHeaderComments;
 	}
 	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvDetailComment(String invNum) {
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvDetailComment(String invNum,String invLineNum) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolInvComments = invoiceDao.getInvoiceDetailComment(invNum);
+		List<IMY_MGOL_SO_DETAIL_COMMENT> imyMGolInvComments = invoiceDao.getInvoiceDetailComment(invNum,invLineNum);
 		logger.debug("END");
 		return imyMGolInvComments;
 	}

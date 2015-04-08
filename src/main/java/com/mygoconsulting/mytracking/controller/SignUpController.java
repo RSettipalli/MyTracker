@@ -44,6 +44,7 @@ public class SignUpController {
 		logger.debug("BEGIN");
 		LoginForm loginForm = new LoginForm();
 		model.addAttribute("loginForm", loginForm);
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return "login";
 	}
@@ -65,6 +66,7 @@ public class SignUpController {
 		user.setUserType(UserType.COMPANY);
 		model.addAttribute("user", user);
 		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return "signUp";
 	}
@@ -84,6 +86,7 @@ public class SignUpController {
 			result = signUp(model);
 		}
 		model.addAttribute("message", message);
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return result;
 	}
@@ -93,6 +96,7 @@ public class SignUpController {
 		logger.debug("BEGIN");
 		User user = new User();
 		model.addAttribute("forgotUser", user);
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return "forgot";
 	}
@@ -102,6 +106,7 @@ public class SignUpController {
 		logger.debug("BEGIN");
 		request.getSession().removeAttribute("user");
 		loginForm(model);
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return "login";
 	}	
@@ -128,6 +133,7 @@ public class SignUpController {
 		}
 		model.addAttribute("forgotMsg", message);
 		model.addAttribute("forgotUser", forgotUser);
+		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return "forgot";
 	}

@@ -203,12 +203,13 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 	
-	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String soNum){
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String customerId){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from SO_HEADER");
-		List<Object> objectsList = null;
-		List<IMY_MGOL_SO_HEADER> soHeaderList = new ArrayList<IMY_MGOL_SO_HEADER>();
-		objectsList = (List<Object>) getObjects(selectQuery,headerRowMapper);
+		List<IMY_MGOL_SO_HEADER> soHeaderList = new ArrayList<IMY_MGOL_SO_HEADER>();		
+		StringBuilder selectQuery = new StringBuilder("select * from SO_HEADER");
+		if(customerId != null)
+			selectQuery.append(" where SOLD_TO_COMPANY_CD = "+customerId);
+		List<Object> objectsList = (List<Object>) getObjects(selectQuery.toString(),headerRowMapper);
 		if(objectsList != null){
 			for(Object obj: objectsList){
 				IMY_MGOL_SO_HEADER imySoHeader = (IMY_MGOL_SO_HEADER) obj;
@@ -229,8 +230,10 @@ public class SalesDAO extends BaseDAO implements IDAO {
 	
 	public List<IMY_MGOL_SO_HEADER_COMMENT> getSOHeaderCommentDetails(String soNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from SO_HEADER_COMMENT");
-		List<Object> soHeaderCommentObjects = (List<Object>) getObjects(selectQuery,headerCommentRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from SO_HEADER_COMMENT");
+		if(soNum != null)
+			selectQuery.append(" where ORDER_NBR_SO_HEADER = "+soNum);
+		List<Object> soHeaderCommentObjects = (List<Object>) getObjects(selectQuery.toString(),headerCommentRowMapper);
 		List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = new ArrayList<IMY_MGOL_SO_HEADER_COMMENT>();
 		for(Iterator<Object> iterator = soHeaderCommentObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_SO_HEADER_COMMENT soHeaderComment = (IMY_MGOL_SO_HEADER_COMMENT) iterator.next();
@@ -242,8 +245,10 @@ public class SalesDAO extends BaseDAO implements IDAO {
 	
 	public List<IMY_MGOL_SO_DETAIL> getSalesOrderDetails(String soNum){
 		logger.debug("BEGIN");
-		String selectQuery = new String("select * from SO_DETAIL");
-		List<Object> soDetailObjects = (List<Object>) getObjects(selectQuery,soDetailRowMapper);
+		StringBuilder selectQuery = new StringBuilder("select * from SO_DETAIL");
+		if(soNum != null)
+			selectQuery.append(" where order_nbr = "+soNum);
+		List<Object> soDetailObjects = (List<Object>) getObjects(selectQuery.toString(),soDetailRowMapper);
 		List<IMY_MGOL_SO_DETAIL> soDetails = new ArrayList<IMY_MGOL_SO_DETAIL>();
 		for(Iterator<Object> iterator = soDetailObjects.iterator();iterator.hasNext();){
 			IMY_MGOL_SO_DETAIL invDetail = (IMY_MGOL_SO_DETAIL) iterator.next();
@@ -257,9 +262,8 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		logger.debug("BEGIN");
 		StringBuilder sb = new StringBuilder();
 		sb.append("select * from SO_DETAIL_COMMENT");		
-		if(soNum != null && soLineNum != null){
+		if(soNum != null && soLineNum != null)
 			sb.append(" where ORDER_NBR_SO_DETAIL = "+soNum+" and ORDER_LINE_NBR_SO_DETAIL = "+soLineNum);
-		}
 		List<Object> soDetailCommentObjects = (List<Object>) getObjects(sb.toString(),soDetailCommentRowMapper);
 		List<IMY_MGOL_SO_DETAIL_COMMENT> soDetailComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
 		for(Iterator<Object> iterator = soDetailCommentObjects.iterator();iterator.hasNext();){

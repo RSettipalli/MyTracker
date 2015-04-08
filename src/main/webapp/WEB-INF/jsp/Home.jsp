@@ -1,37 +1,5 @@
 <%@include file="./header.jsp" %>
-<div class="main">
-		<div class="header">
-			<div class="header_resize">
-				<div class="logo">
-					<a href="http://mygoconsulting.com/"><img
-						src="./images/mygologo_smallsize.jpg" /></a>
-				</div>
-				<div class="logoTitle">
-					<h1>
-						MyTracking<sup>&reg;</sup>
-					</h1>
-				</div>
-				<div class="logoSmallTitle">
-					<a href="http://mygoconsulting.com/contact-us"><img
-						src="./images/contactusimage_sm.jpg" width="50px" border="0" /></a> <a
-						href="./signUp.htm"><img src="./images/Registeration_sm.png"
-						width="50px" border="0" /></a>
-				</div>
-				<div class="clr"></div>
-				<div class="menu_nav">
-					<ul>
-						<li class="active"><a href="./Home.htm">Home</a></li>
-						<li><a href='./OrderInfo.htm'><span>Delivery Info</span></a></li>
-						<li><a href='./Invoice.htm'><span>Invoice Info</span></a></li>
-						<li><a href='./Shipment.htm'><span>Sales Order
-									Info</span></a></li>
-						<li><a href='./Material.htm'><span>Material Info</span></a></li>
-						<li><a href="./logout.htm">SignOut</a></li>
-					</ul>
-				</div>
-				<div class="clr"></div>
-			</div>
-		</div>
+<div >
 		<div class="content">
 			<div class="content_resize">
 				<div class="clr"></div>
@@ -41,8 +9,7 @@
 						<h2>
 							<span>Company Profile</span>
 						</h2>
-						<b> <u>Company Information</u>
-						</b>
+						<b> Company Information	</b>
 						<table>
 							<tr>
 								<td><b>Company Code</b></td>
@@ -73,8 +40,7 @@
 							</tr>
 						</table>
 						<div>
-							<b> <u>Company Ship Points</u>
-							</b> <br />
+							<b> Company Ship Points</b> <br />
 							<display:table name="shipPoint" cellspacing="2"
 								style="border: 1px solid; width: 600px;">
 								<display:column property="BUKRS" title="Company Code" />
@@ -93,8 +59,7 @@
 						<h2>
 							<span>Customer Profile</span>
 						</h2>
-						<b> <u>Customer Information</u>
-						</b>
+						<b> Customer Information</b>
 						<table>
 							<tr>
 								<td><b>Customer Code</b></td>
@@ -135,8 +100,7 @@
 						</table>
 						<c:if test="${customerBank != null }">
 						<div>
-							<b> <u>Customer Bank</u>
-							</b> <br />
+							<b> Customer Bank</b> <br />
 							<display:table name="customerBank" cellspacing="2"
 								style="border: 1px solid; width: 600px;">
 								<display:column property="CUST_NUMBER" title="Customer Number" />
@@ -153,7 +117,8 @@
 				</div>				
 			</div>			
 		</div>
-		<%@include file="./footer.jsp" %>
+		
 	</div>
+<%@include file="./footer.jsp" %>
 </body>
 </html>

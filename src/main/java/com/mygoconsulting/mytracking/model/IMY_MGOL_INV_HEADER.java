@@ -33,6 +33,8 @@ public class IMY_MGOL_INV_HEADER
     private String OVERRIDE_ZIP;
 
     private List<IMY_MGOL_INV_HEADER_COMMEN> IMY_MGOL_INV_HEADER_COMMEN;
+    
+    private List<IMY_MGOL_INV_DETAIL> IMY_MGOL_INV_DETAIL;
 
     private String SOLD_TO_COMPANY_CD;
 
@@ -195,4 +197,12 @@ public class IMY_MGOL_INV_HEADER
     {
         this.SHIP_TO_COMPANY_CD = SHIP_TO_COMPANY_CD;
     }
+
+	public List<IMY_MGOL_INV_DETAIL> getIMY_MGOL_INV_DETAIL() {
+		return IMY_MGOL_INV_DETAIL;
+	}
+
+	public void setIMY_MGOL_INV_DETAIL(List<IMY_MGOL_INV_DETAIL> iMY_MGOL_INV_DETAIL) {
+		IMY_MGOL_INV_DETAIL = iMY_MGOL_INV_DETAIL;
+	}
 }
