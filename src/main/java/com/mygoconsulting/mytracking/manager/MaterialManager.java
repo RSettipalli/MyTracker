@@ -28,6 +28,12 @@ public class MaterialManager {
 		return imyMatOnlineList;
 	}
 	
+	public IMY_MAT_ONLINE getMaterialInfo(String material_cd) {
+		logger.debug("BEGIN");
+		IMY_MAT_ONLINE imyMatOnline = materialDao.getMaterialDetails(material_cd);
+		logger.debug("END");
+		return imyMatOnline;
+	}
 	public List<IMY_MAT_WERKS> getMaterialPlantDetails() {
 		logger.debug("BEGIN");
 		List<IMY_MAT_WERKS> imyMatPlant = materialDao.getMaterialPlantDetails();
@@ -35,9 +41,23 @@ public class MaterialManager {
 		return imyMatPlant;
 	}
 	
+	public List<IMY_MAT_WERKS> getMaterialPlantDetails(String material_cd_ref) {
+		logger.debug("BEGIN");
+		List<IMY_MAT_WERKS> imyMatPlant = materialDao.getMaterialPlantDetails(material_cd_ref);
+		logger.debug("END");
+		return imyMatPlant;
+	}	
+	
 	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails() {
 		logger.debug("BEGIN");
 		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetails = materialDao.getMaterialStorageDetails();
+		logger.debug("END");
+		return imyMatStorageDetails;
+	}
+	
+	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails(String plant_cd_ref) {
+		logger.debug("BEGIN");
+		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetails = materialDao.getMaterialStorageDetails(plant_cd_ref);
 		logger.debug("END");
 		return imyMatStorageDetails;
 	}

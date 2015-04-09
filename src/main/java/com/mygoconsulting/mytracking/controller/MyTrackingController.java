@@ -74,14 +74,15 @@ public class MyTrackingController {
 			Model model) {
 		logger.debug("BEGIN");
 		logger.debug("email is: " + loginRecord.getEmail());
-		if(StringUtils.isEmpty(loginRecord.getEmail()) || StringUtils.isEmpty(loginRecord.getPassword())){
+		if (StringUtils.isEmpty(loginRecord.getEmail())
+				|| StringUtils.isEmpty(loginRecord.getPassword())) {
 			model.addAttribute("message", "Invalid User ID or Password");
 			model.addAttribute("currPage", "liLogin");
 			logger.debug("END");
 			return "login";
-		}else{
+		} else {
 			User user = userDAO.validateUser(loginRecord.getEmail(),
-				loginRecord.getPassword());
+					loginRecord.getPassword());
 			if (user != null) {
 				IMY_COMPANY companyInfo = null;
 				setCompanyOrCustomerAttributes(model, user, companyInfo);
@@ -113,23 +114,33 @@ public class MyTrackingController {
 
 	@RequestMapping(value = "/Material", method = RequestMethod.POST)
 	public String showMaterial(@ModelAttribute("user") User userInfo,
-			@ModelAttribute("materialForm") MaterialForm materialForm,Model model) {
+			@ModelAttribute("materialForm") MaterialForm materialForm,
+			Model model) {
 		logger.debug("BEGIN");
-		List<IMY_MAT_ONLINE> imyMatOnline = materialManager.getMaterialInfo();
-		List<IMY_MAT_WERKS> imyMatPlant = materialManager
-				.getMaterialPlantDetails();
-		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetailsList = materialManager
-				.getMaterialStorageDetails();
-		materialForm.setMaterialIdList(getMaterialIdList(imyMatOnline));
+		String matId = materialForm.getMaterialId();
+		matId = matId.substring(0, matId.indexOf(':'));
 
+		IMY_MAT_ONLINE imyMatOnline = materialManager.getMaterialInfo(matId);
+		List<IMY_MAT_ONLINE> imyMatOnlineList = new ArrayList<IMY_MAT_ONLINE>();
+		imyMatOnlineList.add(imyMatOnline);
+		List<IMY_MAT_WERKS> imyMatPlantList = materialManager
+				.getMaterialPlantDetails(imyMatOnline.getMATERIAL());
+		
+		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetailsList = new ArrayList<IMY_MAT_STORAGE_DETIALS>();
+		for (IMY_MAT_WERKS plant : imyMatPlantList) {
+			imyMatStorageDetailsList.addAll(materialManager.getMaterialStorageDetails(plant.getPLANT()));
+		}
+		
+		materialForm.setMaterialIdList(getMaterialIdList(imyMatOnlineList));
+		
 		model.addAttribute("materialForm", materialForm);
 		model.addAttribute("imyMatOnlineList", imyMatOnline);
-		model.addAttribute("imyMatPlantList", imyMatPlant);
-		model.addAttribute("imyMatStorageDetailsList", imyMatStorageDetailsList);
+		model.addAttribute("imyMatPlantList", imyMatPlantList);
+		 model.addAttribute("imyMatStorageDetailsList", imyMatStorageDetailsList);
 		model.addAttribute("currPage", "liMaterial");
 		logger.debug("END");
 		return "materialDetails";
-	}	
+	}
 
 	@RequestMapping(value = "/Invoice", method = RequestMethod.GET)
 	public String invoice(@ModelAttribute("user") User userInfo, Model model) {
@@ -137,8 +148,9 @@ public class MyTrackingController {
 		if (userInfo != null) {
 			List<IMY_MGOL_INV_HEADER> invoiceHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if(customerId != null){
-				invoiceHeaderList = inventoryManager.getInventoryHeader(userInfo.getCompanyId());
+			if (customerId != null) {
+				invoiceHeaderList = inventoryManager
+						.getInventoryHeader(userInfo.getCompanyId());
 			} else {
 				invoiceHeaderList = inventoryManager.getInventoryHeader(null);
 			}
@@ -153,11 +165,12 @@ public class MyTrackingController {
 	public String orderInfo(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_OD_HEADER> orderHeaderList = null;			
+			List<IMY_MGOL_OD_HEADER> orderHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if(customerId != null){
-				orderHeaderList = orderManager.getOrderHeaderDetail(userInfo.getCompanyId());
-			}else{
+			if (customerId != null) {
+				orderHeaderList = orderManager.getOrderHeaderDetail(userInfo
+						.getCompanyId());
+			} else {
 				orderHeaderList = orderManager.getOrderHeaderDetail(null);
 			}
 			setODHeaderAttribute(model, orderHeaderList);
@@ -173,10 +186,12 @@ public class MyTrackingController {
 		if (userInfo != null) {
 			List<IMY_MGOL_SO_HEADER> salesOrderHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if(customerId != null){
-				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(userInfo.getCustomerId());
+			if (customerId != null) {
+				salesOrderHeaderList = salesOrderManager
+						.getSalesOrderHeader(userInfo.getCustomerId());
 			} else {
-				salesOrderHeaderList = salesOrderManager.getSalesOrderHeader(null);
+				salesOrderHeaderList = salesOrderManager
+						.getSalesOrderHeader(null);
 			}
 			setSOHeaderAttribute(model, salesOrderHeaderList);
 		}
@@ -184,7 +199,7 @@ public class MyTrackingController {
 		logger.debug("END");
 		return "Shipment";
 	}
-	
+
 	@RequestMapping(value = "/Home", method = RequestMethod.GET)
 	public String home(@ModelAttribute("user") User user, Model model) {
 		logger.debug("BEGIN");
@@ -200,15 +215,14 @@ public class MyTrackingController {
 		logger.debug("END");
 		return "Home";
 	}
-	
+
 	private void setCompanyOrCustomerAttributes(Model model, User user,
 			IMY_COMPANY companyInfo) {
 		List<IMY_SHIP_POINT> shipPoint;
 		IMY_MGOL_CUST_BANK customerBank;
-		if(user.getCompanyId() != null){
+		if (user.getCompanyId() != null) {
 			logger.debug("Company id is " + user.getCompanyId());
-			companyInfo = companyManager.getCompanyInfo(user
-				.getCompanyId());
+			companyInfo = companyManager.getCompanyInfo(user.getCompanyId());
 		}
 		if (companyInfo != null) {
 			model.addAttribute("companyInfo", companyInfo);
@@ -221,40 +235,40 @@ public class MyTrackingController {
 					.getCustomerInfo(user.getCustomerId());
 			model.addAttribute("customerInfo", imyCustomer);
 			model.addAttribute("companyInfo", null);
-			customerBank = customerManager.getCustomerBank(user
-					.getCustomerId());
+			customerBank = customerManager
+					.getCustomerBank(user.getCustomerId());
 			model.addAttribute("customerBank", customerBank);
 			model.addAttribute("shipPoint", null);
 		}
 	}
-	
+
 	private void setSOHeaderAttribute(Model model,
 			List<IMY_MGOL_SO_HEADER> salesOrderHeaderList) {
-		if(salesOrderHeaderList != null && salesOrderHeaderList.size() > 0){
+		if (salesOrderHeaderList != null && salesOrderHeaderList.size() > 0) {
 			model.addAttribute("salesOrderHeader", salesOrderHeaderList);
 		} else {
-			model.addAttribute("message","No SalesOrders to be displayed");
+			model.addAttribute("message", "No SalesOrders to be displayed");
 		}
 	}
-	
+
 	private void setODHeaderAttribute(Model model,
 			List<IMY_MGOL_OD_HEADER> orderHeaderList) {
-		if(orderHeaderList != null && orderHeaderList.size() > 0){
+		if (orderHeaderList != null && orderHeaderList.size() > 0) {
 			model.addAttribute("orderHeader", orderHeaderList);
 		} else {
-			model.addAttribute("message","No OrderDetails to be displayed");
+			model.addAttribute("message", "No OrderDetails to be displayed");
 		}
 	}
-	
+
 	private void setInvHeaderAttribute(Model model,
 			List<IMY_MGOL_INV_HEADER> invoiceHeaderList) {
-		if(invoiceHeaderList != null && invoiceHeaderList.size() > 0){
+		if (invoiceHeaderList != null && invoiceHeaderList.size() > 0) {
 			model.addAttribute("invoiceHeader", invoiceHeaderList);
 		} else {
-			model.addAttribute("message","No Invoice's to be displayed");
+			model.addAttribute("message", "No Invoice's to be displayed");
 		}
 	}
-	
+
 	private List<String> getMaterialIdList(List<IMY_MAT_ONLINE> imyMatOnline) {
 		List<String> materialIdList = new ArrayList<String>();
 		for (IMY_MAT_ONLINE matObj : imyMatOnline) {
@@ -263,25 +277,18 @@ public class MyTrackingController {
 		}
 		return materialIdList;
 	}
-	
-	/*@RequestMapping(value = "/CompanyProfile", method = RequestMethod.GET)
-	public String companyProfile(@ModelAttribute("user") User userInfo,
-			Model model) {
-		logger.debug("BEGIN");
-		List<IMY_SHIP_POINT> shipPoint = null;
-		if (userInfo != null) {
-			logger.debug("User Id is " + userInfo.getCompanyId());
-			IMY_COMPANY companyInfo = companyManager.getCompanyInfo(userInfo
-					.getCompanyId());
-			model.addAttribute("companyInfo", companyInfo);
-			if (companyInfo != null) {
-				shipPoint = companyManager.getShipPoints(userInfo
-						.getCompanyId());
-				model.addAttribute("shipPoint", shipPoint);
-			}
-		}
-		logger.debug("END");
-		return "CompanyProfile";
-	}*/
+
+	/*
+	 * @RequestMapping(value = "/CompanyProfile", method = RequestMethod.GET)
+	 * public String companyProfile(@ModelAttribute("user") User userInfo, Model
+	 * model) { logger.debug("BEGIN"); List<IMY_SHIP_POINT> shipPoint = null; if
+	 * (userInfo != null) { logger.debug("User Id is " +
+	 * userInfo.getCompanyId()); IMY_COMPANY companyInfo =
+	 * companyManager.getCompanyInfo(userInfo .getCompanyId());
+	 * model.addAttribute("companyInfo", companyInfo); if (companyInfo != null)
+	 * { shipPoint = companyManager.getShipPoints(userInfo .getCompanyId());
+	 * model.addAttribute("shipPoint", shipPoint); } } logger.debug("END");
+	 * return "CompanyProfile"; }
+	 */
 
 }

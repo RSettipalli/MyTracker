@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
-import com.mygoconsulting.mytracking.mappers.UserMapper;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
@@ -83,6 +82,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 	private void createPlant(IMY_MAT_ONLINE material) {
 		logger.debug("BEGIN");
 		IMY_MAT_WERKS materialPlant = material.getIMY_MAT_WERKS();
+		if(materialPlant != null){
 		String selectQuery = new String(
 				"select * from MATERIAL_PLANT where PLANT_CD= ?");
 		Object[] selectParams = { materialPlant.getPLANT() };
@@ -105,11 +105,13 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 					material.getMATERIAL(), materialPlant.getPLANT() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
+		}
 		logger.debug("END");
 	}
 
 	private void createStorageDetails(IMY_MAT_WERKS materialPlant) {
 		logger.debug("BEGIN");
+		if(materialPlant != null){
 		IMY_MAT_STORAGE_DETIALS storageDetails = materialPlant
 				.getIMY_MAT_STORAGE_DETIALS();
 		if (storageDetails != null) {
@@ -136,6 +138,7 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 						materialPlant.getPLANT() };
 				insertOrUpdate(sqlQuery, updateParams);
 			}
+		}
 		}
 		logger.debug("END");
 
@@ -169,9 +172,35 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		return iMyMaterials;
 	}
 
+	
+	public IMY_MAT_ONLINE getMaterialDetails(String material_cd) {
+		logger.debug("BEGIN");
+		String selectQuery = new String("select * from MATERIAL  where MATERIAL_CD = '"+material_cd+"'");
+		 IMY_MAT_ONLINE iMyMaterials = (IMY_MAT_ONLINE) get(selectQuery, materialMapper);
+		logger.debug("END");
+		return iMyMaterials;
+	}
+	
+	
 	public List<IMY_MAT_WERKS> getMaterialPlantDetails() {
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL_PLANT");
+		List<Object> objList = super.getObjects(selectQuery,
+				materialPlantMapper);
+		// IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery,
+		// materialPlantMapper);
+		List<IMY_MAT_WERKS> iMyMaterialPlant = new ArrayList(objList.size());
+		for (Object obj : objList) {
+			IMY_MAT_WERKS matOnline = (IMY_MAT_WERKS) obj;
+			iMyMaterialPlant.add(matOnline);
+		}
+		logger.debug("END");
+		return iMyMaterialPlant;
+	}
+	
+	public List<IMY_MAT_WERKS> getMaterialPlantDetails(String material_cd_ref) {
+		logger.debug("BEGIN");
+		String selectQuery = new String("select * from MATERIAL_PLANT where MATERIAL_CD_REF='"+material_cd_ref+"'");
 		List<Object> objList = super.getObjects(selectQuery,
 				materialPlantMapper);
 		// IMY_MAT_WERKS iMyMaterialPlant = (IMY_MAT_WERKS) get(selectQuery,
@@ -188,6 +217,24 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails() {
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from MATERIAL_storage");
+		List<Object> objList = getObjects(selectQuery, storageMapper);
+		// IMY_MAT_STORAGE_DETIALS iMyMaterialStorage =
+		// (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);
+		List<IMY_MAT_STORAGE_DETIALS> iMyMaterialStorageList = new ArrayList<IMY_MAT_STORAGE_DETIALS>();
+		if (objList != null) {
+			iMyMaterialStorageList = new ArrayList<IMY_MAT_STORAGE_DETIALS>(objList.size());
+			for (Object obj : objList) {
+				IMY_MAT_STORAGE_DETIALS storage = (IMY_MAT_STORAGE_DETIALS) obj;
+				iMyMaterialStorageList.add(storage);
+			}
+		}
+		logger.debug("END");
+		return iMyMaterialStorageList;
+	}
+	
+	public List<IMY_MAT_STORAGE_DETIALS> getMaterialStorageDetails(String plant_cd_ref) {
+		logger.debug("BEGIN");
+		String selectQuery = new String("select * from MATERIAL_storage where PLANT_CD_REF='"+plant_cd_ref+"'");
 		List<Object> objList = getObjects(selectQuery, storageMapper);
 		// IMY_MAT_STORAGE_DETIALS iMyMaterialStorage =
 		// (IMY_MAT_STORAGE_DETIALS) get(selectQuery, storageMapper);

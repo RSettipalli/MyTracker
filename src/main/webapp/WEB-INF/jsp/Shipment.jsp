@@ -59,15 +59,13 @@
 									<b> Sales Order Detail Information</b>
 									<display:table list="${soHeader.getIMY_MGOL_SO_DETAIL()}"
 										style="border: 1px solid; width: 950px; height: 20px;">
+										<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
 										<display:column property="PRODUCT_NBR" title="Product Number" />
-										<display:column property="NET_VAL" title="Net Value" />
-										<!--<display:column property="ITEM_CAT" title="Item Category" />-->
-										<display:column property="ORDER_NBR" title="Order Number" />
-										<display:column property="BASE_UOM" title="Unit Of Measure" />
 										<display:column property="OVERRIDE_PRODUCT" title="Product" />
-										<display:column property="ORDER_LINE_NBR"
-											title="OrderLineNumber" />
 										<display:column property="ORD_QTY" title="OrderQuantity" />
+										<display:column property="NET_VAL" title="Net Value" />
+										<display:column property="BASE_UOM" title="Unit Of Measure" />
+										<display:column property="ORDER_NBR" title="Order Number" />
 									</display:table>
 								</div>
 								<table>
@@ -79,9 +77,8 @@
 													<display:table
 														name="${soDetail.getIMY_MGOL_SO_DETAIL_COMMENT ()}"
 														cellspacing="2" style="border: 1px solid; width: 600px;">
+														<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
 														<display:column property="ORDER_NBR" title="Order Number" />
-														<display:column property="ORDER_LINE_NBR"
-															title="Order Line Number" />
 														<display:column property="LINE" title="Line" />
 														<display:column property="TYPE" title="Type" />
 													</display:table>

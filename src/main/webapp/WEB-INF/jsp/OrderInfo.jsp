@@ -13,14 +13,13 @@
 						<b> Delivery Header Information </b> <br />
 						<table class="tg">
 							<tr>
-								<th class="tg-kkr7">DeliveryNumber</th>
+								<th class="tg-kkr7">Delivery Number</th>
 								<th class="tg-t8h0">Status</th>
-								<th class="tg-t8h0">Ship_To</th>
+								<th class="tg-t8h0">Ship To</th>
 								<th class="tg-t8h0">End_User</th>
-								<th class="tg-t8h0">End_User_Company</th>
-								<th class="tg-t8h0">Company_Name</th>
-								<th class="tg-t8h0">Customer_PO</th>
-								<th class="tg-t8h0">ReferenceNum</th>
+								<th class="tg-t8h0">Company Name</th>
+								<th class="tg-t8h0">Customer PO</th>
+								<th class="tg-t8h0">Reference Number</th>
 								<th class="tg-t8h0">Order Plant</th>
 								<th class="tg-t8h0">Address1</th>
 								<th class="tg-t8h0">Address2</th>
@@ -36,7 +35,6 @@
 									<td class="tg-031e">${odHeader.ORDER_STATUS_CD}</td>
 									<td class="tg-031e">${odHeader.SHIP_TO_COMPANY_CD}</td>
 									<td class="tg-031e">${odHeader.END_USER}</td>
-									<td class="tg-031e">${odHeader.END_USER_COMPANY_CD}</td>
 									<td class="tg-031e">${odHeader.OVERRIDE_COMPANY_NAME}</td>
 									<td class="tg-031e">${odHeader.ORDER_REF_NUM}</td>
 									<td class="tg-031e">${odHeader.ORDER_PLANT_CD}</td>
@@ -60,15 +58,13 @@
 									<b> Delivery Details</b>
 									<display:table list="${odHeader.getIMY_MGOL_OD_DETAIL()}"
 										style="border: 1px solid; width: 950px; height: 20px;">
-										<display:column property="PRODUCT_NBR" title="Product_Number" />
-										<display:column property="NET_VAL" title="Net_Value" />
-										<display:column property="ITEM_CAT" title="Item_Category" />
-										<display:column property="ORDER_NBR" title="Order_Number" />
-										<display:column property="BASE_UOM" title="Unit_Of_Measure" />
+										<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
+										<display:column property="PRODUCT_NBR" title="Product Number" />
 										<display:column property="OVERRIDE_PRODUCT" title="Product" />
-										<display:column property="ORDER_LINE_NBR"
-											title="OrderLineNumber" />
-										<display:column property="ORD_QTY" title="OrderQuantity" />
+										<display:column property="ORD_QTY" title="Order Quantity" />
+										<display:column property="BASE_UOM" title="Unit Of Measure" />
+										<display:column property="NET_VAL" title="Net Value" />
+										<display:column property="ORDER_NBR" title="Orde Number" />
 									</display:table>
 								</div>
 
@@ -81,9 +77,8 @@
 													<display:table
 														name="${odDetail.get_IMY_MGOL_SO_DETAIL_COMMENT ()}"
 														cellspacing="2" style="border: 1px solid; width: 600px;">
-														<display:column property="ORDER_NBR" title="OrderNumber" />
-														<display:column property="ORDER_LINE_NBR"
-															title="OrderLineNumber" />
+														<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
+														<display:column property="ORDER_NBR" title="Order Number" />
 														<display:column property="LINE" title="Line" />
 														<display:column property="TYPE" title="Type" />
 													</display:table>
@@ -94,11 +89,10 @@
 												<display:table
 													list="${odHeader.getIMY_MGOL_OD_HEADER_COMMENT ()}"
 													cellspacing="2" style="border: 1px solid; width: 300px;">
-													<display:column property="ORDER_NBR" title="OrderNumber" />
+													<display:column property="ORDER_NBR" title="Order Number" />
 													<display:column property="LINE" title="Line" />
 													<display:column property="TYPE" title="Type" />
-													<display:column property="DELVI_NBR_OD_HEADER"
-														title="OrderDetailNumber" />
+													<display:column property="DELVI_NBR_OD_HEADER" title="Order Detail Number" />
 												</display:table>
 											</div></td>
 									</tr>
