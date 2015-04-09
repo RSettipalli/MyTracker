@@ -1,16 +1,4 @@
 <%@include file="./header.jsp" %>
-<script type="text/javascript">
-function onChange() {
-	/* document.getElementById("materialIds").onchange = function(){ */
-		var e = document.getElementById("materialIds");
-		var selVal = e.options[e.selectedIndex].value;
-		if(selVal != '-1')
-			$('#btnGo').prop('disabled', false);
-		else
-			$('#btnGo').prop('disabled', true);
-	/* } */
-}
-</script>
 <div>
 	<div class="content">
 		<div class="content_resize">
@@ -28,7 +16,7 @@ function onChange() {
 							<form:option value="-1" selected="selected">Select</form:option>
 							<form:options items="${materialForm.materialIdList}" />
 						</form:select>
-						<input type=submit value="go" />
+						<input id="btnGo" type=submit disabled="disabled" value="Go" />
 					</form:form>
 				</div>
 			</div>
