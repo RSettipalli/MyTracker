@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_CUSTOMER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_CUST_BANK;
@@ -24,6 +25,7 @@ public class CustomerXMLParser extends BaseParser implements IParser {
 		XMLStreamReader reader = super.getReader(fileName);
 		IMY_MGOL_CUSTOMER myCustomer = null;
 		IMY_MGOL_CUST_BANK myCustBank = null;
+		EDI_DC40 ediDC40 = null;
 		String tagContent = null;
 		List<IMY_MGOL_CUSTOMER> customerList = null;
 		IDOC doc = null;
@@ -36,6 +38,10 @@ public class CustomerXMLParser extends BaseParser implements IParser {
 						doc = new IDOC();
 						customerList = new ArrayList<IMY_MGOL_CUSTOMER>();
 						parent = "IDOC";
+					} else if ("EDI_DC40".equals(reader.getLocalName())) {
+						ediDC40 = new EDI_DC40();
+						ediDC40.setSEGMENT(reader.getAttributeValue(0));
+						parent = "EDI_DC40";
 					} else if ("_-IMY_-MGOL_CUSTOMER".equals(reader
 							.getLocalName())) {
 						myCustomer = new IMY_MGOL_CUSTOMER();
@@ -105,7 +111,65 @@ public class CustomerXMLParser extends BaseParser implements IParser {
 						customerList.add(myCustomer);
 						parent = null;
 						break;
+					case "TABNAM":
+						ediDC40.setTABNAM(tagContent);
+						break;
+					case "MANDT":
+						ediDC40.setMANDT(tagContent);
+						break;
+					case "DOCNUM":
+						ediDC40.setDOCNUM(tagContent);
+						break;
+					case "DOCREL":
+						ediDC40.setDOCREL(tagContent);
+						break;
+					case "STATUS":
+						ediDC40.setSTATUS(tagContent);
+						break;
+					case "DIRECT":
+						ediDC40.setDIRECT(tagContent);
+						break;
+					case "OUTMOD":
+						ediDC40.setOUTMOD(tagContent);
+						break;
+					case "IDOCTYP":
+						ediDC40.setIDOCTYP(tagContent);
+						break;
+					case "MESTYP":
+						ediDC40.setMESTYP(tagContent);
+						break;
+					case "SNDPOR":
+						ediDC40.setSNDPOR(tagContent);
+						break;
+					case "SNDPRT":
+						ediDC40.setSNDPRT(tagContent);
+						break;
+					case "SNDPRN":
+						ediDC40.setSNDPRN(tagContent);
+						break;
+					case "RCVPOR":
+						ediDC40.setRCVPOR(tagContent);
+						break;
+					case "RCVPRT":
+						ediDC40.setRCVPRT(tagContent);
+						break;
+					case "RCVPRN":
+						ediDC40.setRCVPRN(tagContent);
+						break;
+					case "CREDAT":
+						ediDC40.setCREDAT(tagContent);
+						break;
+					case "CRETIM":
+						ediDC40.setCRETIM(tagContent);
+						break;
+					case "SERIAL":
+						ediDC40.setSERIAL(tagContent);
+						break;
+					case "EDI_DC40":
+						parent = null;
+						break;
 					case "IDOC":
+						doc.setEDI_DC40(ediDC40);
 						doc.setIMY_MGOL_CUSTOMER(customerList);
 						parent = null;
 						break;

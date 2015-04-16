@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MAT_ONLINE;
 import com.mygoconsulting.mytracking.model.IMY_MAT_STORAGE_DETIALS;
@@ -31,6 +32,10 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("MaterialRowMapper")
 	RowMapper<IMY_MAT_ONLINE> materialMapper;
+	
+	@Autowired
+	@Qualifier("EDIDC40Mapper")
+	RowMapper<EDI_DC40> ediDC40Mapper;
 
 	public void persist(IDOC doc) {
 		logger.debug("BEGIN");
@@ -38,8 +43,10 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 
 		for (IMY_MAT_ONLINE material : materialList) {
 
+			createEDI_DC40(doc.getEDI_DC40());
+			
 			// create material Storage details
-			createMaterial(material);
+			createMaterial(material,doc.getEDI_DC40().getDOCNUM());
 
 			// create material Plant details
 			createPlant(material);
@@ -50,8 +57,27 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		}
 		logger.debug("END");
 	}
-
-	private void createMaterial(IMY_MAT_ONLINE material) {
+	
+	private void createEDI_DC40(EDI_DC40 ediDC40){
+		if(ediDC40 != null){
+			String selectQuery = new String("select * from EDI_DC40 where DOCNUM = ?");
+			Object[] selectParams = { ediDC40.getDOCNUM() };
+			if(!isExists(selectQuery,selectParams,ediDC40Mapper)){
+				String sqlQuery = new String(
+						"insert into EDI_DC40 (TABNAM, MANDT, DOCNUM, DOCREL, STATUS, DIRECT, OUTMOD, IDOCTYP, MESTYP,"
+						+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
+						+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(), ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
+						ediDC40.getSTATUS(), ediDC40.getDIRECT(), ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(), 
+						ediDC40.getMESTYP(), ediDC40.getSNDPOR(), ediDC40.getSNDPRT(), ediDC40.getSNDPRN(), 
+						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(), ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
+						ediDC40.getCRETIM(),ediDC40.getSERIAL()};
+				insertOrUpdate(sqlQuery, params);
+			}
+		}
+	}
+	
+	private void createMaterial(IMY_MAT_ONLINE material,String docNum) {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from MATERIAL where MATERIAL_CD= ?");
@@ -59,16 +85,18 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 		if (!isExists(selectQuery, selectParams, materialMapper)) {
 			logger.debug("Material inserting");
 			String sqlQuery = new String(
-					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP) Values(?,?, ?,?, ?, ?,?,?,?)");
+					"insert into MATERIAL (MATERIAL_CD, MAT_DESC, UOM, STOCK, BOM, MAT_TYPE, "
+					+ "GROSS_WEIGHT, NET_WEIGHT, MATERIAL_GROUP, DOCNUM) Values(?,?, ?,?, ?, ?,?,?,?,?)");
 			Object[] params = { material.getMATERIAL(), material.getMAT_DESC(),
 					material.getUOM(), material.getSTOCK(), material.getBOM(),
 					material.getMAT_TYPE(), material.getGROSS_WEIGHT(),
-					material.getNET_WEIGHT(), material.getMATERIAL_GROUP() };
+					material.getNET_WEIGHT(), material.getMATERIAL_GROUP(),docNum };
 			insertOrUpdate(sqlQuery, params);
 		} else {
 			logger.debug("Material updating");
 			String sqlQuery = new String(
-					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, NET_WEIGHT=?, MATERIAL_GROUP=? where MATERIAL_CD=?");
+					"update MATERIAL SET MAT_DESC=?, UOM=?, STOCK=?, BOM=?, MAT_TYPE=?, GROSS_WEIGHT=?, "
+					+ "NET_WEIGHT=?, MATERIAL_GROUP=? where MATERIAL_CD=?");
 			Object[] updateParams = { material.getMATERIAL(),
 					material.getMAT_DESC(), material.getUOM(),
 					material.getSTOCK(), material.getBOM(),
@@ -90,7 +118,8 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 			logger.debug("Material Plant inserting");
 
 			String sqlQuery = new String(
-					"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT, MATERIAL_CD_REF) Values(?,?,?, ?, ?)");
+					"insert into MATERIAL_PLANT (PLANT_CD, MAINT_STATUS, MRP_TYPE,MRP_CONT, "
+					+ "MATERIAL_CD_REF) Values(?,?,?, ?, ?)");
 			Object[] params = { materialPlant.getPLANT(),
 					materialPlant.getMAINT_STATUS(),
 					materialPlant.getMRP_TYPE(), materialPlant.getMRP_CONT(),
@@ -122,7 +151,8 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 				logger.debug("Material Storage details inserting");
 
 				String sqlQuery = new String(
-						"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS, PLANT_CD_REF ) Values(?,?,?, ?)");
+						"insert into MATERIAL_STORAGE (STO_LOCATION, MAINT_STATUS, STOC_IN_QLTY_INS, "
+						+ "PLANT_CD_REF ) Values(?,?,?, ?)");
 				Object[] params = { storageDetails.getSTO_LOCATION(),
 						storageDetails.getMAINT_STATUS(),
 						storageDetails.getSTOC_IN_QLTY_INS(),
@@ -147,7 +177,8 @@ public class MaterialDAO extends BaseDAO implements IDAO {
 	public MaterialWrapper getAllMaterialDetails(String material_cd) {
 
 		String selectQuery = new String(
-				" select * from material m,material_plant mp, material_storage ms where m.plant_cd = mp.plant_cd and mp.sto_location = ms.sto_location and m.material_cd="
+				" select * from material m,material_plant mp, "
+				+ "material_storage ms where m.plant_cd = mp.plant_cd and mp.sto_location = ms.sto_location and m.material_cd="
 						+ material_cd);
 		// List<Object> objList = jdbcTemplateObject.queryForObject(selectQuery,
 		// new Object[]{material_cd},new UserMapper());

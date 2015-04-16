@@ -25,6 +25,8 @@ public class IMY_MGOL_CUSTOMER
     private String STR_SUPPL3;
 
     private IMY_MGOL_CUST_BANK IMY_MGOL_CUST_BANK;
+    
+    private String DOCNUM;
 
     public String getNAME1 ()
     {
@@ -145,4 +147,12 @@ public class IMY_MGOL_CUSTOMER
     {
         this.IMY_MGOL_CUST_BANK = IMY_MGOL_CUST_BANK;
     }
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
 }

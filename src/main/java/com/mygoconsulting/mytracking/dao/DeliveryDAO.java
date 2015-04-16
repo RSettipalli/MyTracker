@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER;
@@ -41,13 +42,19 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("DetailItemAttachementRowMapper")
 	RowMapper<IMY_MGOL_OD_ITEM_ATTACHM> detailItemAttachementRowMapper;
+	
+	@Autowired
+	@Qualifier("EDIDC40Mapper")
+	RowMapper<EDI_DC40> ediDC40Mapper;
 
 	public void persist(IDOC doc) {
 		logger.debug("BEGIN");
 		IMY_MGOL_OD_HEADER header = doc.getIMY_MGOL_OD_HEADER();
 		
+		createEDI_DC40(doc.getEDI_DC40());
+		
 		// create header
-		createHeader(header);
+		createHeader(header,doc.getEDI_DC40().getDOCNUM());
 
 		// create details
 		createDetail(doc.getIMY_MGOL_OD_DETAIL());
@@ -56,20 +63,42 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 		createDetailItemAttachment(doc.getIMY_MGOL_OD_DETAIL());
 		logger.debug("END");
 	}
+	
+	private void createEDI_DC40(EDI_DC40 ediDC40){
+		if(ediDC40 != null){
+			String selectQuery = new String("select * from EDI_DC40 where DOCNUM = ?");
+			Object[] selectParams = { ediDC40.getDOCNUM() };
+			if(!isExists(selectQuery,selectParams,ediDC40Mapper)){
+				String sqlQuery = new String(
+						"insert into EDI_DC40 (TABNAM, MANDT, DOCNUM, DOCREL, STATUS, DIRECT, OUTMOD, IDOCTYP, MESTYP,"
+						+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
+						+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(), ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
+						ediDC40.getSTATUS(), ediDC40.getDIRECT(), ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(), 
+						ediDC40.getMESTYP(), ediDC40.getSNDPOR(), ediDC40.getSNDPRT(), ediDC40.getSNDPRN(), 
+						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(), ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
+						ediDC40.getCRETIM(),ediDC40.getSERIAL()};
+				insertOrUpdate(sqlQuery, params);
+			}
+		}
+	}
 
 	private void createDetailItemAttachment(List<IMY_MGOL_OD_DETAIL> imy_MGOL_OD_DETAIL) {
 		logger.debug("BEGIN");
 		for (IMY_MGOL_OD_DETAIL detail : imy_MGOL_OD_DETAIL) {
 			if(detail.getIMY_MGOL_OD_ITEM_ATTACHM() != null){
 				String selectQuery = new String(
-						"select * from DELIVERY_ITEM_ATTACHMENT where DOKAR= ? and ORDER_NBR_OD_DETAIL = ? and ORDER_LINE_NBR_OD_DETAIL =?");
-				Object[] selectParams = { detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKAR(), detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
+						"select * from DELIVERY_ITEM_ATTACHMENT where DOKAR= ? and ORDER_NBR_OD_DETAIL = ? "
+						+ "and ORDER_LINE_NBR_OD_DETAIL =?");
+				Object[] selectParams = { detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKAR(), detail.getORDER_NBR(),
+						detail.getORDER_LINE_NBR() };
 				if (!isExists(selectQuery, selectParams, detailItemAttachementRowMapper)) {
 					logger.debug("Detail Item Attachement inserting");
 					String sqlQuery = new String(
 						"insert into DELIVERY_ITEM_ATTACHMENT (DOKAR, DOKNR, DOKTL, DOKVR, OBJKY, "
 						+ "ORDER_NBR_OD_DETAIL,ORDER_LINE_NBR_OD_DETAIL) Values(?,?,?,?,?,?,?)");
-					Object[] params = { detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKAR(), detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKNR(),
+					Object[] params = { detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKAR(), 
+							detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKNR(),
 							detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKTL(),detail.getIMY_MGOL_OD_ITEM_ATTACHM().getDOKVR(),
 							detail.getIMY_MGOL_OD_ITEM_ATTACHM().getOBJKY(),detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
 					insertOrUpdate(sqlQuery, params);
@@ -99,21 +128,22 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 				logger.debug("Delivery Detail inserting");				
 				String sqlQuery = new String(
 						"insert into DELIVERY_DETAIL (ORDER_NBR, ORDER_LINE_NBR, PRODUCT_NBR, OVERRIDE_PRODUCT, ITEM_CAT, "
-						+ "BASE_UOM, NET_VAL, ORD_QTY) Values(?,?,?,?,?,?,?,?)");
+						+ "BASE_UOM, NET_VAL, ORD_QTY, ORD_UOM_DESC, BASE_UOM_DESC, BASE_PRICE ) values(?,?,?,?, ?,?,?,?, ?,?,?)");
 				Object[] params = { detail.getORDER_NBR(),
-						detail.getORDER_LINE_NBR(), detail.getPRODUCT_NBR(),
-						detail.getOVERRIDE_PRODUCT(), detail.getITEM_CAT(),
-						detail.getBASE_UOM(), detail.getNET_VAL(),
-						detail.getORD_QTY() };
+						detail.getORDER_LINE_NBR(), detail.getPRODUCT_NBR(), detail.getOVERRIDE_PRODUCT(), detail.getITEM_CAT(),
+						detail.getBASE_UOM(), detail.getNET_VAL(), detail.getORD_QTY(), detail.getORD_UOM_DESC(),
+						detail.getBASE_UOM_DESC(), detail.getBASE_PRICE() };
 				insertOrUpdate(sqlQuery, params);
 			} else {
 				logger.debug("Delivery Detail updating");
 				String sqlQuery = new String(
 						"update DELIVERY_DETAIL SET PRODUCT_NBR=?, OVERRIDE_PRODUCT=?, "
-						+ "ITEM_CAT=?, BASE_UOM=?, NET_VAL=?, ORD_QTY=? where ORDER_NBR=? and ORDER_LINE_NBR=?");
+						+ "ITEM_CAT=?, BASE_UOM=?, NET_VAL=?, ORD_QTY=?, "
+						+ "ORD_UOM_DESC=?, BASE_UOM_DESC=?, BASE_PRICE=? "
+						+ "where ORDER_NBR=? and ORDER_LINE_NBR=?");
 				Object[] updateParams = { detail.getPRODUCT_NBR(), detail.getOVERRIDE_PRODUCT(),
-						detail.getITEM_CAT(), detail.getBASE_UOM(),
-						detail.getNET_VAL(), detail.getORD_QTY(),
+						detail.getITEM_CAT(), detail.getBASE_UOM(),	detail.getNET_VAL(), detail.getORD_QTY(),
+						detail.getORD_UOM_DESC(), detail.getBASE_UOM_DESC(), detail.getBASE_PRICE(),
 						detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
 				insertOrUpdate(sqlQuery, updateParams);
 			}
@@ -123,7 +153,7 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 
-	private void createHeader(IMY_MGOL_OD_HEADER header) {
+	private void createHeader(IMY_MGOL_OD_HEADER header,String docNum) {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from DELIVERY_HEADER where DELVI_NBR= ?");
@@ -134,12 +164,14 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 					"insert into DELIVERY_HEADER (SOLD_TO_COMPANY_CD, SHIP_TO_COMPANY_CD, DELVI_NBR, ORDER_PLANT_CD, "
 					+ "ORDER_STATUS_CD, CUSTOMER_PO, END_USER, END_USER_COMPANY_CD, OVERRIDE_COMPANY_NAME, "
 					+ "OVERRIDE_ADDRESS1, OVERRIDE_ADDRESS2, OVERRIDE_CITY, OVERRIDE_STATE, OVERRIDE_ZIP, "
-					+ "ORDER_REF_NUM) Values(?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?)");
+					+ "ORDER_REF_NUM, DOCNUM, DELIV_PRICE, CURRENCY, CREATE_DATE ) "
+					+ "Values(?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?)");
 			Object[] params = { header.getSOLD_TO_COMPANY_CD(),	header.getSHIP_TO_COMPANY_CD(), header.getDELVI_NBR(),
 					header.getORDER_PLANT_CD(), header.getORDER_STATUS_CD(), header.getCUSTOMER_PO(), header.getEND_USER(),
 					header.getEND_USER_COMPANY_CD(), header.getOVERRIDE_COMPANY_NAME(),	header.getOVERRIDE_ADDRESS1(),
-					header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(), header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(),
-					header.getORDER_REF_NUM() };
+					header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(), header.getOVERRIDE_STATE(),
+					header.getOVERRIDE_ZIP(), header.getORDER_REF_NUM(), docNum, header.getDELIV_PRICE(),
+					header.getCURRENCY(), header.getCREATE_DATE()};
 			insertOrUpdate(sqlQuery, params);
 		} else {
 			logger.debug("Header Comment updating");
@@ -147,11 +179,13 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 					"update DELIVERY_HEADER SET SOLD_TO_COMPANY_CD=?, SHIP_TO_COMPANY_CD=?,  ORDER_PLANT_CD=?, "
 					+ "ORDER_STATUS_CD=?, CUSTOMER_PO=?, END_USER=?, END_USER_COMPANY_CD=?, OVERRIDE_COMPANY_NAME=?, "
 					+ "OVERRIDE_ADDRESS1=?, OVERRIDE_ADDRESS2=?, OVERRIDE_CITY=?, OVERRIDE_STATE=?, OVERRIDE_ZIP=?, "
-					+ "ORDER_REF_NUM=? where DELVI_NBR=?");
+					+ "ORDER_REF_NUM=?, DELIV_PRICE=?, CURRENCY=?, CREATE_DATE=? where DELVI_NBR=?");
 			Object[] updateParams = { header.getSOLD_TO_COMPANY_CD(), header.getSHIP_TO_COMPANY_CD(), header.getORDER_PLANT_CD(),
 					header.getORDER_STATUS_CD(), header.getCUSTOMER_PO(), header.getEND_USER(), header.getEND_USER_COMPANY_CD(),
-					header.getOVERRIDE_COMPANY_NAME(), header.getOVERRIDE_ADDRESS1(), header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(),
-					header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(), header.getORDER_REF_NUM(), header.getDELVI_NBR() };
+					header.getOVERRIDE_COMPANY_NAME(), header.getOVERRIDE_ADDRESS1(), 
+					header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(), header.getOVERRIDE_STATE(), 
+					header.getOVERRIDE_ZIP(), header.getORDER_REF_NUM(), header.getDELIV_PRICE(),
+					header.getCURRENCY(), header.getCREATE_DATE(), header.getDELVI_NBR() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
 		
@@ -171,14 +205,18 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 				if (!isExists(selectQuery, selectParams, headerCommentRowMapper)) {
 					logger.debug("Header Comment inserting");
 					String sqlQuery = new String(
-							"insert into DELIVERY_OD_HEADER_COMMENT (ORDER_NBR, TYPE, LINE, DELVI_NBR_OD_HEADER) Values(?,?,?,?)");
-					Object[] params = { headerComment.getORDER_NBR(), headerComment.getTYPE(), headerComment.getLINE(), delviNum };
+							"insert into DELIVERY_OD_HEADER_COMMENT (ORDER_NBR, TYPE, "
+							+ "LINE, DELVI_NBR_OD_HEADER) Values(?,?,?,?)");
+					Object[] params = { headerComment.getORDER_NBR(), headerComment.getTYPE(), 
+							headerComment.getLINE(), delviNum };
 					insertOrUpdate(sqlQuery, params);
 				} else {
 					logger.debug("Header Comment updating");
 					String sqlQuery = new String(
-							"update DELIVERY_OD_HEADER_COMMENT SET TYPE=? where ORDER_NBR=? and LINE=? and DELVI_NBR_OD_HEADER = ?");
-					Object[] updateParams = { headerComment.getTYPE(), headerComment.getORDER_NBR(),headerComment.getLINE(),delviNum };
+							"update DELIVERY_OD_HEADER_COMMENT SET TYPE=? where ORDER_NBR=? "
+							+ "and LINE=? and DELVI_NBR_OD_HEADER = ?");
+					Object[] updateParams = { headerComment.getTYPE(), headerComment.getORDER_NBR(),
+							headerComment.getLINE(),delviNum };
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
@@ -196,7 +234,8 @@ public class DeliveryDAO extends BaseDAO implements IDAO {
 				if (!isExists(selectQuery, selectParams, detailCommentRowMapper)) {
 					logger.debug("Detail Comment inserting");
 					String sqlQuery = new String(
-							"insert into DELIVERY_OD_DETAIL_COMMENT (ORDER_NBR, ORDER_LINE_NBR, TYPE, LINE, ORDER_NBR_OD_DETAIL, "
+							"insert into DELIVERY_OD_DETAIL_COMMENT (ORDER_NBR, ORDER_LINE_NBR, "
+							+ "TYPE, LINE, ORDER_NBR_OD_DETAIL, "
 							+ "ORDER_LINE_NBR_OD_DETAIL) Values(?,?,?,?,?,?)");
 					Object[] params = { detailComment.getORDER_NBR(), detailComment.getORDER_LINE_NBR(), 
 							detailComment.getTYPE(),detailComment.getLINE(), orderNum, orderLineNum  };

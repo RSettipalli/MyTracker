@@ -4,25 +4,31 @@ import java.util.List;
 
 public class IMY_MGOL_OD_DETAIL
 {
-    private String PRODUCT_NBR;
+	private String ORDER_NBR;
 
-    private String NET_VAL;
-
+    private String ORDER_LINE_NBR;
+    
+	private String PRODUCT_NBR;
+	
+	private String OVERRIDE_PRODUCT;
+	
+    private String ITEM_CAT;
+    
     private String BASE_UOM;
 
-    private String ITEM_CAT;
+    private String NET_VAL;
+    
+    private String ORD_QTY;
+
+    private String ORD_UOM_DESC;
+    
+    private String BASE_UOM_DESC;
+    
+    private String BASE_PRICE;
 
     private String SEGMENT;
 
     private List<IMY_MGOL_SO_DETAIL_COMMENT> IMY_MGOL_SO_DETAIL_COMMENT;
-
-    private String OVERRIDE_PRODUCT;
-
-    private String ORDER_NBR;
-
-    private String ORDER_LINE_NBR;
-
-    private String ORD_QTY;
 
     private IMY_MGOL_OD_ITEM_ATTACHM IMY_MGOL_OD_ITEM_ATTACHM;
 
@@ -135,4 +141,28 @@ public class IMY_MGOL_OD_DETAIL
     {
         this.IMY_MGOL_OD_ITEM_ATTACHM = IMY_MGOL_OD_ITEM_ATTACHM;
     }
+
+	public String getORD_UOM_DESC() {
+		return ORD_UOM_DESC;
+	}
+
+	public void setORD_UOM_DESC(String oRD_UOM_DESC) {
+		ORD_UOM_DESC = oRD_UOM_DESC;
+	}
+
+	public String getBASE_UOM_DESC() {
+		return BASE_UOM_DESC;
+	}
+
+	public void setBASE_UOM_DESC(String bASE_UOM_DESC) {
+		BASE_UOM_DESC = bASE_UOM_DESC;
+	}
+
+	public String getBASE_PRICE() {
+		return BASE_PRICE;
+	}
+
+	public void setBASE_PRICE(String bASE_PRICE) {
+		BASE_PRICE = bASE_PRICE;
+	}
 }

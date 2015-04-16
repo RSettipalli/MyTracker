@@ -26,6 +26,7 @@ public class CompanyCodeRowMapper implements RowMapper<IMY_COMPANY> {
 		iMYCompany.setFAX(rs.getString("FAX"));
 		iMYCompany.setPHONE(rs.getString("PHONE"));
 		iMYCompany.setZIP(rs.getString("ZIP"));
+		iMYCompany.setDOCNUM(rs.getString("DOCNUM"));
 		return iMYCompany;
 	}
 

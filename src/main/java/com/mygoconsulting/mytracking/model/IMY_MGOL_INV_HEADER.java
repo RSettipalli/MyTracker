@@ -14,7 +14,7 @@ public class IMY_MGOL_INV_HEADER
 
     private String ORDER_PLANT_CD;
     
-    private String SHIP_TO_COMPANY_CD;
+    private String BILL_TO_COMPANY_CD;
     
     private String CUSTOMER_PO;
 
@@ -31,12 +31,22 @@ public class IMY_MGOL_INV_HEADER
     private String OVERRIDE_ADDRESS2;
 
     private String OVERRIDE_ZIP;
+    
+    private String ORDER_REF_NUM;
+    
+    private String BILLED_PRICE;
+    
+    private String CURRENCY;
+    
+    private String CREATE_DATE;
 
     private List<IMY_MGOL_INV_HEADER_COMMEN> IMY_MGOL_INV_HEADER_COMMEN;
     
     private List<IMY_MGOL_INV_DETAIL> IMY_MGOL_INV_DETAIL;
 
     private String SOLD_TO_COMPANY_CD;
+    
+    private String DOCNUM;
 
     public String getORDER_STATUS_CD ()
     {
@@ -188,14 +198,14 @@ public class IMY_MGOL_INV_HEADER
         this.OVERRIDE_ZIP = OVERRIDE_ZIP;
     }
     
-    public String getSHIP_TO_COMPANY_CD ()
+    public String getBILL_TO_COMPANY_CD ()
     {
-        return SHIP_TO_COMPANY_CD;
+        return BILL_TO_COMPANY_CD;
     }
 
-    public void setSHIP_TO_COMPANY_CD (String SHIP_TO_COMPANY_CD)
+    public void setBILL_TO_COMPANY_CD (String BILL_TO_COMPANY_CD)
     {
-        this.SHIP_TO_COMPANY_CD = SHIP_TO_COMPANY_CD;
+        this.BILL_TO_COMPANY_CD = BILL_TO_COMPANY_CD;
     }
 
 	public List<IMY_MGOL_INV_DETAIL> getIMY_MGOL_INV_DETAIL() {
@@ -204,5 +214,45 @@ public class IMY_MGOL_INV_HEADER
 
 	public void setIMY_MGOL_INV_DETAIL(List<IMY_MGOL_INV_DETAIL> iMY_MGOL_INV_DETAIL) {
 		IMY_MGOL_INV_DETAIL = iMY_MGOL_INV_DETAIL;
+	}
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
+
+	public String getORDER_REF_NUM() {
+		return ORDER_REF_NUM;
+	}
+
+	public void setORDER_REF_NUM(String oRDER_REF_NUM) {
+		ORDER_REF_NUM = oRDER_REF_NUM;
+	}
+
+	public String getBILLED_PRICE() {
+		return BILLED_PRICE;
+	}
+
+	public void setBILLED_PRICE(String bILLED_PRICE) {
+		BILLED_PRICE = bILLED_PRICE;
+	}
+
+	public String getCURRENCY() {
+		return CURRENCY;
+	}
+
+	public void setCURRENCY(String cURRENCY) {
+		CURRENCY = cURRENCY;
+	}
+
+	public String getCREATE_DATE() {
+		return CREATE_DATE;
+	}
+
+	public void setCREATE_DATE(String cREATE_DATE) {
+		CREATE_DATE = cREATE_DATE;
 	}
 }

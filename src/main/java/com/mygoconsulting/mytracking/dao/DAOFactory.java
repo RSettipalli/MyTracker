@@ -39,9 +39,9 @@ public class DAOFactory {
 	
 	
 	public void persistCompanyCodeData(IDOC doc){
-		logger.debug("BEGIN");
+		System.out.println("BEGIN");
 		companyCodeDAO.persist(doc);
-		logger.debug("END");
+		System.out.println("END");
 	}
 
 	public void persistCustomerData(IDOC doc) {

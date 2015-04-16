@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_COMPANY;
 import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
@@ -26,20 +27,46 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("CompanyCodeMapper")
 	RowMapper<IMY_COMPANY> companyCodeRowMapper;
-
+	
+	@Autowired
+	@Qualifier("EDIDC40Mapper")
+	RowMapper<EDI_DC40> ediDC40Mapper;
+	
 	public void persist(IDOC doc) {
-		logger.debug("BEGIN");
+		System.out.println("BEGIN");		 
+		
 		List<IMY_COMPANY> iMyCompanies = doc.getIMY_COMPANY();
 		
+		createEDI_DC40(doc.getEDI_DC40());
+		
 		// create company code
-		createCompany(iMyCompanies);
+		createCompany(iMyCompanies,doc.getEDI_DC40().getDOCNUM());
 		
 		// create Ship Point
 		createShipPoint(iMyCompanies);
-		logger.debug("END");
+		System.out.println("END");
 	}
 
-	private void createCompany(List<IMY_COMPANY> iMyCompanies) {
+	private void createEDI_DC40(EDI_DC40 ediDC40){
+		if(ediDC40 != null){
+			String selectQuery = new String("select * from EDI_DC40 where DOCNUM = ?");
+			Object[] selectParams = { ediDC40.getDOCNUM() };
+			if(!isExists(selectQuery,selectParams,ediDC40Mapper)){
+				String sqlQuery = new String(
+						"insert into EDI_DC40 (TABNAM, MANDT, DOCNUM, DOCREL, STATUS, DIRECT, OUTMOD, IDOCTYP, MESTYP,"
+						+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
+						+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(), ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
+						ediDC40.getSTATUS(), ediDC40.getDIRECT(), ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(), 
+						ediDC40.getMESTYP(), ediDC40.getSNDPOR(), ediDC40.getSNDPRT(), ediDC40.getSNDPRN(), 
+						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(), ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
+						ediDC40.getCRETIM(),ediDC40.getSERIAL()};
+				insertOrUpdate(sqlQuery, params);
+			}
+		}
+	}
+	
+	private void createCompany(List<IMY_COMPANY> iMyCompanies,String docNum) {
 		logger.debug("BEGIN");
 		for(IMY_COMPANY iMyCompany :iMyCompanies){
 			String selectQuery = new String("select * from COMPANY_CODE where BUKRS= ?");
@@ -48,12 +75,12 @@ public class CompanyCodeDAO extends BaseDAO implements IDAO {
 				logger.debug("Company Code inserting");
 				String sqlQuery = new String(
 						"insert into COMPANY_CODE (BUKRS, BUTXT, ORT01, WAERS, SPRAS, ADRNR, ADDRESS1, ADDRESS2, "
-						+ "COUNTRY, ZIP, PHONE, FAX) Values(?,?,?,?, ?,?,?,?, ?,?,?,?)");
+						+ "COUNTRY, ZIP, PHONE, FAX, DOCNUM) Values(?,?,?,?, ?,?,?,?, ?,?,?,?,?)");
 				Object[] params = { iMyCompany.getBUKRS(), iMyCompany.getBUTXT(),
 						iMyCompany.getORT01(), iMyCompany.getWAERS(), iMyCompany.getSPRAS(),
 						iMyCompany.getADRNR(),iMyCompany.getADDRESS1(),
 						iMyCompany.getADDRESS2(), iMyCompany.getCOUNTRY(),
-						iMyCompany.getZIP(), iMyCompany.getPHONE(), iMyCompany.getFAX() };
+						iMyCompany.getZIP(), iMyCompany.getPHONE(), iMyCompany.getFAX(), docNum };
 				insertOrUpdate(sqlQuery, params);
 			} else {
 				logger.debug("Company Code updating");

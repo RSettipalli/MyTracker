@@ -29,6 +29,7 @@ public class MaterialRowMapper implements RowMapper<IMY_MAT_ONLINE> {
 		//material.setSEGMENT(rs.getString("SEGMENT"));
 		material.setSTOCK(rs.getString("STOCK"));
 		material.setUOM(rs.getString("UOM"));
+		material.setDOCNUM(rs.getString("DOCNUM"));
 		
 		return material;
 	}

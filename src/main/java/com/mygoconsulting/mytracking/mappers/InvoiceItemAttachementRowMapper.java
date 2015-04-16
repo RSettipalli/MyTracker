@@ -18,7 +18,9 @@ public class InvoiceItemAttachementRowMapper implements RowMapper<IMY_MGOL_INV_I
 		iMyInvItemAtmt.setDOKNR(rs.getString("DOKNR"));
 		iMyInvItemAtmt.setDOKTL(rs.getString("DOKTL"));
 		iMyInvItemAtmt.setDOKVR(rs.getString("DOKVR"));
-		iMyInvItemAtmt.setOBJKY(rs.getString("OBJKY"));		
+		iMyInvItemAtmt.setOBJKY(rs.getString("OBJKY"));
+		iMyInvItemAtmt.setINVOI_NUM_SO(rs.getString("INVOI_NUM_SO"));
+		iMyInvItemAtmt.setINVOI_ORD_NUM(rs.getString("INVOI_ORD_NUM"));
 		return iMyInvItemAtmt;
 	}
 

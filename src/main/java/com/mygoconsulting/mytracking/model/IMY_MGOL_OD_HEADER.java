@@ -32,13 +32,21 @@ public class IMY_MGOL_OD_HEADER
     
     private String OVERRIDE_ZIP;
     
-    private String ORDER_REF_NUM;    
+    private String ORDER_REF_NUM;
+    
+    private String DELIV_PRICE;
+    
+    private String CURRENCY;
+    
+    private String CREATE_DATE;
 
     private List<IMY_MGOL_OD_HEADER_COMMENT> IMY_MGOL_OD_HEADER_COMMENT;
     
     private List<IMY_MGOL_OD_DETAIL>  IMY_MGOL_OD_DETAIL; 
 
     private String SOLD_TO_COMPANY_CD;
+    
+    private String DOCNUM;
 
     public String getORDER_STATUS_CD ()
     {
@@ -216,5 +224,37 @@ public class IMY_MGOL_OD_HEADER
 
 	public void setIMY_MGOL_OD_DETAIL(List<IMY_MGOL_OD_DETAIL> iMY_MGOL_OD_DETAIL) {
 		IMY_MGOL_OD_DETAIL = iMY_MGOL_OD_DETAIL;
+	}
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
+
+	public String getDELIV_PRICE() {
+		return DELIV_PRICE;
+	}
+
+	public void setDELIV_PRICE(String dELIV_PRICE) {
+		DELIV_PRICE = dELIV_PRICE;
+	}
+
+	public String getCURRENCY() {
+		return CURRENCY;
+	}
+
+	public void setCURRENCY(String cURRENCY) {
+		CURRENCY = cURRENCY;
+	}
+
+	public String getCREATE_DATE() {
+		return CREATE_DATE;
+	}
+
+	public void setCREATE_DATE(String cREATE_DATE) {
+		CREATE_DATE = cREATE_DATE;
 	}
 }

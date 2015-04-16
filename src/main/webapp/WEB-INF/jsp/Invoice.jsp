@@ -16,11 +16,15 @@
 								<th class="tg-kkr7">Invoice Number</th>
 								<th class="tg-t8h0">Status</th>
 								<th class="tg-t8h0">Sold From</th>
-								<th class="tg-t8h0">Ship To</th>
+								<th class="tg-t8h0">Bill To</th>
 								<th class="tg-t8h0">Company Name</th>
 								<th class="tg-t8h0">Customer PO</th>
 								<th class="tg-t8h0">Sold To</th>
 								<th class="tg-t8h0">Order Plant</th>
+								<th class="tg-t8h0">Order Ref Num</th>
+								<th class="tg-t8h0">Billed Price</th>
+								<th class="tg-t8h0">Currency</th>
+								<th class="tg-t8h0">Create Date</th>
 								<th class="tg-t8h0">Address1</th>
 								<th class="tg-t8h0">Address2</th>
 								<th class="tg-t8h0">City</th>
@@ -34,11 +38,15 @@
 									</td>
 									<td class="tg-031e">${invHeader.ORDER_STATUS_CD}</td>
 									<td class="tg-031e">${invHeader.SOLD_FROM_COMPANY_CD}</td>
-									<td class="tg-031e">${invHeader.SHIP_TO_COMPANY_CD}</td>
+									<td class="tg-031e">${invHeader.BILL_TO_COMPANY_CD}</td>
 									<td class="tg-031e">${invHeader.OVERRIDE_COMPANY_NAME}</td>
 									<td class="tg-031e">${invHeader.ORDER_PLANT_CD}</td>
 									<td class="tg-031e">${invHeader.CUSTOMER_PO}</td>
 									<td class="tg-031e">${invHeader.SOLD_TO_COMPANY_CD}</td>
+									<td class="tg-031e">${invHeader.ORDER_REF_NUM}</td>
+									<td class="tg-031e">${invHeader.BILLED_PRICE}</td>
+									<td class="tg-031e">${invHeader.CURRENCY}</td>
+									<td class="tg-031e">${invHeader.CREATE_DATE}</td>
 									<td class="tg-031e">${invHeader.OVERRIDE_ADDRESS1}</td>
 									<td class="tg-031e">${invHeader.OVERRIDE_ADDRESS2}</td>
 									<td class="tg-031e">${invHeader.OVERRIDE_CITY}</td>

@@ -19,6 +19,8 @@ public class DetailItemAttachementRowMapper implements RowMapper<IMY_MGOL_OD_ITE
 		iMyDetailItemAttachm.setDOKTL(rs.getString("DOKTL"));
 		iMyDetailItemAttachm.setDOKVR(rs.getString("DOKVR"));
 		iMyDetailItemAttachm.setOBJKY(rs.getString("OBJKY"));
+		iMyDetailItemAttachm.setORDER_NBR_OD_DETAIL(rs.getString("ORDER_NBR_OD_DETAIL"));
+		iMyDetailItemAttachm.setORDER_LINE_NBR_OD_DETAIL(rs.getString("ORDER_LINE_NBR_OD_DETAIL"));
 		return iMyDetailItemAttachm;
 	}
 	

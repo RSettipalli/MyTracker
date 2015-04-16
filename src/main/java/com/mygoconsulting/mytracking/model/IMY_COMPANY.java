@@ -31,6 +31,8 @@ public class IMY_COMPANY
     private String FAX;
     
     private String ZIP;
+    
+    private String DOCNUM;
 
     public String getSPRAS ()
     {
@@ -172,4 +174,12 @@ public class IMY_COMPANY
     {
         this.FAX = FAX;
     }
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
 }

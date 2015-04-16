@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_CUSTOMER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_CUST_BANK;
@@ -26,17 +27,42 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("CustomerRowMapper")
 	RowMapper<IMY_MGOL_CUSTOMER> customerRowMapper;
+	
+	@Autowired
+	@Qualifier("EDIDC40Mapper")
+	RowMapper<EDI_DC40> ediDC40Mapper;
 
 	public void persist(IDOC doc) {
 		logger.debug("BEGIN");
 		List<IMY_MGOL_CUSTOMER> iMyCustomers = doc.getIMY_MGOL_CUSTOMER();
+		
+		createEDI_DC40(doc.getEDI_DC40());
 
 		// create customer
-		createCustomer(iMyCustomers);
+		createCustomer(iMyCustomers,doc.getEDI_DC40().getDOCNUM());
 
 		// create customer bank
 		createCustomerBank(iMyCustomers);
 		logger.debug("END");
+	}
+	
+	private void createEDI_DC40(EDI_DC40 ediDC40){
+		if(ediDC40 != null){
+			String selectQuery = new String("select * from EDI_DC40 where DOCNUM = ?");
+			Object[] selectParams = { ediDC40.getDOCNUM() };
+			if(!isExists(selectQuery,selectParams,ediDC40Mapper)){
+				String sqlQuery = new String(
+						"insert into EDI_DC40 (TABNAM, MANDT, DOCNUM, DOCREL, STATUS, DIRECT, OUTMOD, IDOCTYP, MESTYP,"
+						+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
+						+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(), ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
+						ediDC40.getSTATUS(), ediDC40.getDIRECT(), ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(), 
+						ediDC40.getMESTYP(), ediDC40.getSNDPOR(), ediDC40.getSNDPRT(), ediDC40.getSNDPRN(), 
+						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(), ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
+						ediDC40.getCRETIM(),ediDC40.getSERIAL()};
+				insertOrUpdate(sqlQuery, params);
+			}
+		}
 	}
 
 	private void createCustomerBank(List<IMY_MGOL_CUSTOMER> iMyCustomers) {
@@ -74,7 +100,7 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 
-	private void createCustomer(List<IMY_MGOL_CUSTOMER> iMyCustomers) {
+	private void createCustomer(List<IMY_MGOL_CUSTOMER> iMyCustomers,String docNum) {
 		logger.debug("BEGIN");
 		for (IMY_MGOL_CUSTOMER iMyCustomer : iMyCustomers) {
 			String selectQuery = new String(
@@ -83,18 +109,20 @@ public class CustomerDAO extends BaseDAO implements IDAO {
 			if (!isExists(selectQuery, selectParams, customerRowMapper)) {
 				logger.debug("Customer inserting");
 				String sqlQuery = new String(
-						"insert into CUSTOMER (KUNNR, NAME1, STREET, STR_SUPPL3, CITY, REGION, COUNTRY, POSTL_COD1, TELEPHONE, FAX) Values(?,?,?,?,?,?,?,?,?,?)");
+						"insert into CUSTOMER (KUNNR, NAME1, STREET, STR_SUPPL3, CITY, REGION, COUNTRY, "
+						+ " POSTL_COD1, TELEPHONE, FAX, DOCNUM) Values(?,?,?,?,?,?,?,?,?,?,?)");
 				Object[] params = { iMyCustomer.getKUNNR(),
 						iMyCustomer.getNAME1(), iMyCustomer.getSTREET(),
 						iMyCustomer.getSTR_SUPPL3(), iMyCustomer.getCITY(),
 						iMyCustomer.getREGION(), iMyCustomer.getCOUNTRY(),
 						iMyCustomer.getPOSTL_COD1(),
-						iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX() };
+						iMyCustomer.getTELEPHONE(), iMyCustomer.getFAX(), docNum };
 				insertOrUpdate(sqlQuery, params);
 			} else {
 				logger.debug("Customer updating");
 				String sqlQuery = new String(
-						"update CUSTOMER SET NAME1=?, STREET=?, STR_SUPPL3=?, CITY=?, REGION=?, COUNTRY=?, POSTL_COD1=?, TELEPHONE=?, FAX=? where KUNNR=? ");
+						"update CUSTOMER SET NAME1=?, STREET=?, STR_SUPPL3=?, CITY=?, REGION=?, "
+						+ "COUNTRY=?, POSTL_COD1=?, TELEPHONE=?, FAX=? where KUNNR=? ");
 				Object[] updateParams = { iMyCustomer.getNAME1(),
 						iMyCustomer.getSTREET(), iMyCustomer.getSTR_SUPPL3(),
 						iMyCustomer.getCITY(), iMyCustomer.getREGION(),

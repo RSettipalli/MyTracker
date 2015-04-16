@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_INV_HEADER;
@@ -25,6 +26,7 @@ public class InvoiceXMLParser extends BaseParser implements IParser {
 		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
 		IDOC idoc = null;
+		EDI_DC40 ediDC40 = null;
 		IMY_MGOL_INV_HEADER myINVHeader = null;
 		List<IMY_MGOL_INV_HEADER_COMMEN> myINVHeaderComments = new ArrayList<IMY_MGOL_INV_HEADER_COMMEN>();
 		IMY_MGOL_INV_HEADER_COMMEN myINVHeaderComment = null;
@@ -44,6 +46,10 @@ public class InvoiceXMLParser extends BaseParser implements IParser {
 						idoc = new IDOC();
 						idoc.setBEGIN(reader.getAttributeValue(0));
 						parent = "IDOC";
+					} else if ("EDI_DC40".equals(reader.getLocalName())) {
+						ediDC40 = new EDI_DC40();
+						ediDC40.setSEGMENT(reader.getAttributeValue(0));
+						parent = "EDI_DC40";
 					} else if ("_-IMY_-MGOL_INV_HEADER".equals(reader.getLocalName())) {
 						myINVHeader = new IMY_MGOL_INV_HEADER();
 						myINVHeader.setSEGMENT(reader.getAttributeValue(0));
@@ -80,7 +86,10 @@ public class InvoiceXMLParser extends BaseParser implements IParser {
 						myINVHeader.setSOLD_TO_COMPANY_CD(tagContent);
 						break;
 					case "SHIP_TO_COMPANY_CD":
-						myINVHeader.setSHIP_TO_COMPANY_CD(tagContent);
+						myINVHeader.setBILL_TO_COMPANY_CD(tagContent);
+						break;
+					case "BILL_TO_COMPANY_CD":
+						myINVHeader.setBILL_TO_COMPANY_CD(tagContent);
 						break;
 					case "INVOI_NBR":
 						myINVHeader.setINVOI_NBR(tagContent);
@@ -114,6 +123,18 @@ public class InvoiceXMLParser extends BaseParser implements IParser {
 						break;
 					case "OVERRIDE_ZIP":
 						myINVHeader.setOVERRIDE_ZIP(tagContent);
+						break;
+					case "ORDER_REF_NUM":
+						myINVHeader.setORDER_REF_NUM(tagContent);
+						break;
+					case "BILLED_PRICE":
+						myINVHeader.setBILLED_PRICE(tagContent);
+						break;
+					case "CURRENCY":
+						myINVHeader.setCURRENCY(tagContent);
+						break;
+					case "CREATE_DATE":
+						myINVHeader.setCREATE_DATE(tagContent);
 						break;
 					case "ORDER_NBR":
 						if (parent.equals("_-IMY_-MGOL_INV_HEADER_COMMEN")) {
@@ -195,7 +216,66 @@ public class InvoiceXMLParser extends BaseParser implements IParser {
 						idoc.setIMY_MGOL_INV_DETAIL(myINVDetails);
 						parent = null;
 						break;
+					case "TABNAM":
+						ediDC40.setTABNAM(tagContent);
+						break;
+					case "MANDT":
+						ediDC40.setMANDT(tagContent);
+						break;
+					case "DOCNUM":
+						ediDC40.setDOCNUM(tagContent);
+						break;
+					case "DOCREL":
+						ediDC40.setDOCREL(tagContent);
+						break;
+					case "STATUS":
+						ediDC40.setSTATUS(tagContent);
+						break;
+					case "DIRECT":
+						ediDC40.setDIRECT(tagContent);
+						break;
+					case "OUTMOD":
+						ediDC40.setOUTMOD(tagContent);
+						break;
+					case "IDOCTYP":
+						ediDC40.setIDOCTYP(tagContent);
+						break;
+					case "MESTYP":
+						ediDC40.setMESTYP(tagContent);
+						break;
+					case "SNDPOR":
+						ediDC40.setSNDPOR(tagContent);
+						break;
+					case "SNDPRT":
+						ediDC40.setSNDPRT(tagContent);
+						break;
+					case "SNDPRN":
+						ediDC40.setSNDPRN(tagContent);
+						break;
+					case "RCVPOR":
+						ediDC40.setRCVPOR(tagContent);
+						break;
+					case "RCVPRT":
+						ediDC40.setRCVPRT(tagContent);
+						break;
+					case "RCVPRN":
+						ediDC40.setRCVPRN(tagContent);
+						break;
+					case "CREDAT":
+						ediDC40.setCREDAT(tagContent);
+						break;
+					case "CRETIM":
+						ediDC40.setCRETIM(tagContent);
+						break;
+					case "SERIAL":
+						ediDC40.setSERIAL(tagContent);
+						break;
+					case "EDI_DC40":
+						idoc.setEDI_DC40(ediDC40);
+						parent = null;
+						break;
 					}
+				  
 					break;
 				}
 			}

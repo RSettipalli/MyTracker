@@ -24,7 +24,10 @@ public class DeliveryDetailRowMapper implements
 		deliveryDetail.setBASE_UOM(rs.getString("BASE_UOM"));
 		deliveryDetail.setITEM_CAT(rs.getString("ITEM_CAT"));
 		deliveryDetail.setNET_VAL(rs.getString("NET_VAL"));
-		deliveryDetail.setORD_QTY(rs.getString("ORD_QTY"));		
+		deliveryDetail.setORD_QTY(rs.getString("ORD_QTY"));
+		deliveryDetail.setORD_UOM_DESC(rs.getString("ORD_UOM_DESC"));
+		deliveryDetail.setBASE_UOM_DESC(rs.getString("BASE_UOM_DESC"));
+		deliveryDetail.setBASE_PRICE(rs.getString("BASE_PRICE"));
 		return deliveryDetail;
 	}
 

@@ -13,6 +13,10 @@ public class IMY_MGOL_INV_ITEM_ATMT
     private String SEGMENT;
 
     private String OBJKY;
+    
+    private String INVOI_NUM_SO;
+    
+    private String INVOI_ORD_NUM;
 
     public String getDOKAR ()
     {
@@ -73,4 +77,20 @@ public class IMY_MGOL_INV_ITEM_ATMT
     {
         this.OBJKY = OBJKY;
     }
+
+	public String getINVOI_NUM_SO() {
+		return INVOI_NUM_SO;
+	}
+
+	public void setINVOI_NUM_SO(String iNVOI_NUM_SO) {
+		INVOI_NUM_SO = iNVOI_NUM_SO;
+	}
+
+	public String getINVOI_ORD_NUM() {
+		return INVOI_ORD_NUM;
+	}
+
+	public void setINVOI_ORD_NUM(String iNVOI_ORD_NUM) {
+		INVOI_ORD_NUM = iNVOI_ORD_NUM;
+	}
 }

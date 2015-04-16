@@ -23,6 +23,7 @@ public class SalesHeaderRowMapper implements RowMapper<IMY_MGOL_SO_HEADER> {
 		salesHeader.setSOLD_FROM_COMPANY_CD(rs.getString("SOLD_FROM_COMPANY_CD"));
 		salesHeader.setSOLD_TO_COMPANY_CD(rs.getString("SOLD_TO_COMPANY_CD"));
 		salesHeader.setSHIP_TO_COMPANY_CD(rs.getString("SHIP_TO_COMPANY_CD"));
+		salesHeader.setBILL_TO_COMPANY_CD(rs.getString("BILL_TO_COMPANY_CD"));
 		salesHeader.setORDER_NBR(rs.getString("ORDER_NBR"));
 		salesHeader.setORDER_NBR_VER(rs.getString("ORDER_NBR_VER"));
 		salesHeader.setORDER_PLANT_CD(rs.getString("ORDER_PLANT_CD"));
@@ -36,7 +37,10 @@ public class SalesHeaderRowMapper implements RowMapper<IMY_MGOL_SO_HEADER> {
 		salesHeader.setOVERRIDE_ADDRESS2(rs.getString("OVERRIDE_ADDRESS2"));
 		salesHeader.setOVERRIDE_CITY(rs.getString("OVERRIDE_CITY"));
 		salesHeader.setOVERRIDE_STATE(rs.getString("OVERRIDE_STATE"));
-		salesHeader.setOVERRIDE_ZIP(rs.getString("OVERRIDE_ZIP"));		
+		salesHeader.setOVERRIDE_ZIP(rs.getString("OVERRIDE_ZIP"));
+		salesHeader.setTOTAL_PRICE(rs.getString("TOTAL_PRICE"));
+		salesHeader.setCURRENCY(rs.getString("CURRENCY"));
+		salesHeader.setCREATE_DATE(rs.getString("CREATE_DATE"));
 			
 		// set the header
 		List<IMY_MGOL_SO_HEADER_COMMENT> headerCommentList = new ArrayList<IMY_MGOL_SO_HEADER_COMMENT>();

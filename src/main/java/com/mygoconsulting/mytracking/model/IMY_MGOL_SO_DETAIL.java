@@ -13,6 +13,12 @@ public class IMY_MGOL_SO_DETAIL
     private String ITEM_CAT;
 
     private String BASE_UOM;
+    
+    private String ORD_UOM_DESC;
+    
+    private String BASE_UOM_DESC;
+    
+    private String BASE_PRICE;
 
     private IMY_MGOL_SO_ITEM_ATTACHM IMY_MGOL_SO_ITEM_ATTACHM;
 
@@ -147,4 +153,28 @@ public class IMY_MGOL_SO_DETAIL
     {
         this.ORD_QTY = ORD_QTY;
     }
+
+	public String getORD_UOM_DESC() {
+		return ORD_UOM_DESC;
+	}
+
+	public void setORD_UOM_DESC(String oRD_UOM_DESC) {
+		ORD_UOM_DESC = oRD_UOM_DESC;
+	}
+
+	public String getBASE_UOM_DESC() {
+		return BASE_UOM_DESC;
+	}
+
+	public void setBASE_UOM_DESC(String bASE_UOM_DESC) {
+		BASE_UOM_DESC = bASE_UOM_DESC;
+	}
+
+	public String getBASE_PRICE() {
+		return BASE_PRICE;
+	}
+
+	public void setBASE_PRICE(String bASE_PRICE) {
+		BASE_PRICE = bASE_PRICE;
+	}
 }

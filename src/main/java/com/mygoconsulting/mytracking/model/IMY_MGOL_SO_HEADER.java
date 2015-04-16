@@ -10,6 +10,8 @@ public class IMY_MGOL_SO_HEADER
 
     private List<IMY_MGOL_SO_HEADER_COMMENT> IMY_MGOL_SO_HEADER_COMMENT;
 
+    private String BILL_TO_COMPANY_CD;
+    
     private String SHIP_TO_COMPANY_CD;
 
     private String END_USER;
@@ -42,7 +44,15 @@ public class IMY_MGOL_SO_HEADER
     
     private String CUSTOMER_PO;
     
+    private String TOTAL_PRICE;
+    
+    private String CURRENCY;
+    
+    private String CREATE_DATE;
+    
     private List<IMY_MGOL_SO_DETAIL> IMY_MGOL_SO_DETAIL;
+    
+    private String DOCNUM;
     
     public List<IMY_MGOL_SO_DETAIL> getIMY_MGOL_SO_DETAIL() {
 		return IMY_MGOL_SO_DETAIL;
@@ -82,14 +92,14 @@ public class IMY_MGOL_SO_HEADER
         this.IMY_MGOL_SO_HEADER_COMMENT = IMY_MGOL_SO_HEADER_COMMENT;
     }
 
-    public String getSHIP_TO_COMPANY_CD ()
+    public String getBILL_TO_COMPANY_CD ()
     {
-        return SHIP_TO_COMPANY_CD;
+        return BILL_TO_COMPANY_CD;
     }
 
-    public void setSHIP_TO_COMPANY_CD (String SHIP_TO_COMPANY_CD)
+    public void setBILL_TO_COMPANY_CD (String BILL_TO_COMPANY_CD)
     {
-        this.SHIP_TO_COMPANY_CD = SHIP_TO_COMPANY_CD;
+        this.BILL_TO_COMPANY_CD = BILL_TO_COMPANY_CD;
     }
 
     public String getEND_USER ()
@@ -241,5 +251,45 @@ public class IMY_MGOL_SO_HEADER
     {
         this.OVERRIDE_ZIP = OVERRIDE_ZIP;
     }
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
+
+	public String getSHIP_TO_COMPANY_CD() {
+		return SHIP_TO_COMPANY_CD;
+	}
+
+	public void setSHIP_TO_COMPANY_CD(String sHIP_TO_COMPANY_CD) {
+		SHIP_TO_COMPANY_CD = sHIP_TO_COMPANY_CD;
+	}
+
+	public String getTOTAL_PRICE() {
+		return TOTAL_PRICE;
+	}
+
+	public void setTOTAL_PRICE(String tOTAL_PRICE) {
+		TOTAL_PRICE = tOTAL_PRICE;
+	}
+
+	public String getCURRENCY() {
+		return CURRENCY;
+	}
+
+	public void setCURRENCY(String cURRENCY) {
+		CURRENCY = cURRENCY;
+	}
+
+	public String getCREATE_DATE() {
+		return CREATE_DATE;
+	}
+
+	public void setCREATE_DATE(String cREATE_DATE) {
+		CREATE_DATE = cREATE_DATE;
+	}
     
 }

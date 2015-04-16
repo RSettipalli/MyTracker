@@ -15,10 +15,10 @@ public class ParserFactory {
 	private static final MygoLogger LOG = LogFactory.getMygoLogger();
 
 	public IDOC parseCompanyCodeXML(String file) {
-		LOG.debug("BEGIN");
+		System.out.println("BEGIN");
 		IParser parser = new CompanyParser();
 		IDOC doc = (IDOC) parser.parse(file);
-		LOG.debug("END");
+		System.out.println("END");
 		return doc;
 	}
 

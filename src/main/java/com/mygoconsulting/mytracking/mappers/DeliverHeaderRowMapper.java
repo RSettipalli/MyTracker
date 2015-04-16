@@ -32,7 +32,10 @@ public class DeliverHeaderRowMapper implements RowMapper<IMY_MGOL_OD_HEADER> {
 		deliveryHeader.setOVERRIDE_STATE(rs.getString("OVERRIDE_STATE"));
 		deliveryHeader.setOVERRIDE_ZIP(rs.getString("OVERRIDE_ZIP"));		
 		deliveryHeader.setORDER_REF_NUM(rs.getString("ORDER_REF_NUM"));
-				
+		deliveryHeader.setDOCNUM(rs.getString("DOCNUM"));
+		deliveryHeader.setDELIV_PRICE(rs.getString("DELIV_PRICE"));
+		deliveryHeader.setCURRENCY(rs.getString("CURRENCY"));
+		deliveryHeader.setCREATE_DATE(rs.getString("CREATE_DATE"));		
 		return deliveryHeader;
 	}
 

@@ -21,7 +21,10 @@ public class SalesDetailRowMapper implements RowMapper<IMY_MGOL_SO_DETAIL> {
 		salesDetail.setBASE_UOM(rs.getString("BASE_UOM"));
 		salesDetail.setITEM_CAT(rs.getString("ITEM_CAT"));
 		salesDetail.setNET_VAL(rs.getString("NET_VAL"));
-		salesDetail.setORD_QTY(rs.getString("ORD_QTY"));		
+		salesDetail.setORD_QTY(rs.getString("ORD_QTY"));
+		salesDetail.setORD_UOM_DESC(rs.getString("ORD_UOM_DESC"));
+		salesDetail.setBASE_UOM_DESC(rs.getString("BASE_UOM_DESC"));
+		salesDetail.setBASE_PRICE(rs.getString("BASE_PRICE"));
 		return salesDetail;
 	}
 }

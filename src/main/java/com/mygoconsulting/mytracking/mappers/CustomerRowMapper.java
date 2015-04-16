@@ -24,6 +24,7 @@ public class CustomerRowMapper implements RowMapper<IMY_MGOL_CUSTOMER> {
 		iMYCustomer.setSTR_SUPPL3(rs.getString("STR_SUPPL3"));
 		iMYCustomer.setSTREET(rs.getString("STREET"));
 		iMYCustomer.setTELEPHONE(rs.getString("TELEPHONE"));
+		iMYCustomer.setDOCNUM(rs.getString("DOCNUM"));
 		return iMYCustomer;
 	}
 	

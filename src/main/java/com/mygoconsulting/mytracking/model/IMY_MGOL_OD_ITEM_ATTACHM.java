@@ -13,6 +13,10 @@ public class IMY_MGOL_OD_ITEM_ATTACHM
     private String DOKNR;
 
     private String OBJKY;
+    
+    private String ORDER_NBR_OD_DETAIL;
+    
+    private String ORDER_LINE_NBR_OD_DETAIL;
 
     public String getDOKTL ()
     {
@@ -73,4 +77,20 @@ public class IMY_MGOL_OD_ITEM_ATTACHM
     {
         this.OBJKY = OBJKY;
     }
+
+	public String getORDER_NBR_OD_DETAIL() {
+		return ORDER_NBR_OD_DETAIL;
+	}
+
+	public void setORDER_NBR_OD_DETAIL(String oRDER_NBR_OD_DETAIL) {
+		ORDER_NBR_OD_DETAIL = oRDER_NBR_OD_DETAIL;
+	}
+
+	public String getORDER_LINE_NBR_OD_DETAIL() {
+		return ORDER_LINE_NBR_OD_DETAIL;
+	}
+
+	public void setORDER_LINE_NBR_OD_DETAIL(String oRDER_LINE_NBR_OD_DETAIL) {
+		ORDER_LINE_NBR_OD_DETAIL = oRDER_LINE_NBR_OD_DETAIL;
+	}
 }

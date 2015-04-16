@@ -20,6 +20,9 @@
 								<th class="tg-t8h0">Company Name</th>
 								<th class="tg-t8h0">Customer PO</th>
 								<th class="tg-t8h0">Reference Number</th>
+								<th class="tg-t8h0">Delivery Price</th>
+								<th class="tg-t8h0">Currency</th>
+								<th class="tg-t8h0">Create Date</th>
 								<th class="tg-t8h0">Order Plant</th>
 								<th class="tg-t8h0">Address1</th>
 								<th class="tg-t8h0">Address2</th>
@@ -36,9 +39,12 @@
 									<td class="tg-031e">${odHeader.SHIP_TO_COMPANY_CD}</td>
 									<td class="tg-031e">${odHeader.END_USER}</td>
 									<td class="tg-031e">${odHeader.OVERRIDE_COMPANY_NAME}</td>
-									<td class="tg-031e">${odHeader.ORDER_REF_NUM}</td>
-									<td class="tg-031e">${odHeader.ORDER_PLANT_CD}</td>
 									<td class="tg-031e">${odHeader.CUSTOMER_PO}</td>
+									<td class="tg-031e">${odHeader.ORDER_REF_NUM}</td>
+									<td class="tg-031e">${odHeader.DELIV_PRICE}</td>
+									<td class="tg-031e">${odHeader.CURRENCY}</td>
+									<td class="tg-031e">${odHeader.CREATE_DATE}</td>
+									<td class="tg-031e">${odHeader.ORDER_PLANT_CD}</td>
 									<td class="tg-031e">${odHeader.OVERRIDE_ADDRESS1}</td>
 									<td class="tg-031e">${odHeader.OVERRIDE_ADDRESS2}</td>
 									<td class="tg-031e">${odHeader.OVERRIDE_CITY}</td>
@@ -63,6 +69,9 @@
 										<display:column property="OVERRIDE_PRODUCT" title="Product" />
 										<display:column property="ORD_QTY" title="Order Quantity" />
 										<display:column property="BASE_UOM" title="Unit Of Measure" />
+										<display:column property="ORD_UOM_DESC" title="Order Unit Of Measure" />
+										<display:column property="BASE_UOM_DESC" title="Base Unit Of Measure" />
+										<display:column property="BASE_PRICE" title="Base Price" />
 										<display:column property="NET_VAL" title="Net Value" />
 										<display:column property="ORDER_NBR" title="Orde Number" />
 									</display:table>

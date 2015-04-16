@@ -9,6 +9,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
+import com.mygoconsulting.mytracking.model.EDI_DC40;
 import com.mygoconsulting.mytracking.model.IDOC;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_DETAIL;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_OD_HEADER;
@@ -25,6 +26,7 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 		logger.debug("BEGIN");
 		XMLStreamReader reader = super.getReader(fileName);
 		IDOC idoc = null;
+		EDI_DC40 ediDC40 = null;
 		IMY_MGOL_OD_HEADER myODHeader = null;
 		List<IMY_MGOL_OD_HEADER_COMMENT> myODHeaderComments = new ArrayList<IMY_MGOL_OD_HEADER_COMMENT>();
 		IMY_MGOL_OD_HEADER_COMMENT myODHeaderComment = null;
@@ -44,6 +46,10 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 						idoc = new IDOC();
 						idoc.setBEGIN(reader.getAttributeValue(0));
 						parent = "IDOC";
+					} else if ("EDI_DC40".equals(reader.getLocalName())) {
+						ediDC40 = new EDI_DC40();
+						ediDC40.setSEGMENT(reader.getAttributeValue(0));
+						parent = "EDI_DC40";
 					} else if ("_-IMY_-MGOL_OD_HEADER".equals(reader.getLocalName())) {
 						myODHeader = new IMY_MGOL_OD_HEADER();
 						myODHeader.setSEGMENT(reader.getAttributeValue(0));
@@ -72,8 +78,8 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 				  switch (reader.getLocalName()) {
-				  
 				  case "IDOC":
+					  idoc.setEDI_DC40(ediDC40);
 					  idoc.setIMY_MGOL_OD_HEADER(myODHeader);
 					  idoc.setIMY_MGOL_OD_DETAIL(myODDetails);
 					  break;
@@ -121,6 +127,15 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 						break;
 					case "ORDER_REF_NUM":
 						myODHeader.setORDER_REF_NUM(tagContent);
+						break;
+					case "DELIV_PRICE":
+						myODHeader.setDELIV_PRICE(tagContent);
+						break;
+					case "CURRENCY":
+						myODHeader.setCURRENCY(tagContent);
+						break;
+					case "CREATE_DATE":
+						myODHeader.setCREATE_DATE(tagContent);
 						break;
 					case "ORDER_NBR":
 						if (parent.equals("_-IMY_-MGOL_OD_HEADER_COMMENT")) {
@@ -170,6 +185,15 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 					case "ORD_QTY":
 						myODDetail.setORD_QTY(tagContent);
 						break;
+					case "ORD_UOM_DESC":
+						myODDetail.setORD_UOM_DESC(tagContent);
+						break;
+					case "BASE_UOM_DESC":
+						myODDetail.setBASE_UOM_DESC(tagContent);
+						break;
+					case "BASE_PRICE":
+						myODDetail.setBASE_PRICE(tagContent);
+						break;
 					case "DOKAR":
 						myODItemAttachm.setDOKAR(tagContent);
 						break;
@@ -203,6 +227,63 @@ public class DeliveryXMLParser extends BaseParser implements IParser {
 						myODDetail.setIMY_MGOL_SO_DETAIL_COMMENT(mySODetailComments);
 						myODDetails.add(myODDetail);
 						idoc.setIMY_MGOL_OD_DETAIL(myODDetails);
+						parent = null;
+						break;
+					case "TABNAM":
+						ediDC40.setTABNAM(tagContent);
+						break;
+					case "MANDT":
+						ediDC40.setMANDT(tagContent);
+						break;
+					case "DOCNUM":
+						ediDC40.setDOCNUM(tagContent);
+						break;
+					case "DOCREL":
+						ediDC40.setDOCREL(tagContent);
+						break;
+					case "STATUS":
+						ediDC40.setSTATUS(tagContent);
+						break;
+					case "DIRECT":
+						ediDC40.setDIRECT(tagContent);
+						break;
+					case "OUTMOD":
+						ediDC40.setOUTMOD(tagContent);
+						break;
+					case "IDOCTYP":
+						ediDC40.setIDOCTYP(tagContent);
+						break;
+					case "MESTYP":
+						ediDC40.setMESTYP(tagContent);
+						break;
+					case "SNDPOR":
+						ediDC40.setSNDPOR(tagContent);
+						break;
+					case "SNDPRT":
+						ediDC40.setSNDPRT(tagContent);
+						break;
+					case "SNDPRN":
+						ediDC40.setSNDPRN(tagContent);
+						break;
+					case "RCVPOR":
+						ediDC40.setRCVPOR(tagContent);
+						break;
+					case "RCVPRT":
+						ediDC40.setRCVPRT(tagContent);
+						break;
+					case "RCVPRN":
+						ediDC40.setRCVPRN(tagContent);
+						break;
+					case "CREDAT":
+						ediDC40.setCREDAT(tagContent);
+						break;
+					case "CRETIM":
+						ediDC40.setCRETIM(tagContent);
+						break;
+					case "SERIAL":
+						ediDC40.setSERIAL(tagContent);
+						break;
+					case "EDI_DC40":
 						parent = null;
 						break;
 					}

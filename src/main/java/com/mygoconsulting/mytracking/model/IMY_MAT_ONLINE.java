@@ -23,6 +23,8 @@ public class IMY_MAT_ONLINE
     private String MATERIAL_GROUP;
 
     private String GROSS_WEIGHT;
+    
+    private String DOCNUM;
 
     public String getMAT_DESC ()
     {
@@ -133,4 +135,12 @@ public class IMY_MAT_ONLINE
     {
         this.GROSS_WEIGHT = GROSS_WEIGHT;
     }
+
+	public String getDOCNUM() {
+		return DOCNUM;
+	}
+
+	public void setDOCNUM(String dOCNUM) {
+		DOCNUM = dOCNUM;
+	}
 }
