@@ -14,7 +14,7 @@
 							</tr>
 							<tr>
 								<td><form:input path="email" value=""
-										placeholder="name@example.com" type="email" /></td>
+										placeholder="user@domain.com" type="email" /></td>
 								<td><form:password path="password" showPassword="true" /></td>
 								<td><input class="button" type="submit" value="Submit"
 									onclick="login()" />&nbsp;&nbsp;&nbsp;&nbsp;</td>

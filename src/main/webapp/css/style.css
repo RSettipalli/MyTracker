@@ -545,6 +545,17 @@ th, td {
     color: blue;
 } */
 
+/*----- Main Detail -----*/
+#mainDetail {
+    margin: 0 0 0 270px;
+}
+
+/*------ Side Bar -----*/
+#leftSidebar {
+    float:left;
+    width:270px;
+}
+
 /*----- Tabs -----*/
 
 .tabs {

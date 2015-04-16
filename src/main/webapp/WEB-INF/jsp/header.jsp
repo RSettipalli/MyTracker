@@ -9,11 +9,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="./js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="./js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./js/additional-methods.js"></script>
-<link href="./css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="./js/arial.js"></script>
+<script type="text/javascript" src="./js/cufon-yui.js"></script>
 <script type="text/javascript" src="./js/cuf_run.js"></script>
 <script type="text/javascript" src="./js/scripts.js"></script>
+<link href="./css/style.css" rel="stylesheet" type="text/css" />
+<link href="./css/jquery-ui.css" rel="stylesheet" type="text/css" />
 <script>
 	function toggle_visibility(id) {
 		var e = document.getElementById(id);

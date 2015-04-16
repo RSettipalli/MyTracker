@@ -1,5 +1,6 @@
 <%@include file="./header.jsp" %>
-<div >
+<%@include file="./leftsidebar.jsp" %>
+<div id="mainDetail">
 		<div class="content">
 			<div class="content_resize">
 				<div class="clr"></div>

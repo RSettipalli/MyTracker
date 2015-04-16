@@ -74,27 +74,21 @@ public class MyTrackingController {
 			Model model) {
 		logger.debug("BEGIN");
 		logger.debug("email is: " + loginRecord.getEmail());
-		if (StringUtils.isEmpty(loginRecord.getEmail())
-				|| StringUtils.isEmpty(loginRecord.getPassword())) {
+		User user = userDAO.validateUser(loginRecord.getEmail(),
+				loginRecord.getPassword());
+		if (user != null) {
+			IMY_COMPANY companyInfo = null;
+			setCompanyOrCustomerAttributes(model, user, companyInfo);
+			model.addAttribute("user", user);
+			model.addAttribute("currPage", "liHome");
+			logger.debug("END");
+			return "Home";
+		} else{
 			model.addAttribute("message", "Invalid User ID or Password");
 			model.addAttribute("currPage", "liLogin");
 			logger.debug("END");
 			return "login";
-		} else {
-			User user = userDAO.validateUser(loginRecord.getEmail(),
-					loginRecord.getPassword());
-			if (user != null) {
-				IMY_COMPANY companyInfo = null;
-				setCompanyOrCustomerAttributes(model, user, companyInfo);
-				model.addAttribute("user", user);
-				model.addAttribute("currPage", "liHome");
-				logger.debug("END");
-				return "Home";
-			}
 		}
-		model.addAttribute("currPage", "liLogin");
-		logger.debug("END");
-		return "login";
 	}
 
 	@RequestMapping(value = "/Material", method = RequestMethod.GET)
@@ -210,10 +204,14 @@ public class MyTrackingController {
 			model.addAttribute("companyInfo", companyInfo);
 			setCompanyOrCustomerAttributes(model, user, companyInfo);
 			model.addAttribute("user", user);
+			model.addAttribute("currPage", "liHome");
+			logger.debug("END");
+			return "Home";
+		} else{
+			model.addAttribute("currPage", "liLogin");
+			logger.debug("END");
+			return "login";
 		}
-		model.addAttribute("currPage", "liHome");
-		logger.debug("END");
-		return "Home";
 	}
 
 	private void setCompanyOrCustomerAttributes(Model model, User user,

@@ -124,5 +124,10 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.ardverk.collection</groupId>
+			<artifactId>patriciaTrie</artifactId>
+			<version>0.6</version>
+		</dependency>
 	</dependencies>	
 </project>

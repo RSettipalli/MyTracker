@@ -18,6 +18,9 @@ import com.mygoconsulting.mytracking.batch.util.MygoLogger;
 import com.mygoconsulting.mytracking.dao.MyTrackingDAO;
 import com.mygoconsulting.mytracking.manager.CompanyManager;
 import com.mygoconsulting.mytracking.manager.CustomerManager;
+import com.mygoconsulting.mytracking.model.CompanyUser;
+import com.mygoconsulting.mytracking.model.CustomerUser;
+import com.mygoconsulting.mytracking.model.IUser;
 import com.mygoconsulting.mytracking.model.LoginForm;
 import com.mygoconsulting.mytracking.model.User;
 import com.mygoconsulting.mytracking.util.Email;
@@ -66,7 +69,7 @@ public class SignUpController {
 		user.setUserType(UserType.COMPANY);
 		model.addAttribute("user", user);
 		model.addAttribute("AllUserTypes", UserType.getAllUserTypes());
-		model.addAttribute("currPage", "liLogin");
+		model.addAttribute("currPage", "liSignUp");
 		logger.debug("END");
 		return "signUp";
 	}
@@ -74,7 +77,12 @@ public class SignUpController {
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
 	public String register(@ModelAttribute("user") User newUserInfo, Model model) {
 		logger.debug("BEGIN");
-		boolean success = userDAO.createUser(newUserInfo);
+		IUser newUser;
+		if(newUserInfo.getUserType().equals(UserType.COMPANY))
+			newUser = new CompanyUser(newUserInfo);
+		else
+			newUser = new CustomerUser(newUserInfo);
+		boolean success = userDAO.createUser(newUser);
 		logger.debug("Registration successful:" + success);
 		String result = null;
 		String message = null;
@@ -86,7 +94,6 @@ public class SignUpController {
 			result = signUp(model);
 		}
 		model.addAttribute("message", message);
-		model.addAttribute("currPage", "liLogin");
 		logger.debug("END");
 		return result;
 	}

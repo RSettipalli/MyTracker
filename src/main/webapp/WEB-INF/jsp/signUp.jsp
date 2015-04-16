@@ -4,8 +4,6 @@ $(function(){
 	$('#register').prop("disabled",true);
 	$('.signUpInput').change(function(){
 		validateEmail();
-		if(!validatePassword())
-			$('#password').val("");
 		var firstName = $('#fname').val();
 		var lastName = $('#lname').val();
 		var Email = $('#email').val();
@@ -29,6 +27,16 @@ $(function(){
 		}
 	});
 });
+
+function onUserTypeChange(){
+	$('#kunnrList').val('-1');
+	$('#bukrsList').val('-1');
+}
+
+function onPasswordChange(){
+	if(!validatePassword())
+		$('#password').val("");
+}
 
 function validateEmail(){
 	var emailExpr= /[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}/i;
@@ -102,13 +110,13 @@ function validatePassword(){
 							<tr>
 								<td colspan="2">
 									<form:password path="password" value="" placeholder="Password" showPassword="true"
-									   style="width:99%" class="signUpInput"/>
+									   style="width:99%" onchange="onPasswordChange()" class="signUpInput"/> <!--  -->
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<form:radiobuttons path="UserType" items="${AllUserTypes}"
-										onclick="showHideSelects()" class="signUpInput"/>
+										onclick="showHideSelects()" onchange="onUserTypeChange()"/>
 								</td>
 								<td>
 									<form:select id="bukrsList" multiple="single" path="companyId" style="width:100%" class="signUpInput">
