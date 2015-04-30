@@ -3,11 +3,13 @@ package com.mygoconsulting.mytracking.dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedCaseInsensitiveMap;
 
 import com.mygoconsulting.mytracking.LogFactory;
 import com.mygoconsulting.mytracking.batch.util.MygoLogger;
@@ -30,11 +32,11 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("InvoiceDetailRowMapper")
 	RowMapper<IMY_MGOL_INV_DETAIL> invoiceRowMapper;
-	
+
 	@Autowired
 	@Qualifier("InvoiceDetailCommentRowMapper")
 	RowMapper<IMY_MGOL_SO_DETAIL_COMMENT> invoiceCommentRowMapper;
-	
+
 	@Autowired
 	@Qualifier("InvoiceItemAttachementRowMapper")
 	RowMapper<IMY_MGOL_INV_ITEM_ATMT> invoiceItemAttachementRowMapper;
@@ -42,7 +44,7 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 	@Autowired
 	@Qualifier("InvoiceHeaderRowMapper")
 	RowMapper<IMY_MGOL_INV_HEADER> headerInvoiceRowMapper;
-	
+
 	@Autowired
 	@Qualifier("EDIDC40Mapper")
 	RowMapper<EDI_DC40> ediDC40Mapper;
@@ -50,70 +52,91 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 	public void persist(IDOC doc) {
 		logger.debug("BEGIN");
 		IMY_MGOL_INV_HEADER header = doc.getIMY_MGOL_INV_HEADER();
-		
+
 		createEDI_DC40(doc.getEDI_DC40());
 
 		// create header
-		createHeader(header,doc.getEDI_DC40().getDOCNUM());
-				
+		createHeader(header, doc.getEDI_DC40().getDOCNUM());
+
 		// create invoice
 		createInvoice(doc.getIMY_MGOL_INV_DETAIL());
-		
-		//create invoice item atmt
+
+		// create invoice item atmt
 		createInvoiceItemAtmt(doc.getIMY_MGOL_INV_DETAIL());
 		logger.debug("END");
 	}
-	
-	private void createEDI_DC40(EDI_DC40 ediDC40){
-		if(ediDC40 != null){
-			String selectQuery = new String("select * from EDI_DC40 where DOCNUM = ?");
+
+	private void createEDI_DC40(EDI_DC40 ediDC40) {
+		if (ediDC40 != null) {
+			String selectQuery = new String(
+					"select * from EDI_DC40 where DOCNUM = ?");
 			Object[] selectParams = { ediDC40.getDOCNUM() };
-			if(!isExists(selectQuery,selectParams,ediDC40Mapper)){
+			if (!isExists(selectQuery, selectParams, ediDC40Mapper)) {
 				String sqlQuery = new String(
 						"insert into EDI_DC40 (TABNAM, MANDT, DOCNUM, DOCREL, STATUS, DIRECT, OUTMOD, IDOCTYP, MESTYP,"
-						+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
-						+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(), ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
-						ediDC40.getSTATUS(), ediDC40.getDIRECT(), ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(), 
-						ediDC40.getMESTYP(), ediDC40.getSNDPOR(), ediDC40.getSNDPRT(), ediDC40.getSNDPRN(), 
-						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(), ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
-						ediDC40.getCRETIM(),ediDC40.getSERIAL()};
+								+ " SNDPOR, SNDPRT, SNDPRN, RCVPOR, RCVPRT, RCVPRN, CREDAT, CRETIM, SERIAL) values ( "
+								+ " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				Object[] params = { ediDC40.getTABNAM(), ediDC40.getMANDT(),
+						ediDC40.getDOCNUM(), ediDC40.getDOCREL(),
+						ediDC40.getSTATUS(), ediDC40.getDIRECT(),
+						ediDC40.getOUTMOD(), ediDC40.getIDOCTYP(),
+						ediDC40.getMESTYP(), ediDC40.getSNDPOR(),
+						ediDC40.getSNDPRT(), ediDC40.getSNDPRN(),
+						ediDC40.getRCVPOR(), ediDC40.getRCVPRT(),
+						ediDC40.getRCVPRN(), ediDC40.getCREDAT(),
+						ediDC40.getCRETIM(), ediDC40.getSERIAL() };
 				insertOrUpdate(sqlQuery, params);
 			}
 		}
 	}
-	
-	private void createInvoiceItemAtmt(List<IMY_MGOL_INV_DETAIL> imy_MGOL_INV_DETAIL) {
+
+	private void createInvoiceItemAtmt(
+			List<IMY_MGOL_INV_DETAIL> imy_MGOL_INV_DETAIL) {
 		logger.debug("BEGIN");
 		for (IMY_MGOL_INV_DETAIL invoiceDetail : imy_MGOL_INV_DETAIL) {
-			if(invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT() != null){
+			if (invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT() != null) {
 				String selectQuery = new String(
 						"select * from INV_ITEM_ATTACHMENT where DOKAR= ? and INVOI_NUM_SO = ? and INVOI_ORD_NUM = ?");
-				Object[] selectParams = { invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKAR(), 
-						invoiceDetail.getORDER_NBR(), invoiceDetail.getORDER_LINE_NBR()};
-				if (!isExists(selectQuery, selectParams, invoiceItemAttachementRowMapper)) {
+				Object[] selectParams = {
+						invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKAR(),
+						invoiceDetail.getORDER_NBR(),
+						invoiceDetail.getORDER_LINE_NBR() };
+				if (!isExists(selectQuery, selectParams,
+						invoiceItemAttachementRowMapper)) {
 					logger.debug("Invoice Item Attachement inserting");
 					String sqlQuery = new String(
-						"insert into INV_ITEM_ATTACHMENT (DOKAR, DOKNR, DOKTL, DOKVR, OBJKY, "
-						+ "INVOI_NUM_SO, INVOI_ORD_NUM) Values(?,?,?,?,?,?,?)");
-					Object[] params = { invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKAR(), 
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKNR(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKTL(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKVR(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getOBJKY(),invoiceDetail.getORDER_NBR(),
+							"insert into INV_ITEM_ATTACHMENT (DOKAR, DOKNR, DOKTL, DOKVR, OBJKY, "
+									+ "INVOI_NUM_SO, INVOI_ORD_NUM) Values(?,?,?,?,?,?,?)");
+					Object[] params = {
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKAR(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKNR(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKTL(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKVR(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getOBJKY(), invoiceDetail.getORDER_NBR(),
 							invoiceDetail.getORDER_LINE_NBR() };
 					insertOrUpdate(sqlQuery, params);
 				} else {
 					logger.debug("Invoice Item Attachement updating");
 					String sqlQuery = new String(
-						"update INV_ITEM_ATTACHMENT SET DOKNR=?, DOKTL=?, DOKVR=?, "
-						+ "OBJKY=? where DOKAR = ? and INVOI_NUM_SO=? and INVOI_ORD_NUM = ?");
-					Object[] updateParams = { invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKNR(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKTL(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKVR(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getOBJKY(),
-							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT().getDOKAR(),
-							invoiceDetail.getORDER_NBR(), invoiceDetail.getORDER_LINE_NBR() };
+							"update INV_ITEM_ATTACHMENT SET DOKNR=?, DOKTL=?, DOKVR=?, "
+									+ "OBJKY=? where DOKAR = ? and INVOI_NUM_SO=? and INVOI_ORD_NUM = ?");
+					Object[] updateParams = {
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKNR(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKTL(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKVR(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getOBJKY(),
+							invoiceDetail.getIMY_MGOL_INV_ITEM_ATMT()
+									.getDOKAR(), invoiceDetail.getORDER_NBR(),
+							invoiceDetail.getORDER_LINE_NBR() };
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
@@ -121,29 +144,36 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 
-	private void createInvoiceComment(List<IMY_MGOL_SO_DETAIL_COMMENT> imy_MGOL_INV_DETAIL_COMMENT,
-			String orderNumber,String orderLineNumber) {
+	private void createInvoiceComment(
+			List<IMY_MGOL_SO_DETAIL_COMMENT> imy_MGOL_INV_DETAIL_COMMENT,
+			String orderNumber, String orderLineNumber) {
 		logger.debug("BEGIN");
-		if(imy_MGOL_INV_DETAIL_COMMENT != null){
-			for(IMY_MGOL_SO_DETAIL_COMMENT invoiceComment : imy_MGOL_INV_DETAIL_COMMENT ) {
+		if (imy_MGOL_INV_DETAIL_COMMENT != null) {
+			for (IMY_MGOL_SO_DETAIL_COMMENT invoiceComment : imy_MGOL_INV_DETAIL_COMMENT) {
 				String selectQuery = new String(
 						"select * from INV_DETAIL_COMMENT where ORDER_NBR= ? and ORDER_LINE_NBR =?");
-				Object[] selectParams = { invoiceComment.getORDER_NBR(),invoiceComment.getORDER_LINE_NBR() };
-				if (!isExists(selectQuery, selectParams, invoiceCommentRowMapper)) {
+				Object[] selectParams = { invoiceComment.getORDER_NBR(),
+						invoiceComment.getORDER_LINE_NBR() };
+				if (!isExists(selectQuery, selectParams,
+						invoiceCommentRowMapper)) {
 					logger.debug("Invoice Comment inserting");
 					String sqlQuery = new String(
 							"insert into INV_DETAIL_COMMENT (ORDER_NBR, ORDER_LINE_NBR, TYPE, "
-							+ "LINE, ORDER_NBR_SO_DETAIL, ORDER_LINE_NBR_SO_DETAIL) "
-							+ "Values(?,?,?,?,?,?)");
-					Object[] params = { invoiceComment.getORDER_NBR(), invoiceComment.getORDER_LINE_NBR(), 
-							invoiceComment.getTYPE(),invoiceComment.getLINE(), orderNumber,orderLineNumber };
+									+ "LINE, ORDER_NBR_SO_DETAIL, ORDER_LINE_NBR_SO_DETAIL) "
+									+ "Values(?,?,?,?,?,?)");
+					Object[] params = { invoiceComment.getORDER_NBR(),
+							invoiceComment.getORDER_LINE_NBR(),
+							invoiceComment.getTYPE(), invoiceComment.getLINE(),
+							orderNumber, orderLineNumber };
 					insertOrUpdate(sqlQuery, params);
 				} else {
 					logger.debug("Invoice Comment updating");
 					String sqlQuery = new String(
-							"update INV_DETAIL_COMMENT SET TYPE=?, LINE=?  where ORDER_NBR=? and ORDER_LINE_NBR = ?"); 
-					Object[] updateParams = { invoiceComment.getTYPE(), invoiceComment.getLINE(), 
-							invoiceComment.getORDER_NBR(), invoiceComment.getORDER_LINE_NBR()};
+							"update INV_DETAIL_COMMENT SET TYPE=?, LINE=?  where ORDER_NBR=? and ORDER_LINE_NBR = ?");
+					Object[] updateParams = { invoiceComment.getTYPE(),
+							invoiceComment.getLINE(),
+							invoiceComment.getORDER_NBR(),
+							invoiceComment.getORDER_LINE_NBR() };
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
@@ -156,12 +186,13 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 		for (IMY_MGOL_INV_DETAIL detail : detailsList) {
 			String selectQuery = new String(
 					"select * from INV_DETAIL where ORDER_NBR= ? and ORDER_LINE_NBR=?");
-			Object[] selectParams = { detail.getORDER_NBR(), detail.getORDER_LINE_NBR() };
+			Object[] selectParams = { detail.getORDER_NBR(),
+					detail.getORDER_LINE_NBR() };
 			if (!isExists(selectQuery, selectParams, invoiceRowMapper)) {
 				logger.debug("Invoice inserting");
 				String sqlQuery = new String(
 						"insert into INV_DETAIL (ORDER_NBR, ORDER_LINE_NBR, PRODUCT_NBR, OVERRIDE_PRODUCT, "
-						+ "ITEM_CAT, BASE_UOM, NET_VAL) Values(?,?,?,?,?,?,?)");
+								+ "ITEM_CAT, BASE_UOM, NET_VAL) Values(?,?,?,?,?,?,?)");
 				Object[] params = { detail.getORDER_NBR(),
 						detail.getORDER_LINE_NBR(), detail.getPRODUCT_NBR(),
 						detail.getOVERRIDE_PRODUCT(), detail.getITEM_CAT(),
@@ -171,20 +202,22 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 				logger.debug("Invoice updating");
 				String sqlQuery = new String(
 						"update INV_DETAIL SET  PRODUCT_NBR=?, OVERRIDE_PRODUCT=?, "
-						+ "ITEM_CAT=?, BASE_UOM=?, NET_VAL=? where ORDER_NBR=? and ORDER_LINE_NBR=?");
-				Object[] updateParams = { detail.getPRODUCT_NBR(), detail.getOVERRIDE_PRODUCT(),
-						detail.getITEM_CAT(), detail.getBASE_UOM(),
-						detail.getNET_VAL(), detail.getORDER_NBR(),detail.getORDER_LINE_NBR() };
+								+ "ITEM_CAT=?, BASE_UOM=?, NET_VAL=? where ORDER_NBR=? and ORDER_LINE_NBR=?");
+				Object[] updateParams = { detail.getPRODUCT_NBR(),
+						detail.getOVERRIDE_PRODUCT(), detail.getITEM_CAT(),
+						detail.getBASE_UOM(), detail.getNET_VAL(),
+						detail.getORDER_NBR(), detail.getORDER_LINE_NBR() };
 				insertOrUpdate(sqlQuery, updateParams);
 			}
-			//create invoice comment
-			createInvoiceComment(detail.getIMY_MGOL_SO_DETAIL_COMMENT(),detail.getORDER_NBR(),detail.getORDER_LINE_NBR());
+			// create invoice comment
+			createInvoiceComment(detail.getIMY_MGOL_SO_DETAIL_COMMENT(),
+					detail.getORDER_NBR(), detail.getORDER_LINE_NBR());
 
 		}
 		logger.debug("END");
 	}
 
-	private void createHeader(IMY_MGOL_INV_HEADER header,String docNum) {
+	private void createHeader(IMY_MGOL_INV_HEADER header, String docNum) {
 		logger.debug("BEGIN");
 		String selectQuery = new String(
 				"select * from INV_HEADER where INVOI_NBR= ?");
@@ -198,27 +231,39 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 							+ "OVERRIDE_ADDRESS1, OVERRIDE_ADDRESS2, OVERRIDE_CITY, OVERRIDE_STATE, OVERRIDE_ZIP, "
 							+ " DOCNUM, ORDER_REF_NUM, BILLED_PRICE, CURRENCY, CREATE_DATE) "
 							+ " values(?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?,?, ?,?,?)");
-			Object[] params = { header.getSOLD_FROM_COMPANY_CD(), header.getSOLD_TO_COMPANY_CD(), 
-					header.getBILL_TO_COMPANY_CD(), header.getINVOI_NBR(), header.getORDER_PLANT_CD(), 
-					header.getORDER_STATUS_CD(),	header.getCUSTOMER_PO(), header.getEND_USER_COMPANY_CD(),
-					header.getOVERRIDE_COMPANY_NAME(),header.getOVERRIDE_ADDRESS1(), header.getOVERRIDE_ADDRESS2(),
-					header.getOVERRIDE_CITY(), header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(), docNum,
-					header.getORDER_REF_NUM(), header.getBILLED_PRICE(),header.getCURRENCY(),header.getCREATE_DATE() };			
+			Object[] params = { header.getSOLD_FROM_COMPANY_CD(),
+					header.getSOLD_TO_COMPANY_CD(),
+					header.getBILL_TO_COMPANY_CD(), header.getINVOI_NBR(),
+					header.getORDER_PLANT_CD(), header.getORDER_STATUS_CD(),
+					header.getCUSTOMER_PO(), header.getEND_USER_COMPANY_CD(),
+					header.getOVERRIDE_COMPANY_NAME(),
+					header.getOVERRIDE_ADDRESS1(),
+					header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(),
+					header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(),
+					docNum, header.getORDER_REF_NUM(),
+					header.getBILLED_PRICE(), header.getCURRENCY(),
+					header.getCREATE_DATE() };
 			insertOrUpdate(sqlQuery, params);
 		} else {
 			logger.debug("Header updating");
 			String sqlQuery = new String(
 					"update INV_HEADER SET SOLD_FROM_COMPANY_CD = ?, SOLD_TO_COMPANY_CD=?, BILL_TO_COMPANY_CD=?, "
-					+ "ORDER_PLANT_CD=?, ORDER_STATUS_CD=?, CUSTOMER_PO=?, END_USER_COMPANY_CD=?, "
-					+ "OVERRIDE_COMPANY_NAME=?, OVERRIDE_ADDRESS1=?, OVERRIDE_ADDRESS2=?, OVERRIDE_CITY=?, "
-					+ "OVERRIDE_STATE=?, OVERRIDE_ZIP=?, ORDER_REF_NUM=?, BILLED_PRICE=?, CURRENCY=?, CREATE_DATE=? "
-					+ "where INVOI_NBR=?");
-			Object[] updateParams = { header.getSOLD_FROM_COMPANY_CD(), header.getSOLD_TO_COMPANY_CD(),	
-					header.getBILL_TO_COMPANY_CD(), header.getORDER_PLANT_CD(),	header.getORDER_STATUS_CD(), 
-					header.getCUSTOMER_PO(),header.getEND_USER_COMPANY_CD(), header.getOVERRIDE_COMPANY_NAME(),
-					header.getOVERRIDE_ADDRESS1(),header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(),
-					header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(), header.getORDER_REF_NUM(), 
-					header.getBILLED_PRICE(),header.getCURRENCY(),header.getCREATE_DATE(), header.getINVOI_NBR() };
+							+ "ORDER_PLANT_CD=?, ORDER_STATUS_CD=?, CUSTOMER_PO=?, END_USER_COMPANY_CD=?, "
+							+ "OVERRIDE_COMPANY_NAME=?, OVERRIDE_ADDRESS1=?, OVERRIDE_ADDRESS2=?, OVERRIDE_CITY=?, "
+							+ "OVERRIDE_STATE=?, OVERRIDE_ZIP=?, ORDER_REF_NUM=?, BILLED_PRICE=?, CURRENCY=?, CREATE_DATE=? "
+							+ "where INVOI_NBR=?");
+			Object[] updateParams = { header.getSOLD_FROM_COMPANY_CD(),
+					header.getSOLD_TO_COMPANY_CD(),
+					header.getBILL_TO_COMPANY_CD(), header.getORDER_PLANT_CD(),
+					header.getORDER_STATUS_CD(), header.getCUSTOMER_PO(),
+					header.getEND_USER_COMPANY_CD(),
+					header.getOVERRIDE_COMPANY_NAME(),
+					header.getOVERRIDE_ADDRESS1(),
+					header.getOVERRIDE_ADDRESS2(), header.getOVERRIDE_CITY(),
+					header.getOVERRIDE_STATE(), header.getOVERRIDE_ZIP(),
+					header.getORDER_REF_NUM(), header.getBILLED_PRICE(),
+					header.getCURRENCY(), header.getCREATE_DATE(),
+					header.getINVOI_NBR() };
 			insertOrUpdate(sqlQuery, updateParams);
 		}
 		// create header comment
@@ -228,99 +273,159 @@ public class InvoiceDAO extends BaseDAO implements IDAO {
 
 	private void createHeaderComment(IMY_MGOL_INV_HEADER header) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_INV_HEADER_COMMEN> headerCommentList = header.getIMY_MGOL_INV_HEADER_COMMEN();
-		if(headerCommentList != null){
-			for(IMY_MGOL_INV_HEADER_COMMEN headerComment : headerCommentList ) {
+		List<IMY_MGOL_INV_HEADER_COMMEN> headerCommentList = header
+				.getIMY_MGOL_INV_HEADER_COMMEN();
+		if (headerCommentList != null) {
+			for (IMY_MGOL_INV_HEADER_COMMEN headerComment : headerCommentList) {
 				String selectQuery = new String(
-					"select * from INV_HEADER_COMMENT where ORDER_NBR= ? and LINE=?");
-				Object[] selectParams = { headerComment.getORDER_NBR(), headerComment.getLINE() };
+						"select * from INV_HEADER_COMMENT where ORDER_NBR= ? and LINE=?");
+				Object[] selectParams = { headerComment.getORDER_NBR(),
+						headerComment.getLINE() };
 				if (!isExists(selectQuery, selectParams, headerCommentRowMapper)) {
 					String sqlQuery = new String(
-						"insert into INV_HEADER_COMMENT (ORDER_NBR, TYPE, LINE, INVOI_NBR_SO_HEADER) Values(?,?,?,?)");
-					Object[] params = { headerComment.getORDER_NBR(), headerComment.getTYPE(), headerComment.getLINE(),
-							header.getINVOI_NBR()};
+							"insert into INV_HEADER_COMMENT (ORDER_NBR, TYPE, LINE, INVOI_NBR_SO_HEADER) Values(?,?,?,?)");
+					Object[] params = { headerComment.getORDER_NBR(),
+							headerComment.getTYPE(), headerComment.getLINE(),
+							header.getINVOI_NBR() };
 					insertOrUpdate(sqlQuery, params);
 				} else {
 					String sqlQuery = new String(
-						"update INV_HEADER_COMMENT SET TYPE=?  where ORDER_NBR=? and INVOI_NBR_SO_HEADER = ? and LINE=?");
-					Object[] updateParams = { headerComment.getTYPE(), headerComment.getORDER_NBR(),
-							header.getINVOI_NBR(),headerComment.getLINE(),};
+							"update INV_HEADER_COMMENT SET TYPE=?  where ORDER_NBR=? and INVOI_NBR_SO_HEADER = ? and LINE=?");
+					Object[] updateParams = { headerComment.getTYPE(),
+							headerComment.getORDER_NBR(),
+							header.getINVOI_NBR(), headerComment.getLINE(), };
 					insertOrUpdate(sqlQuery, updateParams);
 				}
 			}
 		}
 		logger.debug("END");
 	}
-	
-	public List<IMY_MGOL_INV_HEADER> getInvHeader(String customerId){
+
+	public List<IMY_MGOL_INV_HEADER> getInvHeaders(String customerId) {
 		logger.debug("BEGIN");
-		StringBuilder selectQuery = new StringBuilder("select * from INV_HEADER");		
+		StringBuilder selectQuery = new StringBuilder(
+				"select * from INV_HEADER");
 		List<IMY_MGOL_INV_HEADER> invHeaderList = new ArrayList<IMY_MGOL_INV_HEADER>();
-		if(customerId != null)
-			selectQuery.append(" where SOLD_TO_COMPANY_CD = "+customerId);
-		List<Object> objectsList = (List<Object>) getObjects(selectQuery.toString(),headerInvoiceRowMapper);
-		if(objectsList != null){
-			for(Object obj: objectsList){
-				IMY_MGOL_INV_HEADER invHeader = (IMY_MGOL_INV_HEADER)obj;
+		if (customerId != null)
+			selectQuery.append(" where SOLD_TO_COMPANY_CD = " + customerId);
+		List<Object> objectsList = (List<Object>) getObjects(
+				selectQuery.toString(), headerInvoiceRowMapper);
+		if (objectsList != null) {
+			for (Object obj : objectsList) {
+				IMY_MGOL_INV_HEADER invHeader = (IMY_MGOL_INV_HEADER) obj;
 				invHeaderList.add(invHeader);
 			}
 		}
 		logger.debug("END");
 		return invHeaderList;
 	}
-	
-	public List<IMY_MGOL_INV_DETAIL> getInvDetails(String invNum){
+
+	public IMY_MGOL_INV_HEADER getInvHeader(String customerId, String invNum) {
 		logger.debug("BEGIN");
-		StringBuilder selectQuery = new StringBuilder("select * from INV_DETAIL");
-		if(invNum != null)
-			selectQuery.append(" where ORDER_NBR = "+invNum);
-		List<Object> invDetailObjects = (List<Object>) getObjects(selectQuery.toString(),invoiceRowMapper);
+		IMY_MGOL_INV_HEADER invHeader = null;
+		StringBuilder selectQuery = new StringBuilder(
+				"select * from INV_HEADER where INVOI_NBR=" + invNum);
+		if (customerId != null) {
+			selectQuery.append(" where SOLD_TO_COMPANY_CD = " + customerId);
+		}
+		Object object = get(selectQuery.toString(), headerInvoiceRowMapper);
+		if (object != null) {
+			invHeader = (IMY_MGOL_INV_HEADER) object;
+		}
+		logger.debug("END");
+		return invHeader;
+	}
+
+	@SuppressWarnings("unchecked")
+	public String getInvNum(String customerId, String ordNum) {
+		logger.debug("BEGIN");
+		StringBuilder selectQuery = new StringBuilder(
+				"select INVOI_NBR from INV_HEADER where ORDER_REF_NUM="
+						+ ordNum);
+		Object object = get(selectQuery.toString());
+		logger.debug("END");
+		if ((object != null)
+				&& (((ArrayList<LinkedCaseInsensitiveMap<String>>) object).size() > 0) 
+				&& (object.getClass() == ArrayList.class)) {
+			List<LinkedCaseInsensitiveMap<String>> invNum = (ArrayList<LinkedCaseInsensitiveMap<String>>) object;
+			LinkedCaseInsensitiveMap<String> obj = (LinkedCaseInsensitiveMap<String>) invNum
+					.get(0);
+			String INVOI_NBR = obj.get("INVOI_NBR");
+			return INVOI_NBR;
+		}
+		return null;
+	}
+
+	public List<IMY_MGOL_INV_DETAIL> getInvDetails(String invNum) {
+		logger.debug("BEGIN");
+		StringBuilder selectQuery = new StringBuilder(
+				"select * from INV_DETAIL");
+		if (invNum != null)
+			selectQuery.append(" where ORDER_NBR = " + invNum);
+		List<Object> invDetailObjects = (List<Object>) getObjects(
+				selectQuery.toString(), invoiceRowMapper);
 		List<IMY_MGOL_INV_DETAIL> invDetails = new ArrayList<IMY_MGOL_INV_DETAIL>();
-		for(Iterator<Object> iterator = invDetailObjects.iterator();iterator.hasNext();){
-			IMY_MGOL_INV_DETAIL invDetail = (IMY_MGOL_INV_DETAIL) iterator.next();
+		for (Iterator<Object> iterator = invDetailObjects.iterator(); iterator
+				.hasNext();) {
+			IMY_MGOL_INV_DETAIL invDetail = (IMY_MGOL_INV_DETAIL) iterator
+					.next();
 			invDetails.add(invDetail);
 		}
 		logger.debug("END");
 		return invDetails;
 	}
-	
-	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvoiceDetailComment(String invNum,String invLineNum){
+
+	public List<IMY_MGOL_SO_DETAIL_COMMENT> getInvoiceDetailComment(
+			String invNum, String invLineNum) {
 		logger.debug("BEGIN");
-		StringBuilder selectQuery = new StringBuilder("select * from INV_DETAIL_COMMENT");
-		if(invNum != null && invLineNum != null)
-			selectQuery.append(" where ORDER_NBR_SO_DETAIL = "+invNum+" and ORDER_LINE_NBR_SO_DETAIL = "+invLineNum);
-		List<Object> invCommentObjects = (List<Object>) getObjects(selectQuery.toString(),invoiceCommentRowMapper);
+		StringBuilder selectQuery = new StringBuilder(
+				"select * from INV_DETAIL_COMMENT");
+		if (invNum != null && invLineNum != null)
+			selectQuery.append(" where ORDER_NBR_SO_DETAIL = " + invNum
+					+ " and ORDER_LINE_NBR_SO_DETAIL = " + invLineNum);
+		List<Object> invCommentObjects = (List<Object>) getObjects(
+				selectQuery.toString(), invoiceCommentRowMapper);
 		List<IMY_MGOL_SO_DETAIL_COMMENT> invComments = new ArrayList<IMY_MGOL_SO_DETAIL_COMMENT>();
-		for(Iterator<Object> iterator = invCommentObjects.iterator();iterator.hasNext();){
-			IMY_MGOL_SO_DETAIL_COMMENT invComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator.next();
+		for (Iterator<Object> iterator = invCommentObjects.iterator(); iterator
+				.hasNext();) {
+			IMY_MGOL_SO_DETAIL_COMMENT invComment = (IMY_MGOL_SO_DETAIL_COMMENT) iterator
+					.next();
 			invComments.add(invComment);
 		}
 		logger.debug("END");
 		return invComments;
 	}
-	
-	public List<IMY_MGOL_INV_ITEM_ATMT> getInvoiceItemAttachement(String invNum){
+
+	public List<IMY_MGOL_INV_ITEM_ATMT> getInvoiceItemAttachement(String invNum) {
 		logger.debug("BEGIN");
 		String selectQuery = new String("select * from INV_ITEM_ATTACHMENT");
-		List<Object> invItemAttachementObjects = (List<Object>) getObjects(selectQuery,invoiceItemAttachementRowMapper);
+		List<Object> invItemAttachementObjects = (List<Object>) getObjects(
+				selectQuery, invoiceItemAttachementRowMapper);
 		List<IMY_MGOL_INV_ITEM_ATMT> invItemAttachements = new ArrayList<IMY_MGOL_INV_ITEM_ATMT>();
-		for(Iterator<Object> iterator = invItemAttachementObjects.iterator();iterator.hasNext();){
-			IMY_MGOL_INV_ITEM_ATMT invItemAttachement = (IMY_MGOL_INV_ITEM_ATMT) iterator.next();
+		for (Iterator<Object> iterator = invItemAttachementObjects.iterator(); iterator
+				.hasNext();) {
+			IMY_MGOL_INV_ITEM_ATMT invItemAttachement = (IMY_MGOL_INV_ITEM_ATMT) iterator
+					.next();
 			invItemAttachements.add(invItemAttachement);
 		}
 		logger.debug("END");
 		return invItemAttachements;
 	}
-	
-	public List<IMY_MGOL_INV_HEADER_COMMEN> getInvoiceHeaderCommentDetails(String invNum){
+
+	public List<IMY_MGOL_INV_HEADER_COMMEN> getInvoiceHeaderCommentDetails(
+			String invNum) {
 		logger.debug("BEGIN");
-		StringBuilder selectQuery = new StringBuilder("select * from INV_HEADER_COMMENT");
-		if(invNum != null)
-			selectQuery.append(" where INVOI_NBR_SO_HEADER = "+invNum);
-		List<Object> invHeaderCommentObjects = (List<Object>) getObjects(selectQuery.toString(),headerCommentRowMapper);
+		StringBuilder selectQuery = new StringBuilder(
+				"select * from INV_HEADER_COMMENT");
+		if (invNum != null)
+			selectQuery.append(" where INVOI_NBR_SO_HEADER = " + invNum);
+		List<Object> invHeaderCommentObjects = (List<Object>) getObjects(
+				selectQuery.toString(), headerCommentRowMapper);
 		List<IMY_MGOL_INV_HEADER_COMMEN> invHeaderComments = new ArrayList<IMY_MGOL_INV_HEADER_COMMEN>();
-		for(Iterator<Object> iterator = invHeaderCommentObjects.iterator();iterator.hasNext();){
-			IMY_MGOL_INV_HEADER_COMMEN invHeaderComment = (IMY_MGOL_INV_HEADER_COMMEN) iterator.next();
+		for (Iterator<Object> iterator = invHeaderCommentObjects.iterator(); iterator
+				.hasNext();) {
+			IMY_MGOL_INV_HEADER_COMMEN invHeaderComment = (IMY_MGOL_INV_HEADER_COMMEN) iterator
+					.next();
 			invHeaderComments.add(invHeaderComment);
 		}
 		logger.debug("END");

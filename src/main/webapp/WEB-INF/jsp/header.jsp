@@ -8,6 +8,7 @@
 <title>MyTracking</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.js"></script>
 <script type="text/javascript" src="./js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="./js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./js/additional-methods.js"></script>
@@ -15,15 +16,32 @@
 <script type="text/javascript" src="./js/cufon-yui.js"></script>
 <script type="text/javascript" src="./js/cuf_run.js"></script>
 <script type="text/javascript" src="./js/scripts.js"></script>
+<script type="text/javascript" src="./js/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="./js/jquery.tablesorter.pager.js"></script>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
 <link href="./css/jquery-ui.css" rel="stylesheet" type="text/css" />
 <script>
+	/* $(document).ready(function() {
+		$("table") 
+		.tablesorter({widthFixed: true, widgets: ['zebra']}) 
+		.tablesorterPager({container: $("#pager")}); 
+	}); */ 
 	function toggle_visibility(id) {
 		var e = document.getElementById(id);
 		if (e.style.display == 'block')
 			e.style.display = 'none';
 		else
 			e.style.display = 'block';
+	}
+	function redirectToDetail(orderNumber){
+		$.ajax({
+			method: "GET",
+			url: "./SalesOrderDetail.htm",
+			data: {'OrderID': orderNumber},
+			error: function(e){
+				console.log(e.message);
+			}
+		});
 	}
 	function login() {
 		document.loginForm.submit();
@@ -80,6 +98,27 @@ function onChange() {
 		else
 			$('#btnGo').prop('disabled', true);
 }
+</script>
+
+<!-- Tabs control -->
+<script type="text/javascript">
+	jQuery(document).ready(
+			function() {
+				jQuery('.tabs .tab-links a').on(
+						'click',
+						function(e) {
+							var currentAttrValue = jQuery(this).attr('href');
+
+							// Show/Hide Tabs
+							jQuery(currentAttrValue).show().siblings().hide();
+
+							// Change/remove current tab to active
+							jQuery(this).parent('li').addClass('active')
+									.siblings().removeClass('active');
+
+							e.preventDefault();
+						});
+			});
 </script>
 </head>
 <body>

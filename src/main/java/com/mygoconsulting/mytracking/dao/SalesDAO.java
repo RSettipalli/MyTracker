@@ -247,7 +247,7 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		logger.debug("END");
 	}
 	
-	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String customerId){
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeaders(String customerId){
 		logger.debug("BEGIN");
 		List<IMY_MGOL_SO_HEADER> soHeaderList = new ArrayList<IMY_MGOL_SO_HEADER>();		
 		StringBuilder selectQuery = new StringBuilder("select * from SO_HEADER");
@@ -262,6 +262,21 @@ public class SalesDAO extends BaseDAO implements IDAO {
 		}
 		logger.debug("END");
 		return soHeaderList;
+	}
+	
+	public IMY_MGOL_SO_HEADER getSalesOrderHeader(String customerId, String orderId){
+		logger.debug("BEGIN");
+		IMY_MGOL_SO_HEADER soHeader = null;
+		if(orderId != null){
+			StringBuilder selectQuery = new StringBuilder("select * from SO_HEADER where order_nbr="+orderId);
+			if(customerId != null)
+				selectQuery.append(" where SOLD_TO_COMPANY_CD = "+customerId);
+			Object object = get(selectQuery.toString(),headerRowMapper);
+			if(object != null){
+					soHeader = (IMY_MGOL_SO_HEADER) object;
+			}
+		}
+		return soHeader;
 	}
 	
 	public IMY_MGOL_SO_ITEM_ATTACHM getSODetailAttachement(String soNum){

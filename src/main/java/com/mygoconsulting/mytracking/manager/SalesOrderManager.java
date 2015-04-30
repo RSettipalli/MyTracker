@@ -1,5 +1,6 @@
 package com.mygoconsulting.mytracking.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_DETAIL_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_HEADER_COMMENT;
 import com.mygoconsulting.mytracking.model.IMY_MGOL_SO_ITEM_ATTACHM;
+import com.mygoconsulting.mytracking.util.OrderStatusTypes;
 
 @Component("SalesOrderManager")
 public class SalesOrderManager {
@@ -37,9 +39,9 @@ public class SalesOrderManager {
 		return imyMGolSoDetailList;
 	}
 	
-	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeader(String customerId) {
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeaders(String customerId) {
 		logger.debug("BEGIN");
-		List<IMY_MGOL_SO_HEADER> imyMGolSoHeaderList = salesDao.getSalesOrderHeader(customerId);
+		List<IMY_MGOL_SO_HEADER> imyMGolSoHeaderList = salesDao.getSalesOrderHeaders(customerId);
 		if(imyMGolSoHeaderList.size() > 0){
 			for(IMY_MGOL_SO_HEADER imyMGolSoHeader:imyMGolSoHeaderList){
 				List<IMY_MGOL_SO_DETAIL> imyMGolSoDetailList = getSalesOrderDetail(imyMGolSoHeader.getORDER_NBR());
@@ -50,6 +52,39 @@ public class SalesOrderManager {
 		}		
 		logger.debug("END");
 		return imyMGolSoHeaderList;
+	}
+	
+	public IMY_MGOL_SO_HEADER getSalesOrderHeader(String customerId,
+			String orderId) {
+		logger.debug("BEGIN");
+		IMY_MGOL_SO_HEADER imyMGolSoHeader = salesDao.getSalesOrderHeader(
+				customerId, orderId);
+		if (imyMGolSoHeader != null) {
+			List<IMY_MGOL_SO_DETAIL> imyMGolSoDetailList = getSalesOrderDetail(imyMGolSoHeader
+					.getORDER_NBR());
+			List<IMY_MGOL_SO_HEADER_COMMENT> soHeaderComments = getSOHeaderCommentDetails(imyMGolSoHeader
+					.getORDER_NBR());
+			imyMGolSoHeader.setIMY_MGOL_SO_DETAIL(imyMGolSoDetailList);
+			imyMGolSoHeader.setIMY_MGOL_SO_HEADER_COMMENT(soHeaderComments);
+		}
+		return imyMGolSoHeader;
+	}
+	
+	public List<IMY_MGOL_SO_HEADER> getSalesOrderHeadersByStatus(String customerId, OrderStatusTypes status){
+		List<IMY_MGOL_SO_HEADER> toReturn = null;
+		if(status!=null){
+			toReturn = new ArrayList<IMY_MGOL_SO_HEADER>();
+			List<IMY_MGOL_SO_HEADER> completeList = getSalesOrderHeaders(customerId);
+			if((status.toString().equalsIgnoreCase(OrderStatusTypes.OPEN.toString()))||
+				(status.toString().equalsIgnoreCase(OrderStatusTypes.COMPLETED.toString()))||
+				(status.toString().equalsIgnoreCase(OrderStatusTypes.CANCELLED.toString()))){
+				for(IMY_MGOL_SO_HEADER soHeaderItem:completeList){
+					if(status.equals(OrderStatusTypes.getType(soHeaderItem.getORDER_STATUS_CD())))
+						toReturn.add(soHeaderItem);
+				}
+			}
+		}
+		return toReturn;
 	}
 	
 	public IMY_MGOL_SO_ITEM_ATTACHM getSODetailAttachement(String soNum) {

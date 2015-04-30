@@ -4,143 +4,71 @@
 		<div class="content_resize">
 			<div class="clr"></div>
 			<div>
-				<c:if test="${not empty invoiceHeader}">
-					<div class="article">
-						<br />
-						<h2>
-							<span>Invoice Info</span>
-						</h2>
-						<b> Invoice Header Information</b> <br />
-						<table class="tg">
-							<tr>
-								<th class="tg-kkr7">Invoice Number</th>
-								<th class="tg-t8h0">Status</th>
-								<th class="tg-t8h0">Sold From</th>
-								<th class="tg-t8h0">Bill To</th>
-								<th class="tg-t8h0">Company Name</th>
-								<th class="tg-t8h0">Customer PO</th>
-								<th class="tg-t8h0">Sold To</th>
-								<th class="tg-t8h0">Order Plant</th>
-								<th class="tg-t8h0">Order Ref Num</th>
-								<th class="tg-t8h0">Billed Price</th>
-								<th class="tg-t8h0">Currency</th>
-								<th class="tg-t8h0">Create Date</th>
-								<th class="tg-t8h0">Address1</th>
-								<th class="tg-t8h0">Address2</th>
-								<th class="tg-t8h0">City</th>
-								<th class="tg-t8h0">State</th>
-								<th class="tg-qta8">Zip</th>
-							</tr>
-							<c:forEach var="invHeader" items="${invoiceHeader}">
-								<tr>
-									<td class="tg-031e"><a href="#"
-										onclick="toggle_visibility('${invHeader.INVOI_NBR}')">${invHeader.INVOI_NBR}</a>
-									</td>
-									<td class="tg-031e">${invHeader.ORDER_STATUS_CD}</td>
-									<td class="tg-031e">${invHeader.SOLD_FROM_COMPANY_CD}</td>
-									<td class="tg-031e">${invHeader.BILL_TO_COMPANY_CD}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_COMPANY_NAME}</td>
-									<td class="tg-031e">${invHeader.ORDER_PLANT_CD}</td>
-									<td class="tg-031e">${invHeader.CUSTOMER_PO}</td>
-									<td class="tg-031e">${invHeader.SOLD_TO_COMPANY_CD}</td>
-									<td class="tg-031e">${invHeader.ORDER_REF_NUM}</td>
-									<td class="tg-031e">${invHeader.BILLED_PRICE}</td>
-									<td class="tg-031e">${invHeader.CURRENCY}</td>
-									<td class="tg-031e">${invHeader.CREATE_DATE}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_ADDRESS1}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_ADDRESS2}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_CITY}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_STATE}</td>
-									<td class="tg-031e">${invHeader.OVERRIDE_ZIP}</td>
-								</tr>
-							</c:forEach>
-						</table>
+				<div class="article">
+					<br />
+					<h2>
+						<span>Invoice Info</span>
+					</h2>
 
-						<!--  expand collapse : start -->
-						<c:forEach var="invHeader" items="${invoiceHeader}">
-							<div id='${invHeader.INVOI_NBR}' class="filter-container">
-								<div class="triggear">
-									<a href="#"
-										onclick="toggle_visibility('${invHeader.INVOI_NBR}')">Hide</a>
-								</div>
-								<div class="toggle-container">
-									<b> Invoice Details</b>
-									<display:table list="${invHeader.getIMY_MGOL_INV_DETAIL()}"
-										style="border: 1px solid; width: 950px; height: 20px;">
-										<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
-										<display:column property="PRODUCT_NBR" title="Product Number" />
-										<display:column property="OVERRIDE_PRODUCT" title="Product" />
-										<display:column property="BASE_UOM" title="Unit Of Measure" />
-										<display:column property="NET_VAL" title="Net Value" />
-										<display:column property="ORDER_NBR" title="Order Number" />
-									</display:table>
-								</div>
-
-								<table>
-									<tr>
-										<td><div>
-												<b> Invoice Detail Comments </b> <br />
-												<c:forEach var="invDetail"
-													items="${invHeader.getIMY_MGOL_INV_DETAIL()}">
-													<display:table
-														name="${invDetail.getIMY_MGOL_SO_DETAIL_COMMENT ()}"
-														cellspacing="2" style="border: 1px solid; width: 600px;">
-														<display:column property="ORDER_LINE_NBR" title="Order Line Number" />
-														<display:column property="ORDER_NBR" title="Order Number" />
-														<display:column property="LINE" title="Line" />
-														<display:column property="TYPE" title="Type" />
-													</display:table>
-												</c:forEach>
-											</div></td>
-										<td><div>
-												<b> Invoice Header Comments </b> <br />
-												<display:table
-													list="${invHeader.getIMY_MGOL_INV_HEADER_COMMEN ()}"
-													cellspacing="2" style="border: 1px solid; width: 300px;">
-													<display:column property="ORDER_NBR" title="Order Number" />
-													<display:column property="LINE" title="Line" />
-													<display:column property="TYPE" title="Type" />
-												</display:table>
-											</div></td>
-									</tr>
-									<tr>
-										<td><div>
-												<b> Invoice Item Attachments </b> <br />
-												<c:forEach var="invDetail"
-													items="${invHeader.getIMY_MGOL_INV_DETAIL()}">
-													<c:if
-														test="${not empty invDetail.getIMY_MGOL_INV_ITEM_ATMT ()}">
-														<display:table name="invItemAttachments" cellspacing="2"
-															style="border:solid 1px;">
-															<display:column property="DOKAR" title="DOKAR" />
-															<display:column property="DOKVR" title="DOKVR" />
-															<display:column property="DOKTL" title="DOKTL" />
-															<display:column property="DOKNR" title="DOKNR" />
-															<display:column property="OBJKY" title="OBJKY" />
-														</display:table>
-													</c:if>
-												</c:forEach>
-											</div></td>
-										<td></td>
-									</tr>
-								</table>
-							</div>
-						</c:forEach>
-						<!--  expand collapse : end -->
-
-
-						<div class="clr"></div>
+					<div class="tabs" style="float: left;">
+						<ul class="tab-links">
+							<li class="active"><a href="#tab1">Open</a></li>
+							<li><a href="#tab2">Completed</a></li>
+							<li><a href="#tab3">Cancelled</a></li>
+						</ul>
 					</div>
-				</c:if>
-				<c:if test="${empty invoiceHeader}">
-					<div class="article">
-						<br />
-						<h2>
-							<span>Invoice Info</span>
-						</h2>
-						<b> Invoice Header Information</b> <br /> ${message}
+					<div class="tab-content">
+						<div id="tab1" class="tab active">
+							<p>
+								<c:if test="${not empty invoiceHeader}">
+									<table class="tg">
+										<%@include file="./delivTableHeader.jsp"%>
+										<c:forEach var="invHeader" items="${invoiceHeader}">
+											<%@include file="./invTableBodyRows.jsp"%>
+										</c:forEach>
+									</table>
+								</c:if>
+								<c:if test="${empty invoiceHeader}">
+									<span style="margin-left: .5in;"><b>No data to
+											display.</b></span>
+								</c:if>
+							</p>
+						</div>
+						<div id="tab2" class="tab">
+							<p>
+								<c:if test="${not empty invoiceHeaderCompleted}">
+									<table class="tg">
+										<%@include file="./delivTableHeader.jsp"%>
+										<c:forEach var="invHeader" items="${invoiceHeaderCompleted}">
+											<%@include file="./invTableBodyRows.jsp"%>
+										</c:forEach>
+									</table>
+								</c:if>
+								<c:if test="${empty invoiceHeaderCompleted}">
+									<span style="margin-left: .5in;"><b>No data to
+											display.</b></span>
+								</c:if>
+							</p>
+						</div>
+						<div id="tab3" class="tab">
+							<p>
+								<c:if test="${not empty invoiceHeaderCancelled}">
+									<table class="tg">
+										<%@include file="./delivTableHeader.jsp"%>
+										<c:forEach var="invHeader" items="${invoiceHeaderCancelled}">
+											<%@include file="./invTableBodyRows.jsp"%>
+										</c:forEach>
+									</table>
+								</c:if>
+								<c:if test="${empty invoiceHeaderCancelled}">
+									<span style="margin-left: .5in;"><b>No data to
+											display.</b></span>
+								</c:if>
+							</p>
+						</div>
 					</div>
-				</c:if>
+					<div class="clr"></div>
+				</div>
 			</div>
 		</div>
 	</div>

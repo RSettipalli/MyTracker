@@ -590,7 +590,8 @@ li.active a, li.active a:hover{
 	/* background:#fff;
 	color:#4c4c4c; */
 	color:#fff;
-	background:url("../images/menu_a.gif") no-repeat center top;
+	/* background:url("../images/menu_a.gif") no-repeat center top; */
+	background-color:#26ADE4;
 }
 
 /*----- Content of Tabs -----*/

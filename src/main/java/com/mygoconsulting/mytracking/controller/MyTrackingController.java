@@ -11,6 +11,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.mygoconsulting.mytracking.LogFactory;
@@ -35,6 +37,7 @@ import com.mygoconsulting.mytracking.model.IMY_SHIP_POINT;
 import com.mygoconsulting.mytracking.model.LoginForm;
 import com.mygoconsulting.mytracking.model.MaterialForm;
 import com.mygoconsulting.mytracking.model.User;
+import com.mygoconsulting.mytracking.util.OrderStatusTypes;
 
 @Controller
 @SessionAttributes("user")
@@ -83,7 +86,7 @@ public class MyTrackingController {
 			model.addAttribute("currPage", "liHome");
 			logger.debug("END");
 			return "Home";
-		} else{
+		} else {
 			model.addAttribute("message", "Invalid User ID or Password");
 			model.addAttribute("currPage", "liLogin");
 			logger.debug("END");
@@ -116,21 +119,22 @@ public class MyTrackingController {
 
 		IMY_MAT_ONLINE imyMatOnline = materialManager.getMaterialInfo(matId);
 		List<IMY_MAT_ONLINE> imyMatOnlineList = new ArrayList<IMY_MAT_ONLINE>();
-		imyMatOnlineList.add(imyMatOnline);
+		imyMatOnlineList = materialManager.getMaterialInfo();/*.add(imyMatOnline);*/
 		List<IMY_MAT_WERKS> imyMatPlantList = materialManager
 				.getMaterialPlantDetails(imyMatOnline.getMATERIAL());
-		
+
 		List<IMY_MAT_STORAGE_DETIALS> imyMatStorageDetailsList = new ArrayList<IMY_MAT_STORAGE_DETIALS>();
 		for (IMY_MAT_WERKS plant : imyMatPlantList) {
-			imyMatStorageDetailsList.addAll(materialManager.getMaterialStorageDetails(plant.getPLANT()));
+			imyMatStorageDetailsList.addAll(materialManager
+					.getMaterialStorageDetails(plant.getPLANT()));
 		}
-		
+
 		materialForm.setMaterialIdList(getMaterialIdList(imyMatOnlineList));
-		
+
 		model.addAttribute("materialForm", materialForm);
 		model.addAttribute("imyMatOnlineList", imyMatOnline);
 		model.addAttribute("imyMatPlantList", imyMatPlantList);
-		 model.addAttribute("imyMatStorageDetailsList", imyMatStorageDetailsList);
+		model.addAttribute("imyMatStorageDetailsList", imyMatStorageDetailsList);
 		model.addAttribute("currPage", "liMaterial");
 		logger.debug("END");
 		return "materialDetails";
@@ -140,58 +144,127 @@ public class MyTrackingController {
 	public String invoice(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_INV_HEADER> invoiceHeaderList = null;
+			//List<IMY_MGOL_INV_HEADER> invoiceHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if (customerId != null) {
+			/*if (customerId != null) {
 				invoiceHeaderList = inventoryManager
-						.getInventoryHeader(userInfo.getCompanyId());
+						.getInventoryHeaders(userInfo.getCompanyId());
 			} else {
-				invoiceHeaderList = inventoryManager.getInventoryHeader(null);
+				invoiceHeaderList = inventoryManager.getInventoryHeaders(null);
 			}
-			setInvHeaderAttribute(model, invoiceHeaderList);
+			setInvHeaderAttribute(model, invoiceHeaderList);*/
+			setInvHeaderAddtributeByStatus(model, customerId);
 		}
 		model.addAttribute("currPage", "liInvoice");
 		logger.debug("END");
 		return "Invoice";
 	}
 
+	@RequestMapping(value = "/InvoiceDetail", method = RequestMethod.GET)
+	public String invoiceDetail(@RequestParam String InvoiceID,
+			@ModelAttribute("user") User userInfo, Model model) {
+		logger.debug("BEGIN");
+		if (userInfo != null) {
+			String customerId = userInfo.getCustomerId();
+			IMY_MGOL_INV_HEADER invoiceHeader = null;
+			invoiceHeader = inventoryManager.getInventoryHeader(customerId,
+					InvoiceID);
+			model.addAttribute("invNum", invoiceHeader.getINVOI_NBR());
+			model.addAttribute("IMY_MGOL_INV_DETAIL",
+					invoiceHeader.getIMY_MGOL_INV_DETAIL());
+			model.addAttribute("IMY_MGOL_INV_HEADER_COMMEN",
+					invoiceHeader.getIMY_MGOL_INV_HEADER_COMMEN());
+			if (invoiceHeader.getORDER_REF_NUM() != null) {
+				model.addAttribute("SO_NBR", invoiceHeader.getORDER_REF_NUM());
+				model.addAttribute(
+						"DELIV_NBR",
+						orderManager.getDelivNum(customerId,
+								invoiceHeader.getORDER_REF_NUM()));
+			}
+			model.addAttribute("currPage", "liInvoice");
+			logger.debug("END");
+			return "InvoiceDetail";
+		}
+		logger.debug("END");
+		return "login";
+	}
+
 	@RequestMapping(value = "/OrderInfo", method = RequestMethod.GET)
 	public String orderInfo(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_OD_HEADER> orderHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if (customerId != null) {
-				orderHeaderList = orderManager.getOrderHeaderDetail(userInfo
-						.getCompanyId());
-			} else {
-				orderHeaderList = orderManager.getOrderHeaderDetail(null);
-			}
-			setODHeaderAttribute(model, orderHeaderList);
+			setODHeaderAddtributeByStatus(model, customerId);
 		}
 		model.addAttribute("currPage", "liOrderInfo");
 		logger.debug("END");
 		return "OrderInfo";
 	}
 
+	@RequestMapping(value = "/DeliveryDetail", method = RequestMethod.GET)
+	public String deliveryDetail(@RequestParam String DeliveryID,
+			@ModelAttribute("user") User userInfo, Model model) {
+		logger.debug("BEGIN");
+		if (userInfo != null) {
+			String customerId = userInfo.getCustomerId();
+			IMY_MGOL_OD_HEADER orderHeader = null;
+			orderHeader = orderManager.getOrderHeader(customerId, DeliveryID);
+			model.addAttribute("delivNum", orderHeader.getDELVI_NBR());
+			model.addAttribute("IMY_MGOL_OD_DETAIL",
+					orderHeader.getIMY_MGOL_OD_DETAIL());
+			model.addAttribute("IMY_MGOL_OD_HEADER_COMMENT",
+					orderHeader.getIMY_MGOL_OD_HEADER_COMMENT());
+			if (orderHeader.getORDER_REF_NUM() != null) {
+				model.addAttribute("SO_NBR", orderHeader.getORDER_REF_NUM());
+				model.addAttribute(
+						"INVOI_NBR",
+						inventoryManager.getInvNum(customerId,
+								orderHeader.getORDER_REF_NUM()));
+			}
+			// if(customerId != null)
+			logger.debug("BEGIN");
+			model.addAttribute("currPage", "liOrderInfo");
+			return "DeliveryDetail";
+		}
+		return "login";
+	}
+
 	@RequestMapping(value = "/Shipment", method = RequestMethod.GET)
 	public String shipment(@ModelAttribute("user") User userInfo, Model model) {
 		logger.debug("BEGIN");
 		if (userInfo != null) {
-			List<IMY_MGOL_SO_HEADER> salesOrderHeaderList = null;
 			String customerId = userInfo.getCustomerId();
-			if (customerId != null) {
-				salesOrderHeaderList = salesOrderManager
-						.getSalesOrderHeader(userInfo.getCustomerId());
-			} else {
-				salesOrderHeaderList = salesOrderManager
-						.getSalesOrderHeader(null);
-			}
-			setSOHeaderAttribute(model, salesOrderHeaderList);
+			setSOHeaderAddtributeByStatus(model, customerId);
 		}
 		model.addAttribute("currPage", "liShipment");
 		logger.debug("END");
 		return "Shipment";
+	}
+
+	@RequestMapping(value = "/SalesOrderDetail", method = RequestMethod.GET)
+	public String soDetail(@RequestParam String OrderID,
+			@ModelAttribute("user") User userInfo, Model model) {
+		logger.debug("BEGIN");
+		if (userInfo != null) {
+			String customerId = userInfo.getCustomerId();
+			IMY_MGOL_SO_HEADER soHeader = salesOrderManager
+					.getSalesOrderHeader(customerId, OrderID);
+			model.addAttribute("ORDER_NBR", soHeader.getORDER_NBR());
+			model.addAttribute("IMY_MGOL_SO_DETAIL",
+					soHeader.getIMY_MGOL_SO_DETAIL());
+			model.addAttribute("IMY_MGOL_SO_HEADER_COMMENT",
+					soHeader.getIMY_MGOL_SO_HEADER_COMMENT());
+			if (OrderID != null) {
+				model.addAttribute("DELIV_NBR",
+						orderManager.getDelivNum(customerId, OrderID));
+				model.addAttribute("INVOI_NBR",
+						inventoryManager.getInvNum(customerId, OrderID));
+			}
+			model.addAttribute("currPage", "liShipment");
+			logger.debug("END");
+			return "SalesOrderDetail";
+		}
+		return "login";
 	}
 
 	@RequestMapping(value = "/Home", method = RequestMethod.GET)
@@ -207,7 +280,7 @@ public class MyTrackingController {
 			model.addAttribute("currPage", "liHome");
 			logger.debug("END");
 			return "Home";
-		} else{
+		} else {
 			model.addAttribute("currPage", "liLogin");
 			logger.debug("END");
 			return "login";
@@ -249,6 +322,37 @@ public class MyTrackingController {
 		}
 	}
 
+	private void setSOHeaderAddtributeByStatus(Model model, String customerId) {
+		List<IMY_MGOL_SO_HEADER> salesOrderHeaderOpen = salesOrderManager
+				.getSalesOrderHeadersByStatus(customerId, OrderStatusTypes.OPEN);
+		if (salesOrderHeaderOpen != null && salesOrderHeaderOpen.size() > 0) {
+			model.addAttribute("salesOrderHeaderOpen", salesOrderHeaderOpen);
+		} else {
+			model.addAttribute("message",
+					"No Open Sales Orders to be displayed");
+		}
+		List<IMY_MGOL_SO_HEADER> salesOrderHeaderClosed = salesOrderManager
+				.getSalesOrderHeadersByStatus(customerId,
+						OrderStatusTypes.COMPLETED);
+		if (salesOrderHeaderClosed != null && salesOrderHeaderClosed.size() > 0) {
+			model.addAttribute("salesOrderHeaderClosed", salesOrderHeaderClosed);
+		} else {
+			model.addAttribute("message",
+					"No Closed Sales Orders to be displayed");
+		}
+		List<IMY_MGOL_SO_HEADER> salesOrderHeaderCancelled = salesOrderManager
+				.getSalesOrderHeadersByStatus(customerId,
+						OrderStatusTypes.CANCELLED);
+		if (salesOrderHeaderCancelled != null
+				&& salesOrderHeaderCancelled.size() > 0) {
+			model.addAttribute("salesOrderHeaderCancelled",
+					salesOrderHeaderCancelled);
+		} else {
+			model.addAttribute("message",
+					"No Cancelled Sales Orders to be displayed");
+		}
+	}
+
 	private void setODHeaderAttribute(Model model,
 			List<IMY_MGOL_OD_HEADER> orderHeaderList) {
 		if (orderHeaderList != null && orderHeaderList.size() > 0) {
@@ -256,6 +360,28 @@ public class MyTrackingController {
 		} else {
 			model.addAttribute("message", "No OrderDetails to be displayed");
 		}
+	}
+	
+	private void setODHeaderAddtributeByStatus(Model model, String customerId) {
+		List<IMY_MGOL_OD_HEADER> deliveryHeaderOpen = orderManager
+				.getOrderHeadersByStatus(customerId, OrderStatusTypes.OPEN);
+		if (deliveryHeaderOpen != null && deliveryHeaderOpen.size() > 0) {
+			model.addAttribute("orderHeaderOpen", deliveryHeaderOpen);
+		}
+		List<IMY_MGOL_OD_HEADER> deliveryHeaderClosed = orderManager
+				.getOrderHeadersByStatus(customerId,
+						OrderStatusTypes.COMPLETED);
+		if (deliveryHeaderClosed != null && deliveryHeaderClosed.size() > 0) {
+			model.addAttribute("orderHeaderCompleted", deliveryHeaderClosed);
+		}
+		List<IMY_MGOL_OD_HEADER> deliveryHeaderCancelled = orderManager
+				.getOrderHeadersByStatus(customerId,
+						OrderStatusTypes.CANCELLED);
+		if (deliveryHeaderCancelled != null
+				&& deliveryHeaderCancelled.size() > 0) {
+			model.addAttribute("orderHeaderCancelled",
+					deliveryHeaderCancelled);
+		} 
 	}
 
 	private void setInvHeaderAttribute(Model model,
@@ -265,6 +391,28 @@ public class MyTrackingController {
 		} else {
 			model.addAttribute("message", "No Invoice's to be displayed");
 		}
+	}
+	
+	private void setInvHeaderAddtributeByStatus(Model model, String customerId) {
+		List<IMY_MGOL_INV_HEADER> inventoryHeaderOpen = inventoryManager
+				.getInventoryHeadersByStatus(customerId, OrderStatusTypes.OPEN);
+		if (inventoryHeaderOpen != null && inventoryHeaderOpen.size() > 0) {
+			model.addAttribute("invoiceHeaderOpen", inventoryHeaderOpen);
+		}
+		List<IMY_MGOL_INV_HEADER> inventoryHeaderClosed = inventoryManager
+				.getInventoryHeadersByStatus(customerId,
+						OrderStatusTypes.COMPLETED);
+		if (inventoryHeaderClosed != null && inventoryHeaderClosed.size() > 0) {
+			model.addAttribute("invoiceHeaderCompleted", inventoryHeaderClosed);
+		}
+		List<IMY_MGOL_INV_HEADER> deliveryHeaderCancelled = inventoryManager
+				.getInventoryHeadersByStatus(customerId,
+						OrderStatusTypes.CANCELLED);
+		if (deliveryHeaderCancelled != null
+				&& deliveryHeaderCancelled.size() > 0) {
+			model.addAttribute("invoiceHeaderCancelled",
+					deliveryHeaderCancelled);
+		} 
 	}
 
 	private List<String> getMaterialIdList(List<IMY_MAT_ONLINE> imyMatOnline) {
